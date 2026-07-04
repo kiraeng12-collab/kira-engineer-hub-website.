@@ -13,17 +13,16 @@ const files = [
 ];
 
 const required = [
-  "$70",
-  "$189",
-  "$210",
-  "$21",
+  "USD 70 per month",
+  "USD 189 every three months",
+  "USD 210",
+  "USD 21",
   "10%",
-  "$63/month",
-  "$56/month",
-  "$151.20",
+  "USD 63 per month",
+  "USD 56 per month",
+  "USD 151.20",
   "20%",
-  "USD 70",
-  "USD 189"
+  "KIRA VIP Membership"
 ];
 
 const forbidden = [
@@ -34,7 +33,12 @@ const forbidden = [
   "Kira VIP Monthly: USD 50, 5000 cents",
   "Kira VIP Three-Month: USD 135, 13500 cents",
   "monthlyMembershipPrice: 50",
-  "threeMonthMembershipPrice: 135"
+  "threeMonthMembershipPrice: 135",
+  [String.fromCharCode(36) + "70", "<span>/ month</span>"].join(" "),
+  [String.fromCharCode(36) + "189", "<span>every 3 months</span>"].join(" "),
+  [String.fromCharCode(36) + "56", "month"].join("/"),
+  [String.fromCharCode(36) + "151.20", "every 3 months"].join(" "),
+  ["legacy", "VIP"].join(" ")
 ];
 
 let joined = "";

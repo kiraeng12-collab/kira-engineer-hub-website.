@@ -74,6 +74,7 @@
         border-radius: var(--radius-sm);
       }
       .skip-link:focus { transform: translateY(0); }
+      .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
       .container {
         width: min(var(--container), calc(100% - 40px));
         margin-inline: auto;
@@ -1074,8 +1075,8 @@
           <a href="#ecosystem">Ecosystem</a>
           <a href="#membership">Membership</a>
           <a href="#why-membership">Why Membership?</a>
-          <a href="#news">News</a>
-          <a href="#careers">Careers</a>
+          <a href="#company-updates">Company Updates</a>
+          <a href="#work-with-us">Work With Us</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -1093,13 +1094,13 @@
       <section class="hero" id="home">
         <div class="container hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow">Trading education - Risk discipline - Financial technology</p>
-            <h1>Build a more disciplined way to trade.</h1>
-            <p class="lead">Kira Engineer Hub brings structured market education, risk-first decision frameworks, community access, and trading technology into one connected ecosystem.</p>
+            <p class="eyebrow">Trading Education ? Risk Discipline ? Financial Technology</p>
+            <h1>Build a more disciplined trading process.</h1>
+            <p class="lead">Kira Engineer Hub connects structured market education, risk-aware decision frameworks, community learning and trading technology to help traders plan, act and review with greater clarity.</p>
             <div class="actions">
               <a class="button cyan" href="#ecosystem">Explore the Ecosystem</a>
               <a class="button secondary" href="https://t.me/KiraTradingCommunity">Join the Free Community</a>
-              <a class="text-link" href="#membership">View Private Membership</a>
+              <a class="text-link" href="#membership">View KIRA VIP Membership</a>
             </div>
             <div class="trust-row" aria-label="Kira Engineer Hub credibility points">
               <div class="trust-item"><strong>Community since 2021</strong><span>Built from real market discussion and education.</span></div>
@@ -1146,9 +1147,9 @@
           <div class="section-head">
             <div>
               <p class="eyebrow">Our method</p>
-              <h2>Three pillars. One disciplined approach.</h2>
+              <h2>Four pillars. One disciplined approach.</h2>
             </div>
-            <p class="lead">We combine structured market analysis, risk-first education, and practical technology to help traders make more deliberate decisions.</p>
+            <p class="lead">We combine structured market analysis, risk discipline, trading education, and practical technology to help traders make more deliberate decisions.</p>
           </div>
           <div class="method-grid">
             <article class="card">
@@ -1213,8 +1214,8 @@
             </article>
             <article class="card product-card">
               <div class="product-top">
-                <img class="product-logo" src="kira-vip-channel.png" width="62" height="62" alt="Kira Private Membership legacy VIP logo">
-                <div><span class="tag" data-tone="live">Membership</span><h3>Kira Private Membership</h3></div>
+                <img class="product-logo" src="kira-vip-channel.png" width="62" height="62" alt="KIRA VIP Membership logo">
+                <div><span class="tag" data-tone="live">Membership</span><h3>KIRA VIP Membership</h3></div>
               </div>
               <p>A private educational membership for structured market discussion, risk-aware planning, learning resources, community support, and regular market updates.</p>
               <a class="button secondary" href="#membership">View Membership</a>
@@ -1237,8 +1238,8 @@
           <div>
             <p class="eyebrow">In development</p>
             <h2>A private Kira Engineer initiative.</h2>
-            <p class="lead">Project 242 is a private Kira Engineer initiative with a purpose that will be revealed only when the timing, structure, and protection are right.</p>
-            <p class="muted">It is part of Kira Engineer's personal mission and long-term legacy. For now, only its presence is public; the internal vision remains intentionally undisclosed.</p>
+            <p class="lead">Project 242 is a proprietary risk-management initiative currently in development. Additional details will be released when its product, protection and delivery framework are ready.</p>
+            <p class="muted">Its methodology is not public. Updates will remain limited to readiness, availability, and official release context.</p>
             <div class="pricing-actions">
               <a class="button ghost" href="https://t.me/KiraTradingCommunity">Follow the Development</a>
             </div>
@@ -1249,21 +1250,21 @@
       <section class="section" id="membership">
         <div class="container membership-layout">
           <div id="why-membership">
-            <p class="eyebrow">Private membership</p>
-            <h2>Kira Private Membership.</h2>
+            <p class="eyebrow">KIRA VIP Membership</p>
+            <h2>KIRA VIP Membership.</h2>
             <p class="lead">Structured educational discussion, risk-aware planning, market updates, resources, and community support delivered through private access.</p>
-            <div class="notice"><strong>Why membership?</strong><br>The private membership is built for traders who want a more consistent educational environment than public social feeds can provide. It focuses on market context, planning discipline, community accountability, and responsible learning without promising results or replacing your own decision-making.</div>
+            <div class="notice"><strong>Why membership?</strong><br>The KIRA VIP Membership is built for traders who want a more consistent educational environment than public social feeds can provide. It focuses on market context, planning discipline, community accountability, and responsible learning without promising results or replacing your own decision-making.</div>
             <div class="notice"><strong>Online checkout is being prepared.</strong><br>Until checkout is live, membership requests are handled directly through Telegram. Renewal, cancellation, and refund details should be confirmed before payment.</div>
             <p class="small-disclosure">Educational membership only. It does not provide personalized financial advice, investment management, broker services, or guaranteed results.</p>
           </div>
           <div>
-            <div class="pricing-grid" aria-label="Private membership pricing">
+            <div class="pricing-grid" aria-label="KIRA VIP Membership pricing">
               <article class="price-card">
                 <span class="tag">Standard</span>
-                <h3>Monthly VIP</h3>
-                <div class="price">$70 <span>/ month</span></div>
+                <h3>KIRA VIP Membership</h3>
+                <div class="price">USD 70 <span>per month</span></div>
                 <ul class="check-list">
-                  <li>Automatically renews monthly until cancelled</li>
+                  <li>Renews monthly only when online recurring billing is activated</li>
                   <li>Private educational discussion</li>
                   <li>Risk-aware planning context</li>
                   <li>Market updates and learning resources</li>
@@ -1272,18 +1273,18 @@
               </article>
               <article class="price-card featured">
                 <span class="tag">BEST VALUE</span>
-                <h3>Three-Month VIP</h3>
-                <div class="price">$189 <span>every 3 months</span></div>
+                <h3>KIRA VIP Membership - Three Months</h3>
+                <div class="price">USD 189 <span>every three months</span></div>
                 <ul class="check-list">
-                  <li>Standard three-month equivalent: $210</li>
-                  <li>Saving: $21, equal to 10%</li>
-                  <li>Equivalent cost: $63/month</li>
-                  <li>Automatically renews every three months until cancelled</li>
+                  <li>Standard three-month equivalent: USD 210</li>
+                  <li>Saving: USD 21, equal to 10%</li>
+                  <li>Equivalent cost: USD 63 per month</li>
+                  <li>Renews every three months only when online recurring billing is activated</li>
                   <li>Same educational membership access</li>
                 </ul>
               </article>
             </div>
-            <div class="notice"><strong>Early Bird Lifetime Discount:</strong> verified eligible members receive 20% off qualifying Kira VIP subscription prices. This means $56/month or $151.20 every 3 months while the qualifying service remains available and the subscription is active.</div>
+            <div class="notice"><strong>Early Bird Lifetime Discount Eligibility:</strong> verified eligible members receive 20% off qualifying KIRA VIP Membership prices. Eligibility may remain available for the member's lifetime, but access requires an active paid subscription. Current Early Bird pricing is USD 56 per month or USD 151.20 every three months while the qualifying service remains available.</div><div class="notice"><strong>Renewal and cancellation:</strong> online checkout is not active yet. When recurring billing is activated, each plan will show its renewal frequency before payment. Cancellation stops future renewals and does not remove access already paid for unless the Membership Terms allow removal for misuse, non-payment, or policy breach.</div>
             <div class="pricing-actions">
               <a class="button cyan" href="https://t.me/KIRAENGINEER">Request Membership Access</a>
               <a class="button secondary" href="https://t.me/+fI4f_Iyf0BU0OGRk">Contact on Telegram</a>
@@ -1330,46 +1331,48 @@
         </div>
       </section>
 
-      <section class="section" id="news">
+      <section class="section" id="company-updates">
         <div class="container">
           <div class="section-head">
             <div>
-              <p class="eyebrow">News</p>
+              <p class="eyebrow">Company Updates</p>
               <h2>Official updates from Kira Engineer Hub.</h2>
             </div>
-            <p class="lead">Announcements will focus on platform updates, community notices, membership availability, payment readiness, and carefully selected education releases.</p>
+            <p class="lead">Official updates are published with clear dates, categories, and status labels so visitors can distinguish current access, planned releases, and company notices.</p>
           </div>
           <div class="why-grid">
             <article class="card">
-              <span class="tag" data-tone="live">Live</span>
-              <h3>Community and membership updates</h3>
-              <p>Official notices for Kira Trading Community, private membership access, pricing, and access instructions.</p>
+              <span class="tag" data-tone="live">4 July 2026</span>
+              <h3>KIRA VIP Membership pricing updated</h3>
+              <p><strong>Category:</strong> Membership<br><strong>Status:</strong> Current<br>KIRA VIP Membership is presented with explicit USD pricing, renewal context, and Early Bird eligibility language.</p>
+              <a class="text-link" href="#membership">View membership</a>
             </article>
             <article class="card">
-              <span class="tag" data-tone="soon">Coming soon</span>
-              <h3>Education releases</h3>
-              <p>Selected updates on structured learning resources, risk-awareness material, and new website resources.</p>
+              <span class="tag" data-tone="live">4 July 2026</span>
+              <h3>Legal Center refreshed</h3>
+              <p><strong>Category:</strong> Website<br><strong>Status:</strong> Current<br>Policies now use clearer education-first wording and payment-readiness boundaries while checkout remains disabled.</p>
+              <a class="text-link" href="/legal">Open Legal Center</a>
             </article>
             <article class="card">
               <span class="tag" data-tone="soon">In development</span>
-              <h3>Technology roadmap</h3>
-              <p>Progress notes for future tools will be shared only when details are ready for public release.</p>
+              <h3>Project 242 remains private</h3>
+              <p><strong>Category:</strong> Product<br><strong>Status:</strong> Limited public information<br>Project 242 will receive additional public details only when its product, protection, and delivery framework are ready.</p>
             </article>
             <article class="card">
-              <span class="tag">Official only</span>
+              <span class="tag">Official channels</span>
               <h3>Verified communication</h3>
-              <p>Important updates should be checked through this website, Telegram, Instagram, or official email only.</p>
+              <p><strong>Category:</strong> Company<br><strong>Status:</strong> Ongoing<br>Important updates should be checked through this website, Telegram, Instagram, or KE@kiraengineerhub.com.</p>
             </article>
           </div>
         </div>
       </section>
 
-      <section class="section dark-section" id="careers">
+      <section class="section dark-section" id="work-with-us">
         <div class="container">
           <div class="section-head">
             <div>
-              <p class="eyebrow">Careers</p>
-              <h2>Partnerships and future careers.</h2>
+              <p class="eyebrow">Work with Kira Engineer Hub</p>
+              <h2>Work with Kira Engineer Hub.</h2>
             </div>
             <p class="lead">Kira Engineer Hub is not promising open roles at this stage. Partnership interest can be sent for review, and career posts will be published only when there is a real need.</p>
           </div>
@@ -1392,7 +1395,7 @@
             </article>
           </div>
           <div class="pricing-actions">
-            <a class="button ghost" href="mailto:KE@kiraengineerhub.com?subject=Kira%20Engineer%20Hub%20Partnership%20or%20Career%20Interest">Send Interest</a>
+            <a class="button ghost" href="#contact">Send Interest</a>
             <a class="text-link" href="/affiliate-program">View Partner Program</a>
           </div>
         </div>
@@ -1423,40 +1426,8 @@
               <p>Project 242 is an in-development Kira Engineer initiative. Its purpose, structure, and release details will be shared carefully when the project is ready.</p>
             </details>
             <details>
-              <summary>What does the Early Bird Lifetime Discount mean?</summary>
-              <p>It means lifetime eligibility for a 20% discount on qualifying Kira VIP Membership prices while the qualifying service remains available. It does not mean lifetime VIP access, free access, or access without an active paid subscription.</p>
-            </details>
-            <details>
-              <summary>Who qualifies as an Early Bird Member?</summary>
-              <p>Members who can be verified as having joined an official Kira Trading Community channel, group, or membership before 1 July 2026 at 12:00 AM Gulf Standard Time may qualify.</p>
-            </details>
-            <details>
-              <summary>How do I prove that I joined before 1 July 2026?</summary>
-              <p>Evidence may include verified Telegram user ID, historical Telegram records, previous payment records, Stripe customer records, website records, or manually reviewed administrative evidence. The frontend form cannot approve eligibility by itself.</p>
-            </details>
-            <details>
-              <summary>Can I share my Early Bird code?</summary>
-              <p>No. Early Bird codes are private, member-specific, non-transferable, limited to one verified member, and validated server-side.</p>
-            </details>
-            <details>
-              <summary>Does the discount provide lifetime VIP access?</summary>
-              <p>No. Eligibility may remain for life, but VIP access exists only while a qualifying subscription is active and successfully paid.</p>
-            </details>
-            <details>
-              <summary>What happens if I cancel and return later?</summary>
-              <p>If the same verified member returns and the Early Bird record remains active, the 20% discount can be reapplied to a new qualifying Kira VIP subscription.</p>
-            </details>
-            <details>
-              <summary>Does the discount apply to Project 242?</summary>
-              <p>No. The Early Bird discount applies only to Kira VIP Monthly and Kira VIP Three-Month Membership plans unless an administrator explicitly extends it later.</p>
-            </details>
-            <details>
-              <summary>What happens if the standard VIP price changes?</summary>
-              <p>The discount remains percentage-based. Eligible members receive 20% off the then-current qualifying public Kira VIP price, not a fixed-price guarantee.</p>
-            </details>
-            <details>
-              <summary>Can the discount be combined with another offer?</summary>
-              <p>Normally no. Early Bird discounts are not combinable with other promotions unless specifically enabled by an administrator.</p>
+              <summary>What does Early Bird Lifetime Discount Eligibility mean?</summary>
+              <p>It means lifetime eligibility for a 20% discount on qualifying KIRA VIP Membership prices while the qualifying service remains available. It does not mean lifetime VIP access, free access, or access without an active paid subscription.</p>
             </details>
           </div>
         </div>
@@ -1476,9 +1447,11 @@
               <a class="contact-link" href="mailto:KE@kiraengineerhub.com"><span class="social-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#social-email"></use></svg></span><span><strong>Email</strong><span>KE@kiraengineerhub.com</span></span></a>
             </div>
           </div>
-          <form class="contact-form" action="mailto:KE@kiraengineerhub.com" method="post" enctype="text/plain">
+          <form class="contact-form" action="/api/forms" method="post" data-enhanced-form>
+            <input type="hidden" name="form_type" value="contact">
+            <label class="visually-hidden" for="website">Website</label><input class="visually-hidden" id="website" name="website" tabindex="-1" autocomplete="off">
             <h3>Contact form</h3>
-            <p class="muted">This form opens your email app. A backend contact system can be connected later.</p>
+            <p class="muted">Send a message to Kira Engineer Hub. You will receive an on-screen confirmation reference when the request is accepted.</p>
             <div class="form-grid">
               <div class="field">
                 <label for="name">Name</label>
@@ -1493,7 +1466,7 @@
                 <select id="reason" name="reason" required>
                   <option value="">Select one</option>
                   <option>Free community</option>
-                  <option>Private membership</option>
+                  <option>KIRA VIP Membership</option>
                   <option>Project 242 updates</option>
                   <option>General enquiry</option>
                 </select>
@@ -1505,8 +1478,9 @@
             </div>
             <p class="form-note">By sending a message, you agree to be contacted about your enquiry. Do not send passwords, API keys, or private financial account details.</p>
             <div class="pricing-actions">
-              <button class="button ghost" type="submit">Prepare Email</button>
+              <button class="button ghost" type="submit">Send Message</button>
             </div>
+          <p class="form-note" data-form-status aria-live="polite"></p>
           </form>
         </div>
       </section>
@@ -1515,7 +1489,7 @@
         <div class="container">
           <p class="eyebrow">Next step</p>
           <h2>Build a more structured trading process.</h2>
-          <p class="lead">Join the free community or request private membership access when you are ready for a more structured educational environment.</p>
+          <p class="lead">Join the free community or request KIRA VIP Membership access when you are ready for a more structured educational environment.</p>
           <div class="actions">
             <a class="button cyan" href="https://t.me/KiraTradingCommunity">Join the Free Community</a>
             <a class="button secondary" href="#membership">Explore Membership</a>
@@ -1537,9 +1511,9 @@
           <h3>Company</h3>
           <ul>
             <li><a href="#about">About</a></li>
-            <li><a href="#method">Method</a></li>
+            <li><a href="#method">Our Method</a></li>
             <li><a href="#ecosystem">Ecosystem</a></li>
-            <li><a href="#careers">Careers</a></li>
+            <li><a href="#work-with-us">Work With Us</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
@@ -1547,37 +1521,39 @@
           <h3>Products</h3>
           <ul>
             <li><a href="https://t.me/KiraTradingCommunity" target="_blank" rel="noopener noreferrer">Free Community</a></li>
-            <li><a href="#membership">Private Membership</a></li>
+            <li><a href="#membership">KIRA VIP Membership</a></li>
             <li><a href="#project-242">Project 242</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h3>Resources</h3>
           <ul>
-            <li><a href="/faq">FAQ</a></li>
-            <li><a href="#news">News</a></li>
+            <li><a href="/faq">Frequently Asked Questions</a></li>
+            <li><a href="#company-updates">Company Updates</a></li>
             <li><a href="/community-rules">Community Rules</a></li>
-            <li><a href="/affiliate-program">Affiliate Program</a></li>
+            <li><a href="/affiliate-program">Partner Program</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h3>Legal</h3>
           <ul>
             <li><a href="/legal">Legal Center</a></li>
-            <li><a href="/legal/risk-disclosure">Risk Disclosure</a></li>
             <li><a href="/legal/terms">Terms of Use</a></li>
+            <li><a href="/legal/membership-terms">Membership Terms</a></li>
+            <li><a href="/legal/risk-disclosure">Risk Disclosure</a></li>
             <li><a href="/legal/privacy">Privacy Policy</a></li>
-            <li><a href="/legal/refund-policy">Refund Policy</a></li>
+            <li><a href="/legal/refund-policy">Refund & Cancellation</a></li>
             <li><button type="button" data-cookie-settings>Cookie Settings</button></li>
           </ul>
         </div>
         <div class="footer-col">
           <h3>Connect</h3>
           <ul>
-            <li><a class="footer-social" href="https://t.me/KiraTradingCommunity" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#social-telegram"></use></svg><span>Telegram</span></a></li>
+            <li><a class="footer-social" href="https://t.me/KiraTradingCommunity" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#social-telegram"></use></svg><span>Telegram Community</span></a></li>
+            <li><a class="footer-social" href="https://t.me/KIRAENGINEER" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#social-telegram"></use></svg><span>Membership Support</span></a></li>
             <li><a class="footer-social" href="https://www.instagram.com/kira.engineer/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#social-instagram"></use></svg><span>@kira.engineer</span></a></li>
             <li><a class="footer-social" href="https://www.instagram.com/kira.tradingc/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#social-instagram"></use></svg><span>@kira.tradingc</span></a></li>
-            <li><a class="footer-social" href="mailto:KE@kiraengineerhub.com"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#social-email"></use></svg><span>Email</span></a></li>
+            <li><a class="footer-social" href="mailto:KE@kiraengineerhub.com"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#social-email"></use></svg><span>KE@kiraengineerhub.com</span></a></li>
           </ul>
         </div>
       </div>
@@ -1592,6 +1568,7 @@
     <script src="scripts/legal-config.js"></script>
     <script src="scripts/pricing-config.js"></script>
     <script src="scripts/cookie-consent.js"></script>
+    <script src="scripts/form-handler.js"></script>
     <script>
       const header = document.querySelector('[data-header]');
       const menu = document.querySelector('[data-menu]');

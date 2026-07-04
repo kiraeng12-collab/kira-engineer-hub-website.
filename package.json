@@ -3,6 +3,6 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "echo Static site ready"
+    "build": "node scripts/validate-pricing.js && node scripts/validate-legal-config.js && echo Static site ready"
   }
 }
