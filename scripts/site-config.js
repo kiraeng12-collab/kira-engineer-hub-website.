@@ -1,12 +1,12 @@
 ﻿window.KIRA_SITE_CONFIG = {
   companyName: "Kira Engineer Hub",
   websiteUrl: "https://www.kiraengineerhub.com",
-  supportEmail: "info@kiraengineer.com",
+  supportEmail: "KE@kiraengineerhub.com",
   telegramUrl: "https://t.me/KiraTradingCommunity",
   instagramPrimary: "https://www.instagram.com/kira.engineer/",
   instagramTrading: "https://www.instagram.com/kira.tradingc/",
-  monthlyMembershipPrice: 70,
-  threeMonthMembershipPrice: 189,
+  monthlyMembershipPrice: 50,
+  threeMonthMembershipPrice: 135,
   currency: "USD",
   earlyBirdCutoffDate: "2026-07-01T00:00:00+04:00",
   earlyBirdDiscountRate: 20,
@@ -16,7 +16,7 @@
   affiliateValidationPeriod: "30 days",
   affiliateMinimumPayout: 50,
   legalLastUpdated: "July 2026",
-  governingJurisdiction: "[GOVERNING JURISDICTION TO BE CONFIRMED]",
-  complaintResponseTime: "[COMPLAINT RESPONSE TIME TO BE CONFIRMED]",
-  refundWindow: "OWNER DECISION REQUIRED"
+  governingJurisdiction: "To be finalized before paid checkout launches",
+  complaintResponseTime: "Reasonable timeframe after complete information is received",
+  refundWindow: "Defined in the published refund policy before paid checkout launches"
 };

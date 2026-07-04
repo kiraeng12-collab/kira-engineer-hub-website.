@@ -1,4 +1,4 @@
-const fs = require("fs");
+﻿const fs = require("fs");
 const path = require("path");
 
 const root = path.join(__dirname, "..");
@@ -11,14 +11,14 @@ const files = [
 ];
 
 const required = [
-  "$70",
-  "$189",
-  "$210",
+  "$50",
+  "$135",
+  "$150",
   "$21",
   "10%",
-  "$63/month",
-  "$56/month",
-  "$151.20",
+  "$45/month",
+  "$40/month",
+  "$108",
   "20%"
 ];
 

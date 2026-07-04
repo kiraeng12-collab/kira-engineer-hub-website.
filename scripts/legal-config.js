@@ -1,4 +1,4 @@
-window.KIRA_LEGAL_CONFIG = {
+﻿window.KIRA_LEGAL_CONFIG = {
   legalEntityName: "[INSERT LEGAL ENTITY NAME]",
   tradingName: "Kira Engineer Hub",
   legalStructure: "[INSERT LEGAL STRUCTURE]",
@@ -7,9 +7,9 @@ window.KIRA_LEGAL_CONFIG = {
   registeredAddress: "[INSERT REGISTERED ADDRESS]",
   jurisdiction: "[INSERT JURISDICTION]",
   country: "United Arab Emirates",
-  supportEmail: "info@kiraengineer.com",
-  complaintsEmail: "info@kiraengineer.com",
-  privacyEmail: "info@kiraengineer.com",
+  supportEmail: "KE@kiraengineerhub.com",
+  complaintsEmail: "KE@kiraengineerhub.com",
+  privacyEmail: "KE@kiraengineerhub.com",
   businessPhone: "[INSERT BUSINESS PHONE]",
   vatNumber: "[INSERT VAT/TRN IF APPLICABLE]",
   regulatoryStatus: "[INSERT COUNSEL-REVIEWED REGULATORY STATUS]",

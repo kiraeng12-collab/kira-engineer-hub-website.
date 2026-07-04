@@ -1,4 +1,4 @@
-export type LegalConfig = {
+﻿export type LegalConfig = {
   legalEntityName: string;
   tradingName: string;
   legalStructure: string;
@@ -35,9 +35,9 @@ export const legalConfig: LegalConfig = {
   registeredAddress: "[INSERT REGISTERED ADDRESS]",
   jurisdiction: "[INSERT JURISDICTION]",
   country: "United Arab Emirates",
-  supportEmail: "info@kiraengineer.com",
-  complaintsEmail: "info@kiraengineer.com",
-  privacyEmail: "info@kiraengineer.com",
+  supportEmail: "KE@kiraengineerhub.com",
+  complaintsEmail: "KE@kiraengineerhub.com",
+  privacyEmail: "KE@kiraengineerhub.com",
   businessPhone: "[INSERT BUSINESS PHONE]",
   vatNumber: "[INSERT VAT/TRN IF APPLICABLE]",
   regulatoryStatus: "[INSERT COUNSEL-REVIEWED REGULATORY STATUS]",
