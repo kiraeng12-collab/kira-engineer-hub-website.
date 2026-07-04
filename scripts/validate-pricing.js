@@ -7,26 +7,34 @@ const files = [
   "membership-terms/index.html",
   "early-bird/index.html",
   "scripts/pricing-config.js",
-  "src/config/pricing.ts"
+  "src/config/pricing.ts",
+  "legal/membership-terms/index.html",
+  "docs/stripe-pricing-checkout.md"
 ];
 
 const required = [
-  "$50",
-  "$135",
-  "$150",
+  "$70",
+  "$189",
+  "$210",
   "$21",
   "10%",
-  "$45/month",
-  "$40/month",
-  "$108",
-  "20%"
+  "$63/month",
+  "$56/month",
+  "$151.20",
+  "20%",
+  "USD 70",
+  "USD 189"
 ];
 
 const forbidden = [
-  "USD 50",
-  "USD 135",
-  "$50",
-  "$135"
+  "$50 <span>/ month</span>",
+  "$135 <span>every 3 months</span>",
+  "$40/month instead of $50",
+  "$108 every 3 months instead of $135",
+  "Kira VIP Monthly: USD 50, 5000 cents",
+  "Kira VIP Three-Month: USD 135, 13500 cents",
+  "monthlyMembershipPrice: 50",
+  "threeMonthMembershipPrice: 135"
 ];
 
 let joined = "";

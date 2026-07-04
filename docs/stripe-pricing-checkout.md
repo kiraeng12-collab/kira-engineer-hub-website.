@@ -4,8 +4,8 @@
 
 Create recurring Stripe Prices rather than ad hoc checkout amounts.
 
-- Kira VIP Monthly: USD 50, 5000 cents, recurring interval `month`, `interval_count` 1.
-- Kira VIP Three-Month: USD 135, 13500 cents, recurring interval `month`, `interval_count` 3.
+- Kira VIP Monthly: USD 70, 7000 cents, recurring interval `month`, `interval_count` 1.
+- Kira VIP Three-Month: USD 189, 18900 cents, recurring interval `month`, `interval_count` 3.
 
 Environment variables:
 
