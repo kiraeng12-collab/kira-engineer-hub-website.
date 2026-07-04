@@ -1,4 +1,4 @@
-﻿window.KIRA_LEGAL_CONFIG = {
+window.KIRA_LEGAL_CONFIG = {
   legalEntityName: "[INSERT LEGAL ENTITY NAME]",
   tradingName: "Kira Engineer Hub",
   legalStructure: "[INSERT LEGAL STRUCTURE]",

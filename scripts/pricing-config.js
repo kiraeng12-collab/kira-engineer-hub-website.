@@ -1,4 +1,4 @@
-﻿window.KIRA_PRICING = {
+window.KIRA_PRICING = {
   currency: "USD",
   monthly: {
     name: "Kira VIP Monthly Membership",

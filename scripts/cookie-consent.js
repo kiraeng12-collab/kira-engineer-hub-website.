@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
   const version = "2026.07";
   const key = "kira_cookie_consent";
   const text = {
@@ -50,7 +50,7 @@
     const banner = document.createElement("section");
     banner.setAttribute("data-cookie-banner", "");
     banner.setAttribute("aria-label", t.title);
-    banner.style.cssText = "position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;max-width:760px;margin:auto;background:#151C24;color:#F7F4EE;border:1px solid #29323D;border-radius:8px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.28);font-family:Arial,Helvetica,sans-serif";
+    banner.style.cssText = "position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;max-width:760px;margin:auto;background:#151C24;color:#EDF1F4;border:1px solid #29323D;border-radius:8px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.28);font-family:Arial,Helvetica,sans-serif";
     banner.innerHTML = '<h2 style="font-size:1.1rem;margin:0 0 8px">' + t.title + '</h2><p style="margin:0 0 12px;color:#98A2AE">' + t.body + '</p>' +
       (showManage ? '<div style="display:grid;gap:8px;margin:12px 0">' +
       ["preferences","analytics","marketing"].map((cat) => '<label style="display:flex;gap:8px;align-items:center"><input type="checkbox" data-cookie-cat="' + cat + '"' + (current && current.categories[cat] ? " checked" : "") + (gpc && (cat === "analytics" || cat === "marketing") ? " disabled" : "") + '> ' + t[cat] + '</label>').join("") +

@@ -1,4 +1,4 @@
-﻿export type VipPlan = {
+export type VipPlan = {
   name: string;
   amountCents: number;
   amount: number;

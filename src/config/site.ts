@@ -1,4 +1,4 @@
-﻿export const siteConfig = {
+export const siteConfig = {
   companyName: "Kira Engineer Hub",
   websiteUrl: "https://www.kiraengineerhub.com",
   supportEmail: "KE@kiraengineerhub.com",

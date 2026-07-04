@@ -1,4 +1,4 @@
-﻿export type LegalConfig = {
+export type LegalConfig = {
   legalEntityName: string;
   tradingName: string;
   legalStructure: string;

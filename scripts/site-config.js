@@ -1,4 +1,4 @@
-﻿window.KIRA_SITE_CONFIG = {
+window.KIRA_SITE_CONFIG = {
   companyName: "Kira Engineer Hub",
   websiteUrl: "https://www.kiraengineerhub.com",
   supportEmail: "KE@kiraengineerhub.com",

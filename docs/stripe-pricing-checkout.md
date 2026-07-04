@@ -1,4 +1,4 @@
-﻿# Stripe pricing and checkout requirements
+# Stripe pricing and checkout requirements
 
 ## Stripe products and prices
 
