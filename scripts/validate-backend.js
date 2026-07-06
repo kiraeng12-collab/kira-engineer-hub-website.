@@ -7,18 +7,22 @@ const requiredFiles = [
   'api/forms.js',
   'api/checkout.js',
   'api/stripe-webhook.js',
-  '.env.example',
   'docs/backend-phase-1.md'
 ];
 
 const missing = requiredFiles.filter((file) => !fs.existsSync(path.join(root, file)));
+const envExamplePath = fs.existsSync(path.join(root, '.env.example'))
+  ? path.join(root, '.env.example')
+  : path.join(root, 'env.example');
+
+if (!fs.existsSync(envExamplePath)) missing.push('env.example');
 
 if (missing.length) {
   console.error(`Missing backend files: ${missing.join(', ')}`);
   process.exit(1);
 }
 
-const envExample = fs.readFileSync(path.join(root, '.env.example'), 'utf8');
+const envExample = fs.readFileSync(envExamplePath, 'utf8');
 const requiredEnv = [
   'CHECKOUT_ENABLED',
   'FORM_WEBHOOK_URL',
