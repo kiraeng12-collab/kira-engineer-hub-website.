@@ -8,7 +8,7 @@ window.KIRA_SITE_CONFIG = {
   monthlyMembershipPrice: 70,
   threeMonthMembershipPrice: 189,
   currency: "USD",
-  earlyBirdCutoffDate: "2026-07-01T00:00:00+04:00",
+  earlyBirdCutoffDate: "2026-08-01T00:00:00+04:00",
   earlyBirdDiscountRate: 20,
   affiliateCommissionRate: 20,
   affiliateCommissionDuration: "first 90 days",

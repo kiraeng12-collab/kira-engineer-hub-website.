@@ -18,9 +18,9 @@ window.KIRA_PRICING = {
   },
   earlyBird: {
     discountPercentage: 20,
-    cutoffDate: "2026-07-01T00:00:00+04:00",
-    cutoffDisplay: "1 July 2026 at 12:00 AM Gulf Standard Time",
-    lastQualifyingMomentDisplay: "30 June 2026 at 11:59 PM Gulf Standard Time",
+    cutoffDate: "2026-08-01T00:00:00+04:00",
+    cutoffDisplay: "1 August 2026 at 12:00 AM Gulf Standard Time",
+    lastQualifyingMomentDisplay: "31 July 2026 at 11:59 PM Gulf Standard Time",
     monthlyDisplay: "USD 56 per month for verified Early Bird Members",
     quarterlyDisplay: "USD 151.20 every three months for verified Early Bird Members"
   }
