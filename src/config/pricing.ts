@@ -11,7 +11,7 @@ export type VipPlan = {
 export const pricingConfig = {
   currency: "USD",
   monthly: {
-    name: "Kira VIP Monthly Membership",
+    name: "KIRA VIP Monthly",
     amountCents: 7000,
     amount: 70,
     stripePriceIdEnv: "STRIPE_PRICE_KIRA_VIP_MONTHLY",
@@ -20,7 +20,7 @@ export const pricingConfig = {
     intervalCount: 1
   } satisfies VipPlan,
   quarterly: {
-    name: "Kira VIP Three-Month Membership",
+    name: "KIRA VIP Quarterly",
     amountCents: 18900,
     amount: 189,
     standardEquivalentCents: 21000,

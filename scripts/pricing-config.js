@@ -1,13 +1,13 @@
 window.KIRA_PRICING = {
   currency: "USD",
   monthly: {
-    name: "KIRA VIP Membership",
+    name: "KIRA VIP Monthly",
     amountCents: 7000,
     display: "USD 70 per month",
     billingInterval: "Automatically renews monthly until cancelled when online recurring billing is activated"
   },
   quarterly: {
-    name: "KIRA VIP Membership - Three Months",
+    name: "KIRA VIP Quarterly",
     amountCents: 18900,
     display: "USD 189 every three months",
     standardEquivalent: "USD 210",

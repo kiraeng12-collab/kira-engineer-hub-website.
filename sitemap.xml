@@ -1,6 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://www.kiraengineerhub.com/</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/ecosystem</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/community</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/membership</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/membership/compare</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/academy</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/project-242</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/insights</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/weekly-analysis</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/updates</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/about</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/founder</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/contact</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/support</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/shop</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/security</loc></url>
+  <url><loc>https://www.kiraengineerhub.com/status</loc></url>
   <url><loc>https://www.kiraengineerhub.com/legal</loc></url>
   <url><loc>https://www.kiraengineerhub.com/faq</loc></url>
   <url><loc>https://www.kiraengineerhub.com/affiliate-program</loc></url>
@@ -27,7 +43,6 @@
   <url><loc>https://www.kiraengineerhub.com/cookies</loc></url>
   <url><loc>https://www.kiraengineerhub.com/complaints</loc></url>
   <url><loc>https://www.kiraengineerhub.com/affiliate-disclosure</loc></url>
-  <url><loc>https://www.kiraengineerhub.com/community-rules</loc></url>
   <url><loc>https://www.kiraengineerhub.com/regulatory-notice</loc></url>
   <url><loc>https://www.kiraengineerhub.com/accessibility</loc></url>
   <url><loc>https://www.kiraengineerhub.com/ar/legal</loc></url>
@@ -45,3 +60,4 @@
   <url><loc>https://www.kiraengineerhub.com/ar/regulatory-notice</loc></url>
   <url><loc>https://www.kiraengineerhub.com/ar/accessibility</loc></url>
 </urlset>
+
