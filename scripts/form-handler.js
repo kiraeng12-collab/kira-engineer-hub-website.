@@ -8,7 +8,15 @@
       const button = form.querySelector('button[type="submit"]');
       if (button) button.disabled = true;
       try {
-        const response = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+        const body = new URLSearchParams(new FormData(form));
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body,
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          }
+        });
         const data = await response.json().catch(() => ({}));
         if (!response.ok) throw new Error(data.message || 'The request could not be sent. Please contact KE@kiraengineerhub.com.');
         form.reset();

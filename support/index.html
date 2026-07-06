@@ -1,1 +1,47 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Support | Kira Engineer Hub</title><meta name="description" content="Support information for Kira Engineer Hub community, membership, Early Bird eligibility, privacy, and complaints."><link rel="canonical" href="https://www.kiraengineerhub.com/support"><link rel="stylesheet" href="/legal.css"></head><body><header><p class="crumbs"><a href="/">Home</a> / Support</p><p class="eyebrow">Support</p><h1>Support and help.</h1></header><main><section class="cards"><article class="card"><h2>Membership</h2><p>For membership access and renewal questions, contact the official Telegram support channel.</p><a class="button secondary" href="https://t.me/KIRAENGINEER">Telegram Support</a></article><article class="card"><h2>Early Bird</h2><p>Submit eligibility information through the Early Bird page.</p><a class="button secondary" href="/early-bird">Early Bird Page</a></article><article class="card"><h2>Privacy</h2><p>Use the privacy request page for data-related requests.</p><a class="button secondary" href="/privacy-request">Privacy Request</a></article><article class="card"><h2>Complaints</h2><p>Review the complaints process before submitting a formal issue.</p><a class="button secondary" href="/legal/complaints">Complaints Policy</a></article></section></main><footer><a href="/">Back to Home</a> - <a href="/contact">Contact</a></footer></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Support | Kira Engineer Hub</title>
+  <meta name="description" content="Support information for Kira Engineer Hub community, membership, Early Bird eligibility, privacy, and complaints.">
+  <link rel="canonical" href="https://www.kiraengineerhub.com/support">
+  <link rel="stylesheet" href="/legal.css">
+</head>
+<body>
+  <header>
+    <p class="crumbs"><a href="/">Home</a> / Support</p>
+    <p class="eyebrow">Support</p>
+    <h1>Support and help.</h1>
+  </header>
+  <main>
+    <section class="cards">
+      <article class="card"><h2>Membership</h2><p>For access and renewal questions, use the support form or official Telegram.</p><a class="button secondary" href="https://t.me/KIRAENGINEER">Telegram Support</a></article>
+      <article class="card"><h2>Early Bird</h2><p>Submit eligibility information through the Early Bird page.</p><a class="button secondary" href="/early-bird">Early Bird Page</a></article>
+      <article class="card"><h2>Privacy</h2><p>Use the privacy request page for data-related requests.</p><a class="button secondary" href="/privacy-request">Privacy Request</a></article>
+      <article class="card"><h2>Complaints</h2><p>Review the complaints process before submitting a formal issue.</p><a class="button secondary" href="/legal/complaints">Complaints Policy</a></article>
+    </section>
+
+    <section>
+      <h2>Open a support request</h2>
+      <form class="form-panel" action="/api/forms" method="post" data-enhanced-form>
+        <input type="hidden" name="form_type" value="support">
+        <label class="visually-hidden">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+        <div class="grid">
+          <p><label>Full name<input name="full_name" required></label></p>
+          <p><label>Email<input type="email" name="email" required></label></p>
+          <p><label>Telegram username<input name="telegram_username"></label></p>
+          <p><label>Support category<select name="category" required><option>Membership access</option><option>Billing preparation</option><option>Early Bird eligibility</option><option>Telegram access</option><option>Website issue</option><option>Other</option></select></label></p>
+        </div>
+        <p><label>Request details<textarea name="message" required></textarea></label></p>
+        <p><label><input type="checkbox" required> I confirm this request does not include card numbers, passwords, seed phrases, or broker login details.</label></p>
+        <button type="submit">Send Support Request</button>
+        <p class="form-note" data-form-status aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+  <footer><a href="/">Back to Home</a> - <a href="/contact">Contact</a></footer>
+  <script src="/scripts/cookie-consent.js"></script>
+  <script src="/scripts/form-handler.js"></script>
+</body>
+</html>
