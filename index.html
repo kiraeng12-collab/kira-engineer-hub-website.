@@ -695,6 +695,47 @@
         gap: 12px;
         margin-top: 22px;
       }
+      .checkout-panel {
+        margin-top: 22px;
+        padding: 18px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        background: rgba(18, 26, 35, .72);
+      }
+      .checkout-panel h3 {
+        margin: 0 0 8px;
+      }
+      .checkout-grid {
+        display: grid;
+        grid-template-columns: minmax(220px, 1fr) auto auto;
+        gap: 12px;
+        align-items: end;
+        margin-top: 14px;
+      }
+      .checkout-panel label {
+        display: grid;
+        gap: 7px;
+        color: var(--stone);
+        font-size: .85rem;
+        font-weight: 800;
+      }
+      .checkout-panel input {
+        min-height: 48px;
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        background: var(--bg);
+        color: var(--text);
+        padding: 0 14px;
+        font: inherit;
+      }
+      .checkout-status {
+        min-height: 24px;
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: .88rem;
+      }
       .small-disclosure {
         margin-top: 16px;
         color: var(--muted);
@@ -1003,6 +1044,9 @@
         .final-cta .actions {
           align-items: stretch;
           flex-direction: column;
+        }
+        .checkout-grid {
+          grid-template-columns: 1fr;
         }
         .button, .product-card .button { width: 100%; }
         .project-mark-large { padding: 32px; }
@@ -1341,6 +1385,18 @@
               <a class="button secondary" href="https://t.me/+fI4f_Iyf0BU0OGRk">Contact on Telegram</a>
               <a class="text-link" href="/early-bird">Check Early Bird eligibility</a>
             </div>
+            <form class="checkout-panel" data-checkout-form>
+              <h3>Online checkout</h3>
+              <p class="small-disclosure">Checkout is connected to Stripe and remains controlled by the backend safety switch. Enter your email and choose a plan when checkout is enabled.</p>
+              <div class="checkout-grid">
+                <label>Email for receipt
+                  <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+                </label>
+                <button class="button cyan" type="submit" name="plan" value="monthly">Pay Monthly VIP</button>
+                <button class="button secondary" type="submit" name="plan" value="quarterly">Pay Quarterly VIP</button>
+              </div>
+              <p class="checkout-status" data-checkout-status aria-live="polite">Online checkout is being prepared. Telegram access remains available.</p>
+            </form>
           </div>
         </div>
       </section>
@@ -1661,6 +1717,7 @@
     <script src="scripts/pricing-config.js"></script>
     <script src="scripts/cookie-consent.js"></script>
     <script src="scripts/form-handler.js"></script>
+    <script src="scripts/checkout-handler.js"></script>
     <script>
       const header = document.querySelector('[data-header]');
       const menu = document.querySelector('[data-menu]');

@@ -15,6 +15,7 @@ button:disabled{opacity:.62;cursor:not-allowed}
 .card{border:1px solid #29323D;background:#151C24;border-radius:8px;padding:18px}
 .pill{display:inline-flex;align-items:center;border:1px solid #29323D;border-radius:999px;padding:4px 10px;color:#6FE0D2;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
 .actions{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0}
+.checkout-panel{padding:18px;border:1px solid #29323D;background:#151C24;border-radius:8px;margin:20px 0}.checkout-panel h2,.checkout-panel h3{margin-top:0}.checkout-grid{display:grid;grid-template-columns:minmax(220px,1fr) auto auto;gap:12px;align-items:end}.checkout-status{min-height:24px;color:#98A2AE;font-size:.92rem}.small-disclosure{color:#98A2AE;font-size:.88rem}.checkout-panel .button,.checkout-panel button{white-space:nowrap}
 .comparison-list li{margin-bottom:10px}
 table{width:100%;border-collapse:collapse;margin:18px 0;border:1px solid #29323D;background:#151C24}
 th,td{padding:12px;border-bottom:1px solid #29323D;text-align:left;vertical-align:top}
@@ -23,6 +24,7 @@ th{color:#6FE0D2}
 .crumbs{font-size:.9rem;color:#98A2AE}.meta{color:#98A2AE;font-size:.92rem}.lang-note{direction:ltr;border-left:3px solid #2BB6A8;padding-left:12px;color:#c7ccd2}
 .doc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:24px 0}.doc-card{display:block;border:1px solid #29323D;background:#151C24;border-radius:8px;padding:18px;text-decoration:none;color:#EDF1F4}.doc-card:hover,.doc-card:focus-visible{border-color:#2BB6A8;box-shadow:0 8px 24px rgba(25,25,25,.08)}.doc-card span{display:inline-block;margin-top:10px;color:#2BB6A8;font-size:.82rem;font-weight:800}.toc{border:1px solid #29323D;background:#151C24;border-radius:8px;padding:16px;margin:20px 0}.toc ul{margin:.5rem 0 0}.related{border-top:1px solid #29323D;margin-top:32px;padding-top:20px}.draft-notice{border-left:4px solid #2BB6A8;background:#151C24;padding:14px 16px;margin:18px 0}.legal-layout{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:34px}.legal-layout article{max-width:760px}.side-toc{position:sticky;top:18px;align-self:start}
 @media(max-width:700px){.grid{grid-template-columns:1fr}}
+@media(max-width:760px){.checkout-grid{grid-template-columns:1fr}.checkout-panel .button,.checkout-panel button{width:100%}}
 @media(max-width:900px){.cards{grid-template-columns:1fr}}
 @media(max-width:900px){.doc-grid,.legal-layout{grid-template-columns:1fr}.side-toc{position:static}}
 @media print{body{background:white;color:black}a{color:black}.button,button{display:none}}
