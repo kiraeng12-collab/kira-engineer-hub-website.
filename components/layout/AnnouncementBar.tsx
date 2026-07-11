@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { siteConfig } from "@/lib/config/site";
 
 const DISMISS_KEY = "kiraLaunchNoticeDismissed";
@@ -29,7 +30,7 @@ export function AnnouncementBar() {
       <div className="container">
         <p>
           A new KIRA membership and payment experience launches on 1 August 2026. Verified eligible members retain
-          their loyalty pricing. <a href="/updates">Read the update</a>
+          their loyalty pricing. <Link href="/updates">Read the update</Link>
         </p>
         <button
           className="notice-close"

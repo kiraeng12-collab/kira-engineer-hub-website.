@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/config/site";
+import { getAllArticles } from "@/lib/content/mdx";
+import type { ContentCategory } from "@/lib/content/types";
 
 type Entry = {
   path: string;
@@ -62,12 +64,25 @@ const entries: Entry[] = [
   { path: "/ar/accessibility", changeFrequency: "monthly", priority: 0.2 },
 ];
 
+const ARTICLE_CATEGORIES: ContentCategory[] = ["insights", "weekly-analysis", "updates"];
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
-  return entries.map(({ path, changeFrequency, priority }) => ({
+  const now = new Date();
+  const staticEntries: MetadataRoute.Sitemap = entries.map(({ path, changeFrequency, priority }) => ({
     url: `${siteConfig.websiteUrl}${path}`,
-    lastModified,
+    lastModified: now,
     changeFrequency,
     priority,
   }));
+
+  const articleEntries: MetadataRoute.Sitemap = ARTICLE_CATEGORIES.flatMap((category) =>
+    getAllArticles(category).map((article) => ({
+      url: `${siteConfig.websiteUrl}/${category}/${article.slug}`,
+      lastModified: new Date(article.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }))
+  );
+
+  return [...staticEntries, ...articleEntries];
 }

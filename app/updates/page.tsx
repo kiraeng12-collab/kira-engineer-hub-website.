@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { getAllArticles } from "@/lib/content/mdx";
 
 export const metadata: Metadata = {
   title: "Updates",
@@ -10,6 +11,8 @@ export const metadata: Metadata = {
 };
 
 export default function UpdatesPage() {
+  const articles = getAllArticles("updates");
+
   return (
     <div className="doc-page">
       <div className="doc-intro">
@@ -18,26 +21,22 @@ export default function UpdatesPage() {
         <h1>Company and platform updates.</h1>
       </div>
       <div className="doc-body">
-        <section className="cards">
-          <article className="card">
-            <span className="pill">1 August 2026</span>
-            <h2>Membership and payment experience launch</h2>
-            <p>A new KIRA membership and payment experience is scheduled for 1 August 2026. Verified eligible members retain loyalty pricing where eligibility is approved.</p>
-            <Link className="button secondary" href="/early-bird">Early Bird Eligibility</Link>
-          </article>
-          <article className="card">
-            <span className="pill">Current</span>
-            <h2>KIRA VIP pricing</h2>
-            <p>KIRA VIP Monthly is USD 70 per month. KIRA VIP Quarterly is USD 189 every three months.</p>
-            <Link className="button secondary" href="/membership">View Membership</Link>
-          </article>
-          <article className="card">
-            <span className="pill">In Development</span>
-            <h2>Project 242</h2>
-            <p>Project 242 remains private while development continues. Additional public details will be released only when ready.</p>
-            <Link className="button secondary" href="/project-242">Project 242</Link>
-          </article>
-        </section>
+        {articles.length > 0 ? (
+          <section className="cards">
+            {articles.map((article) => (
+              <article className="card" key={article.slug}>
+                <span className="pill">
+                  {new Date(article.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                </span>
+                <h2>{article.title}</h2>
+                <p>{article.description}</p>
+                <Link className="button secondary" href={`/updates/${article.slug}`}>Read Update</Link>
+              </article>
+            ))}
+          </section>
+        ) : (
+          <div className="notice">No updates have been published yet. Check back soon.</div>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { getAllArticles } from "@/lib/content/mdx";
 
 export const metadata: Metadata = {
   title: "Insights",
@@ -10,6 +11,8 @@ export const metadata: Metadata = {
 };
 
 export default function InsightsPage() {
+  const articles = getAllArticles("insights");
+
   return (
     <div className="doc-page">
       <div className="doc-intro">
@@ -19,25 +22,22 @@ export default function InsightsPage() {
         <p className="meta">A public archive for trading education, risk discipline, and Kira Engineer Hub development notes.</p>
       </div>
       <div className="doc-body">
-        <section className="cards">
-          <article className="card">
-            <span className="pill">Launch</span>
-            <h2>1 August 2026 membership update</h2>
-            <p>The new KIRA membership and payment experience is being prepared with Early Bird loyalty pricing preserved for verified eligible members.</p>
-            <Link className="button secondary" href="/updates">Read Updates</Link>
-          </article>
-          <article className="card">
-            <span className="pill">Education</span>
-            <h2>Risk-first learning</h2>
-            <p>Future educational articles will focus on process, planning, review, and responsible market participation.</p>
-          </article>
-          <article className="card">
-            <span className="pill">Archive</span>
-            <h2>Weekly analysis</h2>
-            <p>Weekly analysis content will be published only when reports are ready for public release.</p>
-            <Link className="button secondary" href="/weekly-analysis">Open Archive</Link>
-          </article>
-        </section>
+        {articles.length > 0 ? (
+          <section className="cards">
+            {articles.map((article) => (
+              <article className="card" key={article.slug}>
+                <span className="pill">
+                  {new Date(article.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                </span>
+                <h2>{article.title}</h2>
+                <p>{article.description}</p>
+                <Link className="button secondary" href={`/insights/${article.slug}`}>Read Article</Link>
+              </article>
+            ))}
+          </section>
+        ) : (
+          <div className="notice">No Insights articles have been published yet. Check back soon.</div>
+        )}
       </div>
     </div>
   );
