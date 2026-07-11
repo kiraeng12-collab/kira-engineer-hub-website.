@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Phase 10: generic sliding-window rate limiting, keyed by an arbitrary
+// bucket string (e.g. "login:email:x@example.com", "register:ip:1.2.3.4").
+// Rows outside any window in use are just harmless clutter - no cleanup job
+// is required for correctness, only eventually for table size.
+model RateLimitEvent {
+  id        String   @id @default(cuid())
+  bucket    String
+  createdAt DateTime @default(now())
+
+  @@index([bucket, createdAt])
+}
+
+// Generic store for every standardized form submission (Section 26).
+// Early Bird gets a dedicated, richer review-workflow model in Phase 8 -
+// until then, Early Bird submissions land here like any other form.
+model FormSubmission {
+  id           String   @id @default(cuid())
+  reference    String   @unique
+  formType     String
+  email        String
+  fields       Json
+  ipHint       String?
+  userAgent    String?
+  consentGiven Boolean  @default(true)
+  status       String   @default("received")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([formType])
+  @@index([email])
+  @@index([createdAt])
+}
+
+// Phase 5: authentication. Credentials-only (email + password) for now,
+// so no Account/Session tables are needed - sessions are JWT-based.
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  name          String?
+  emailVerified DateTime?
+  termsAcceptedAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Phase 6: Stripe/membership. earlyBirdEligible is set by an admin after
+  // reviewing evidence (Phase 8 workflow) - checkout only ever trusts this
+  // database flag, never a client-supplied request value.
+  stripeCustomerId    String?   @unique
+  earlyBirdEligible   Boolean   @default(false)
+  earlyBirdVerifiedAt DateTime?
+
+  // Phase 7: Telegram linking. The invite token is single-use and short-lived,
+  // redeemed via a /start deep link to the bot, which is how we learn the
+  // member's numeric Telegram user ID (needed later to remove them on lapse).
+  telegramUserId               String?   @unique
+  telegramUsername             String?
+  telegramLinkedAt             DateTime?
+  telegramInviteTokenHash      String?   @unique
+  telegramInviteTokenExpiresAt DateTime?
+  telegramRemovedAt            DateTime?
+
+  emailVerificationTokens EmailVerificationToken[]
+  passwordResetTokens     PasswordResetToken[]
+  membership              Membership?
+  earlyBirdRequests       EarlyBirdRequest[]
+
+  @@index([email])
+}
+
+// Tokens are stored as hashes, never in raw form - only the raw value ever
+// sent to the user (by email) can redeem them, matching the pattern used
+// for future Telegram-link tokens (Section 18) and Early Bird codes.
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+// Phase 6: one active/most-recent subscription per user. Statuses match
+// Section 16 exactly: pending, active, past_due, cancelled, expired,
+// suspended, refunded, disputed.
+model Membership {
+  id                    String    @id @default(cuid())
+  userId                String    @unique
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stripeSubscriptionId  String    @unique
+  plan                  String
+  status                String
+  currentPeriodEnd      DateTime?
+  cancelAtPeriodEnd     Boolean   @default(false)
+  earlyBirdApplied      Boolean   @default(false)
+  // Guards against out-of-order webhook delivery: an incoming event is only
+  // applied if its Stripe `created` timestamp is >= this value.
+  lastEventCreatedAt    DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([status])
+}
+
+// Webhook idempotency: every processed Stripe event ID is recorded here so a
+// retried delivery is a no-op instead of double-applying a state change.
+model StripeEvent {
+  id          String   @id
+  type        String
+  processedAt DateTime @default(now())
+}
+
+// Phase 8: Early Bird eligibility review. Deliberately separate from the
+// generic FormSubmission model (Phase 4) because it needs a real status
+// workflow and a durable eligibility decision - not just a stored message.
+// Reviewed and approved out-of-band by an operator running
+// scripts/early-bird-review.js against the database directly (see
+// docs/early-bird-admin-workflow.md: "Do not create a public admin route").
+model EarlyBirdRequest {
+  id                 String    @id @default(cuid())
+  reference          String    @unique
+  userId             String?
+  user               User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  email              String
+  telegramUsername   String?
+  stripeCustomerId   String?
+  // submitted | under_review | evidence_required | approved | rejected |
+  // code_issued | redeemed | suspended
+  status             String    @default("submitted")
+  eligible           Boolean   @default(false)
+  eligibilityCutoff  DateTime?
+  eligibilitySource  String?
+  discountPercentage Int       @default(20)
+  notes              String?
+  verifiedAt         DateTime?
+  verifiedBy         String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@index([email])
+  @@index([status])
+}

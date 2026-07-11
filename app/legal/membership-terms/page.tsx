@@ -1,0 +1,48 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { LegalPageLayout } from "@/components/LegalPageLayout";
+
+export const metadata: Metadata = {
+  title: "Membership Terms",
+  description: "KIRA VIP Membership inclusions, access, billing, cancellation, conduct, and Early Bird terms.",
+  alternates: { canonical: "/legal/membership-terms" },
+};
+
+export default function MembershipTermsPage() {
+  return (
+    <LegalPageLayout title="Membership Terms" lastUpdated="4 July 2026">
+      <h2>KIRA VIP Membership</h2>
+      <p>
+        KIRA VIP Membership is a paid educational membership delivered through the KIRA VIP Channel and KIRA VIP
+        Group. It provides structured educational discussion, market context, risk-aware planning resources,
+        learning material, community support and official member updates.
+      </p>
+      <h2>Exclusions</h2>
+      <p>Membership does not include personalized advice, investment management, brokerage, trade execution, guaranteed signals, guaranteed profits, tax advice, legal advice, or access to Project 242 unless expressly stated in a separate official offer.</p>
+      <h2>Personal access</h2>
+      <p>Access is personal, non-transferable and may not be shared, resold, copied into competing paid communities, recorded, redistributed or used by another person.</p>
+      <h2>Telegram delivery and activation</h2>
+      <p>Access is coordinated through Telegram. Activation may require payment confirmation, Telegram username verification and manual approval. Telegram availability and platform rules may affect delivery.</p>
+      <h2>Billing periods and renewal</h2>
+      <p>Public pricing is USD 70 per month or USD 189 every three months. Online checkout is currently disabled. When recurring billing is activated, renewal frequency will be shown before payment and the selected plan will renew automatically until cancelled.</p>
+      <h2>Cancellation</h2>
+      <p>Cancellation stops future renewals when processed before the next renewal date. Unless required by law or stated otherwise, cancellation does not automatically refund already-paid periods and access may continue until the end of the paid period.</p>
+      <h2>Failed payments and expiry</h2>
+      <p>Failed, reversed or disputed payments may delay activation or lead to access removal. Expired membership may require a new access review.</p>
+      <h2>Community conduct</h2>
+      <p>Members must follow the Community Rules. Kira Engineer Hub may pause or remove access for abuse, redistribution, harassment, unauthorized promotion, fake claims, chargeback abuse or security risk.</p>
+      <h2>Early Bird terms</h2>
+      <p>
+        Verified Early Bird Members may be eligible for a 20% discount on qualifying KIRA VIP Membership prices.
+        Current Early Bird pricing is USD 56 per month or USD 151.20 every three months. Eligibility may remain
+        available for the member&apos;s lifetime, but access always requires an active paid subscription. The
+        benefit is personal, non-transferable, not normally combinable with other offers, and does not apply to
+        Project 242 unless officially extended.
+      </p>
+      <h2>No performance guarantees</h2>
+      <p>Membership is educational. No trading result, profit, win rate or outcome is guaranteed.</p>
+      <h2>Refund policy reference</h2>
+      <p>Cancellation and refund reviews are handled under the <Link href="/legal/refund-policy">Refund and Cancellation Policy</Link>.</p>
+    </LegalPageLayout>
+  );
+}

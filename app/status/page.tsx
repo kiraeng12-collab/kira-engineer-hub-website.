@@ -1,0 +1,35 @@
+import type { Metadata } from "next";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+
+export const metadata: Metadata = {
+  title: "Status",
+  description:
+    "Current public status for Kira Engineer Hub website, community access, membership checkout preparation, and Project 242 development.",
+  alternates: { canonical: "/status" },
+};
+
+export default function StatusPage() {
+  return (
+    <div className="doc-page">
+      <div className="doc-intro">
+        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Status" }]} />
+        <p className="eyebrow">Status</p>
+        <h1>Current platform status.</h1>
+      </div>
+      <div className="doc-body">
+        <table>
+          <thead>
+            <tr><th>Area</th><th>Status</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Website</td><td>Online</td><td>Public information website and legal centre are active.</td></tr>
+            <tr><td>Kira Trading Community</td><td>Live</td><td>Free Telegram community access is available.</td></tr>
+            <tr><td>KIRA VIP Membership</td><td>Live / checkout preparing</td><td>Membership requests are coordinated through official channels while online checkout is prepared.</td></tr>
+            <tr><td>KIRA Academy</td><td>Coming soon</td><td>No public course checkout is active.</td></tr>
+            <tr><td>Project 242</td><td>In development</td><td>Details remain intentionally limited.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

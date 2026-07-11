@@ -10,7 +10,7 @@ Create recurring Stripe Prices rather than ad hoc checkout amounts.
 Environment variables:
 
 - STRIPE_PRICE_KIRA_VIP_MONTHLY
-- STRIPE_PRICE_KIRA_VIP_THREE_MONTH
+- STRIPE_PRICE_KIRA_VIP_QUARTERLY
 - STRIPE_EARLY_BIRD_COUPON_ID
 - STRIPE_WEBHOOK_SECRET
 
@@ -42,12 +42,16 @@ Before payment, show:
 
 ## Access activation
 
-Do not activate VIP access from a frontend success URL. Activate access only after verified Stripe webhook events such as:
+Do not activate VIP access from a frontend success URL (`/checkout/success` only shows a pending-confirmation message). Activate access only after verified Stripe webhook events such as:
 
 - checkout.session.completed
-- invoice.paid
-- invoice.payment_failed
+- customer.subscription.created
 - customer.subscription.updated
 - customer.subscription.deleted
+- invoice.paid
+- invoice.payment_failed
+- charge.refunded
+- charge.dispute.created
+- charge.dispute.closed
 
-Webhook processing must be idempotent. Early Bird eligibility can survive cancellation, but VIP access ends when the subscription is cancelled, unpaid, expired or failed.
+Webhook processing must be idempotent (tracked via the `StripeEvent` table, keyed on the Stripe event id) and must not let an out-of-order event overwrite a newer membership state. Early Bird eligibility can survive cancellation, but VIP access ends when the subscription is cancelled, unpaid, expired or failed.

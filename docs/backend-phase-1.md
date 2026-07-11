@@ -5,9 +5,13 @@ This phase adds the first real backend foundation while keeping public checkout 
 ## What is included
 
 - `/api/forms` receives website forms and forwards them to an operations webhook.
-- `/api/checkout` creates Stripe subscription checkout sessions when `CHECKOUT_ENABLED=true`.
-- `/api/stripe-webhook` receives Stripe payment and subscription events with signature verification.
-- `.env.example` lists the required Vercel environment variables.
+- `/api/stripe/create-checkout-session` creates Stripe subscription checkout sessions for signed-in members when `CHECKOUT_ENABLED=true`.
+- `/api/stripe/create-customer-portal` creates a Stripe Customer Portal session for signed-in members to manage billing.
+- `/api/stripe/webhook` receives Stripe payment and subscription events with signature verification.
+- `/api/membership/status` returns the signed-in member's current membership status.
+- `env.example` lists the required Vercel environment variables.
+
+See [`docs/backend-phase-6.md`](./backend-phase-6.md) for the current Stripe, auth, and membership setup. This document is kept for historical context on the original safety posture (checkout disabled by default) but its API paths below are superseded.
 
 ## Current safety position
 
@@ -49,8 +53,8 @@ STRIPE_SECRET_KEY=
 STRIPE_PRICE_KIRA_VIP_MONTHLY=
 STRIPE_PRICE_KIRA_VIP_QUARTERLY=
 STRIPE_EARLY_BIRD_COUPON_ID=
-STRIPE_SUCCESS_URL=https://www.kiraengineerhub.com/membership?checkout=success
-STRIPE_CANCEL_URL=https://www.kiraengineerhub.com/membership?checkout=cancelled
+STRIPE_SUCCESS_URL=https://www.kiraengineerhub.com/checkout/success
+STRIPE_CANCEL_URL=https://www.kiraengineerhub.com/checkout/cancelled
 ```
 
 Do not enable checkout until Stripe products, refund handling, support handling, and membership delivery are tested.
@@ -60,16 +64,20 @@ Do not enable checkout until Stripe products, refund handling, support handling,
 In Stripe Dashboard, create a webhook endpoint:
 
 ```txt
-https://www.kiraengineerhub.com/api/stripe-webhook
+https://www.kiraengineerhub.com/api/stripe/webhook
 ```
 
 Select these events:
 
 - `checkout.session.completed`
-- `invoice.payment_succeeded`
-- `invoice.payment_failed`
+- `customer.subscription.created`
 - `customer.subscription.updated`
 - `customer.subscription.deleted`
+- `invoice.paid`
+- `invoice.payment_failed`
+- `charge.refunded`
+- `charge.dispute.created`
+- `charge.dispute.closed`
 
 Copy the webhook signing secret into Vercel:
 

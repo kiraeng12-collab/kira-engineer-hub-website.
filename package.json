@@ -1,8 +1,40 @@
 {
-  "name": "kira-engineer-hub-static",
+  "name": "kira-engineer-hub",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "scripts": {
-    "build": "node scripts/validate-pricing.js && node scripts/validate-legal-config.js && node scripts/validate-backend.js && echo Static site ready"
+    "dev": "next dev",
+    "postinstall": "prisma generate",
+    "prebuild": "node scripts/validate-legal-config.js && node scripts/validate-backend.js",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
+    "@prisma/adapter-neon": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "bcryptjs": "^3.0.3",
+    "next": "^15.1.6",
+    "next-auth": "^4.24.14",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "resend": "^6.17.2",
+    "stripe": "^22.3.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.6",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.10.7",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "dotenv": "^17.4.2",
+    "eslint": "^9.18.0",
+    "eslint-config-next": "^15.1.6",
+    "prisma": "^7.8.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.4"
   }
 }

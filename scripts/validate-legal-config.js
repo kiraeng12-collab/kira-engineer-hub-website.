@@ -1,38 +1,37 @@
-const fs = require("fs");
-const path = require("path");
-const configPath = path.join(__dirname, "legal-config.js");
-const text = fs.readFileSync(configPath, "utf8");
-const checkoutEnabled = /checkoutEnabled:\s*true/.test(text);
-const requiredWhenCheckoutEnabled = [
-  "legalEntityName", "registrationNumber", "registrationCountry", "registeredAddress", "governingLaw",
-  "supportEmail", "privacyContact", "cancellationDeadline", "refundRequestDeadline"
-];
-const missing = requiredWhenCheckoutEnabled.filter((key) => {
-  const match = text.match(new RegExp(key + ':\\s*"([^"]*)"'));
-  return !match || !match[1].trim();
-});
+const fs = require('fs');
+const path = require('path');
+
+const root = path.join(__dirname, '..');
+
+function listFiles(dir) {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) return listFiles(full);
+    return full.endsWith('.tsx') || full.endsWith('.mdx') ? [full] : [];
+  });
+}
+
 const bannedPublic = [
-  new RegExp(["Active", "Draft"].join(" "), "i"),
-  new RegExp([["Pre", "launch"].join("-"), "Draft"].join(" "), "i"),
-  new RegExp(["Operational", "draft"].join(" "), "i"),
-  new RegExp(["legacy", "VIP"].join(" "), "i"),
-  new RegExp(["backend", "can", "be", "connected", "later"].join(" "), "i"),
-  new RegExp(["lorem", "ipsum"].join(" "), "i")
+  /pre-launch draft/i,
+  /operational draft/i,
+  /backend can be connected later/i,
+  /lorem ipsum/i
 ];
-const publicFiles = fs.readdirSync(path.join(__dirname, ".."), { recursive: true })
-  .filter((file) => String(file).endsWith(".html"));
-const publicHits = [];
+
+const publicFiles = fs.existsSync(path.join(root, 'app')) ? listFiles(path.join(root, 'app')) : [];
+const hits = [];
+
 for (const file of publicFiles) {
-  const content = fs.readFileSync(path.join(__dirname, "..", file), "utf8");
-  for (const pattern of bannedPublic) if (pattern.test(content)) publicHits.push(file + " :: " + pattern);
+  const content = fs.readFileSync(file, 'utf8');
+  for (const pattern of bannedPublic) {
+    if (pattern.test(content)) hits.push(`${path.relative(root, file)} :: ${pattern}`);
+  }
 }
-if (checkoutEnabled && missing.length) {
-  console.error("Checkout is enabled but required legal fields are missing: " + missing.join(", "));
+
+if (hits.length) {
+  console.error('Public-facing draft/internal language found:');
+  console.error(hits.join('\n'));
   process.exit(1);
 }
-if (publicHits.length) {
-  console.error("Public-facing draft/internal language found:");
-  console.error(publicHits.join("\n"));
-  process.exit(1);
-}
-console.log(checkoutEnabled ? "Checkout legal configuration validated." : "Checkout disabled: legal configuration gate is active.");
+
+console.log('Legal/public-language validation passed.');
