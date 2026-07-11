@@ -5,9 +5,14 @@
 //
 // Usage:
 //   node scripts/early-bird-review.js list [status]
-//   node scripts/early-bird-review.js approve <reference> <verifiedBy>
+//   node scripts/early-bird-review.js approve <reference> <verifiedBy> --tier=founding|early_bird
 //   node scripts/early-bird-review.js reject  <reference> <verifiedBy> [reason]
 //   node scripts/early-bird-review.js mark    <reference> <status> [verifiedBy] [note]
+//
+// Tiers:
+//   founding    - joined Kira Trading Community 2024-2025. Permanent flat
+//                 discounted price ($50/mo, $150/qtr).
+//   early_bird  - joined 2025 through 1 Aug 2026. Permanent 20% off standard.
 
 require('dotenv/config');
 const { PrismaNeon } = require('@prisma/adapter-neon');
@@ -24,6 +29,8 @@ const VALID_STATUSES = [
   'suspended',
 ];
 
+const VALID_TIERS = ['founding', 'early_bird'];
+
 const GRANTS_ELIGIBILITY = new Set(['approved', 'code_issued', 'redeemed']);
 const REVOKES_ELIGIBILITY = new Set(['rejected', 'suspended']);
 
@@ -35,6 +42,21 @@ function getPrisma() {
   }
   const adapter = new PrismaNeon({ connectionString });
   return new PrismaClient({ adapter });
+}
+
+// Pulls --tier=X out of an argv slice and returns { tier, rest } with that
+// flag removed, so positional argument parsing elsewhere is unaffected.
+function extractTierFlag(args) {
+  let tier = null;
+  const rest = [];
+  for (const arg of args) {
+    if (arg.startsWith('--tier=')) {
+      tier = arg.slice('--tier='.length);
+    } else {
+      rest.push(arg);
+    }
+  }
+  return { tier, rest };
 }
 
 async function listRequests(prisma, status) {
@@ -52,12 +74,12 @@ async function listRequests(prisma, status) {
   }
   for (const r of requests) {
     console.log(
-      `${r.reference}  ${r.status.padEnd(18)}  ${r.email}  @${r.telegramUsername || '-'}  ${r.createdAt.toISOString()}`
+      `${r.reference}  ${r.status.padEnd(18)}  tier:${(r.tier || '-').padEnd(11)}  ${r.email}  @${r.telegramUsername || '-'}  ${r.createdAt.toISOString()}`
     );
   }
 }
 
-async function applyDecision(prisma, reference, status, verifiedBy, note) {
+async function applyDecision(prisma, reference, status, verifiedBy, tier, note) {
   const request = await prisma.earlyBirdRequest.findUnique({ where: { reference } });
   if (!request) {
     console.error(`No Early Bird request found with reference ${reference}.`);
@@ -66,6 +88,7 @@ async function applyDecision(prisma, reference, status, verifiedBy, note) {
 
   const grants = GRANTS_ELIGIBILITY.has(status);
   const revokes = REVOKES_ELIGIBILITY.has(status);
+  const resolvedTier = tier || request.tier;
   const notes = note
     ? [request.notes, `[${status} by ${verifiedBy || 'unknown'}] ${note}`].filter(Boolean).join('\n\n')
     : request.notes;
@@ -75,6 +98,7 @@ async function applyDecision(prisma, reference, status, verifiedBy, note) {
     data: {
       status,
       eligible: grants,
+      tier: grants ? resolvedTier : request.tier,
       verifiedAt: new Date(),
       verifiedBy: verifiedBy || request.verifiedBy,
       notes,
@@ -91,14 +115,14 @@ async function applyDecision(prisma, reference, status, verifiedBy, note) {
     await prisma.user.update({
       where: { id: userId },
       data: {
-        earlyBirdEligible: grants,
+        membershipTier: grants ? resolvedTier : null,
         earlyBirdVerifiedAt: grants ? new Date() : null,
       },
     });
-    console.log(`Updated ${reference} to "${status}" and set User.earlyBirdEligible=${grants}.`);
+    console.log(`Updated ${reference} to "${status}" and set User.membershipTier=${grants ? resolvedTier : 'null'}.`);
   } else if (!userId && grants) {
     console.log(
-      `Updated ${reference} to "${status}". No account exists yet for ${request.email} - eligibility will apply automatically once they register with this email.`
+      `Updated ${reference} to "${status}" (tier: ${resolvedTier}). No account exists yet for ${request.email} - the tier will apply automatically once they register with this email.`
     );
   } else {
     console.log(`Updated ${reference} to "${status}".`);
@@ -106,7 +130,8 @@ async function applyDecision(prisma, reference, status, verifiedBy, note) {
 }
 
 async function main() {
-  const [, , command, ...args] = process.argv;
+  const [, , command, ...rawArgs] = process.argv;
+  const { tier, rest: args } = extractTierFlag(rawArgs);
   const prisma = getPrisma();
 
   try {
@@ -115,23 +140,35 @@ async function main() {
       return;
     }
 
-    if (command === 'approve' || command === 'reject') {
-      const [reference, verifiedBy, ...rest] = args;
-      if (!reference || !verifiedBy) {
-        console.error(`Usage: node scripts/early-bird-review.js ${command} <reference> <verifiedBy> [reason]`);
+    if (command === 'approve') {
+      const [reference, verifiedBy, ...noteParts] = args;
+      if (!reference || !verifiedBy || !VALID_TIERS.includes(tier)) {
+        console.error(
+          `Usage: node scripts/early-bird-review.js approve <reference> <verifiedBy> --tier=${VALID_TIERS.join('|')}`
+        );
         process.exit(1);
       }
-      await applyDecision(prisma, reference, command === 'approve' ? 'approved' : 'rejected', verifiedBy, rest.join(' '));
+      await applyDecision(prisma, reference, 'approved', verifiedBy, tier, noteParts.join(' '));
+      return;
+    }
+
+    if (command === 'reject') {
+      const [reference, verifiedBy, ...noteParts] = args;
+      if (!reference || !verifiedBy) {
+        console.error('Usage: node scripts/early-bird-review.js reject <reference> <verifiedBy> [reason]');
+        process.exit(1);
+      }
+      await applyDecision(prisma, reference, 'rejected', verifiedBy, null, noteParts.join(' '));
       return;
     }
 
     if (command === 'mark') {
-      const [reference, status, verifiedBy, ...rest] = args;
+      const [reference, status, verifiedBy, ...noteParts] = args;
       if (!reference || !VALID_STATUSES.includes(status)) {
         console.error(`Usage: node scripts/early-bird-review.js mark <reference> <${VALID_STATUSES.join('|')}> [verifiedBy] [note]`);
         process.exit(1);
       }
-      await applyDecision(prisma, reference, status, verifiedBy || null, rest.join(' '));
+      await applyDecision(prisma, reference, status, verifiedBy || null, tier, noteParts.join(' '));
       return;
     }
 
@@ -139,7 +176,7 @@ async function main() {
       [
         'Usage:',
         '  node scripts/early-bird-review.js list [status]',
-        '  node scripts/early-bird-review.js approve <reference> <verifiedBy>',
+        '  node scripts/early-bird-review.js approve <reference> <verifiedBy> --tier=founding|early_bird',
         '  node scripts/early-bird-review.js reject  <reference> <verifiedBy> [reason]',
         '  node scripts/early-bird-review.js mark    <reference> <status> [verifiedBy] [note]',
       ].join('\n')

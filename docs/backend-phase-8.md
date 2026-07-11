@@ -26,9 +26,11 @@ approved -> code_issued -> redeemed
 ```
 
 In this implementation, `approved`, `code_issued`, and `redeemed` all grant
-eligibility (`User.earlyBirdEligible = true`); `rejected` and `suspended`
-revoke it. `submitted`, `under_review`, and `evidence_required` are neutral
-holding states.
+eligibility (`User.membershipTier` set to the approved tier); `rejected` and
+`suspended` revoke it (`User.membershipTier` set back to `null`).
+`submitted`, `under_review`, and `evidence_required` are neutral holding
+states. See `docs/backend-phase-12.md` for the two-tier pricing model
+(Founding Member vs Early Bird) added on top of this workflow.
 
 ## Why no per-member Stripe promotion codes
 
@@ -55,15 +57,17 @@ web app, via a script an operator runs locally against the same
 
 ```txt
 node scripts/early-bird-review.js list [status]
-node scripts/early-bird-review.js approve <reference> <verifiedBy>
+node scripts/early-bird-review.js approve <reference> <verifiedBy> --tier=founding|early_bird
 node scripts/early-bird-review.js reject  <reference> <verifiedBy> [reason]
 node scripts/early-bird-review.js mark    <reference> <status> [verifiedBy] [note]
 ```
 
-`approve` and `reject` also update the linked `User.earlyBirdEligible` flag
-immediately (if a matching account exists yet - see below). `mark` covers
-the remaining statuses (`under_review`, `evidence_required`, `code_issued`,
-`redeemed`, `suspended`) for cases that need more than a binary decision.
+`approve` requires a `--tier=` flag (see `docs/backend-phase-12.md`) and
+updates the linked `User.membershipTier` immediately (if a matching account
+exists yet - see below). `reject`/`mark` also update it (clearing the tier
+on `rejected`/`suspended`). `mark` covers the remaining statuses
+(`under_review`, `evidence_required`, `code_issued`, `redeemed`, `suspended`)
+for cases that need more than a binary decision.
 
 ## Submission before registration
 

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function Project242TermsPage() {
   return (
     <LegalPageLayout title="Project 242 Terms" lastUpdated="4 July 2026">
-      <p>Project 242 is a proprietary risk-management initiative currently in development. Additional details will be released when its product, protection and delivery framework are ready.</p>
+      <p>Project 242 is a private initiative currently in development. Additional details will be released when its product, protection and delivery framework are ready.</p>
       <p>Project 242 is not currently offered as a purchasable product through this website. Public information is intentionally limited and does not reveal methodology, internal design or commercial terms.</p>
       <p>Any future offer will require clear product terms, privacy information, risk disclosures, refund and cancellation terms, and checkout readiness before payment is accepted.</p>
     </LegalPageLayout>

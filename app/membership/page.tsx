@@ -11,7 +11,9 @@ import {
   getQuarterlyStandardEquivalent,
   getQuarterlySaving,
   getQuarterlyEffectiveMonthly,
-  getEarlyBirdPriceDisplay,
+  getEarlyBirdPrice,
+  getFoundingPrice,
+  formatUSD,
 } from "@/lib/config/pricing";
 import { getCheckoutReadiness } from "@/lib/config/checkout-readiness";
 
@@ -122,8 +124,12 @@ export default function MembershipPage() {
             <EarlyBirdBadge />
             <h2>Loyalty pricing</h2>
             <p>
-              Verified eligible members receive 20% off qualifying KIRA VIP Membership prices:{" "}
-              {getEarlyBirdPriceDisplay("monthly")}, or {getEarlyBirdPriceDisplay("quarterly")}.
+              <strong>Founding Members</strong> (joined 2024-2025): {formatUSD(getFoundingPrice("monthly"))} per
+              month, or {formatUSD(getFoundingPrice("quarterly"))} every three months.
+            </p>
+            <p>
+              <strong>Early Bird</strong> (joined 2025 through 1 Aug 2026): {formatUSD(getEarlyBirdPrice("monthly"))}{" "}
+              per month, or {formatUSD(getEarlyBirdPrice("quarterly"))} every three months.
             </p>
             <Link className="text-link" href="/early-bird">Check Early Bird eligibility</Link>
           </article>

@@ -64,7 +64,10 @@ export async function POST(request: Request): Promise<Response> {
       await prisma.earlyBirdRequest.update({ where: { id: approvedEarlyBird.id }, data: { userId: user.id } });
       await prisma.user.update({
         where: { id: user.id },
-        data: { earlyBirdEligible: true, earlyBirdVerifiedAt: approvedEarlyBird.verifiedAt || new Date() },
+        data: {
+          membershipTier: approvedEarlyBird.tier,
+          earlyBirdVerifiedAt: approvedEarlyBird.verifiedAt || new Date(),
+        },
       });
     }
 

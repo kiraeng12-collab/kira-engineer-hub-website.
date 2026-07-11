@@ -327,10 +327,8 @@ export default function HomePage() {
             <p className="eyebrow">In development</p>
             <h2>A private Kira Engineer initiative.</h2>
             <p className="lead">
-              Project 242 is a proprietary risk-management initiative being developed to help traders apply
-              structured decision controls before, during and after a trade.
+              Project 242 is currently in development. No public details are available at this stage.
             </p>
-            <p className="muted">Built to protect traders from the decisions they make under pressure. Its methodology is not public.</p>
             <div className="pricing-actions">
               <Link className="button ghost" href="/project-242">Follow the Development</Link>
             </div>

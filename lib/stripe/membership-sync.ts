@@ -32,8 +32,8 @@ export async function upsertMembershipFromSubscription(
   if (existing?.lastEventCreatedAt && existing.lastEventCreatedAt > eventCreatedAt) return;
 
   const plan = subscription.metadata?.plan || existing?.plan || "monthly";
-  const earlyBirdApplied =
-    subscription.metadata?.earlyBirdApplied === "true" || existing?.earlyBirdApplied || false;
+  const rawTier = subscription.metadata?.tier || existing?.tier || null;
+  const tier = rawTier === "founding" || rawTier === "early_bird" ? rawTier : null;
   const status = mapSubscriptionStatus(subscription.status);
   const periodEndSeconds = subscription.items.data[0]?.current_period_end;
   const currentPeriodEnd = periodEndSeconds ? new Date(periodEndSeconds * 1000) : null;
@@ -47,7 +47,7 @@ export async function upsertMembershipFromSubscription(
       status,
       currentPeriodEnd,
       cancelAtPeriodEnd: subscription.cancel_at_period_end,
-      earlyBirdApplied,
+      tier,
       lastEventCreatedAt: eventCreatedAt,
     },
     update: {
@@ -56,7 +56,7 @@ export async function upsertMembershipFromSubscription(
       status,
       currentPeriodEnd,
       cancelAtPeriodEnd: subscription.cancel_at_period_end,
-      earlyBirdApplied,
+      tier,
       lastEventCreatedAt: eventCreatedAt,
     },
   });

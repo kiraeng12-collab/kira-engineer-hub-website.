@@ -25,7 +25,7 @@ export async function GET(): Promise<Response> {
       status: membership.status,
       currentPeriodEnd: membership.currentPeriodEnd,
       cancelAtPeriodEnd: membership.cancelAtPeriodEnd,
-      earlyBirdApplied: membership.earlyBirdApplied,
+      tier: membership.tier,
     },
   });
 }

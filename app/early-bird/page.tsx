@@ -13,12 +13,13 @@ export default function EarlyBirdPage() {
       <div className="doc-intro">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Legal", href: "/legal" }, { label: "Early Bird" }]} />
         <h1>Early Bird Lifetime Discount Eligibility</h1>
-        <p className="meta">Last updated: 4 July 2026</p>
+        <p className="meta">Last updated: 12 July 2026</p>
       </div>
       <div className="doc-body">
         <p>
           Early Bird Lifetime Discount Eligibility is a verification benefit for members who joined qualifying
-          official Kira spaces before 1 August 2026 at 12:00 AM Gulf Standard Time.
+          official Kira spaces before 1 August 2026 at 12:00 AM Gulf Standard Time. The discount depends on when a
+          member joined.
         </p>
         <h2>Customer journey</h2>
         <ul>
@@ -29,11 +30,21 @@ export default function EarlyBirdPage() {
           <li>Approved members receive private instructions.</li>
         </ul>
         <h2>Discount terms</h2>
+        <p>Eligibility is grouped into two loyalty tiers based on when a member first joined an official Kira space:</p>
+        <ul>
+          <li>
+            <strong>Founding Members</strong> (joined Kira Trading Community in 2024 or 2025): USD 50 per month or
+            USD 150 every three months.
+          </li>
+          <li>
+            <strong>Early Bird</strong> (joined from 2025 through 1 August 2026): 20% off standard pricing - USD 56
+            per month or USD 151.20 every three months.
+          </li>
+        </ul>
         <p>
-          The current Early Bird benefit is a 20% percentage-based discount on qualifying KIRA VIP Membership
-          prices: USD 56 per month or USD 151.20 every three months. Eligibility may remain available for the
-          verified member&apos;s lifetime, but it does not provide lifetime free access and requires an active paid
-          subscription.
+          Members who join after 1 August 2026 pay standard KIRA VIP pricing. Eligibility may remain available for
+          the verified member&apos;s lifetime, but it does not provide lifetime free access and requires an active
+          paid subscription.
         </p>
         <h2>Evidence</h2>
         <p>

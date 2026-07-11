@@ -31,7 +31,8 @@ const requiredFiles = [
   'docs/backend-phase-1.md',
   'docs/backend-phase-6.md',
   'docs/backend-phase-7.md',
-  'docs/backend-phase-8.md'
+  'docs/backend-phase-8.md',
+  'docs/backend-phase-12.md'
 ];
 
 const missing = requiredFiles.filter((file) => !fs.existsSync(path.join(root, file)));
@@ -54,6 +55,8 @@ const requiredEnv = [
   'STRIPE_SECRET_KEY',
   'STRIPE_PRICE_KIRA_VIP_MONTHLY',
   'STRIPE_PRICE_KIRA_VIP_QUARTERLY',
+  'STRIPE_PRICE_KIRA_VIP_MONTHLY_FOUNDING',
+  'STRIPE_PRICE_KIRA_VIP_QUARTERLY_FOUNDING',
   'STRIPE_EARLY_BIRD_COUPON_ID',
   'STRIPE_SUCCESS_URL',
   'STRIPE_CANCEL_URL',

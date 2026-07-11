@@ -42,8 +42,12 @@ export async function POST(request: Request): Promise<Response> {
     const user = await prisma.user.findUnique({ where: { id: session.user.id } });
     if (!user) return jsonResponse(401, { message: "Please sign in before starting checkout." });
 
-    // Server-side truth only - never trust a client-supplied Early Bird flag.
-    const earlyBirdApplies = user.earlyBirdEligible && Boolean(process.env.STRIPE_EARLY_BIRD_COUPON_ID);
+    // Server-side truth only - never trust a client-supplied tier.
+    const tier = user.membershipTier === "founding" || user.membershipTier === "early_bird" ? user.membershipTier : null;
+    // Founding Members get their own permanently-discounted Price (no coupon
+    // needed); Early Bird members get the standard Price with the shared
+    // coupon applied; everyone else gets the standard Price as-is.
+    const earlyBirdApplies = tier === "early_bird" && Boolean(process.env.STRIPE_EARLY_BIRD_COUPON_ID);
 
     let customerId = user.stripeCustomerId;
     if (!customerId) {
@@ -57,7 +61,8 @@ export async function POST(request: Request): Promise<Response> {
     }
 
     const selected = pricingConfig.plans[plan];
-    const priceId = requireEnv(selected.stripePriceIdEnv);
+    const priceEnvName = tier === "founding" ? selected.stripePriceIdEnvFounding : selected.stripePriceIdEnv;
+    const priceId = requireEnv(priceEnvName);
     const successUrl =
       process.env.STRIPE_SUCCESS_URL || "https://www.kiraengineerhub.com/checkout/success";
     const cancelUrl =
@@ -75,13 +80,13 @@ export async function POST(request: Request): Promise<Response> {
         product: selected.name,
         plan,
         userId: user.id,
-        earlyBirdApplied: String(earlyBirdApplies),
+        tier: tier || "",
       },
       subscription_data: {
         metadata: {
           userId: user.id,
           plan,
-          earlyBirdApplied: String(earlyBirdApplies),
+          tier: tier || "",
         },
       },
     });

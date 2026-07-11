@@ -1,9 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import type { PlanId } from "@/lib/config/pricing";
+import { type PlanId, type MembershipTier, getStandardPriceDisplay, getEarlyBirdPriceDisplay, getFoundingPriceDisplay } from "@/lib/config/pricing";
 
-export function SubscribeButtons() {
+function priceLabel(plan: PlanId, tier: MembershipTier | null): string {
+  if (tier === "founding") return getFoundingPriceDisplay(plan);
+  if (tier === "early_bird") return getEarlyBirdPriceDisplay(plan);
+  return getStandardPriceDisplay(plan);
+}
+
+export function SubscribeButtons({ tier = null }: { tier?: MembershipTier | null }) {
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -40,10 +46,10 @@ export function SubscribeButtons() {
     <div>
       <div className="actions">
         <button className="button" type="button" disabled={status === "submitting"} onClick={() => subscribe("monthly")}>
-          Subscribe Monthly
+          Subscribe Monthly - {priceLabel("monthly", tier)}
         </button>
         <button className="button secondary" type="button" disabled={status === "submitting"} onClick={() => subscribe("quarterly")}>
-          Subscribe Quarterly
+          Subscribe Quarterly - {priceLabel("quarterly", tier)}
         </button>
       </div>
       <p className="form-note" aria-live="polite">

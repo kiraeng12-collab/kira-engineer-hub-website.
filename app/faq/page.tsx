@@ -81,7 +81,7 @@ export default function FaqPage() {
         </details>
         <details>
           <summary>What is Project 242?</summary>
-          <p>Project 242 is a proprietary risk-management initiative currently in development. Additional details will be released only when its product, protection and delivery framework are ready.</p>
+          <p>Project 242 is a private initiative currently in development. No public details are available at this stage.</p>
         </details>
         <details>
           <summary>Is Project 242 available now?</summary>

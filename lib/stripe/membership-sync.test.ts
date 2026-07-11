@@ -74,7 +74,7 @@ describe("upsertMembershipFromSubscription", () => {
   it("never lets an older event overwrite a newer membership state (out-of-order guard)", async () => {
     const prisma = fakePrisma({
       user: { id: "user_1" },
-      existingMembership: { lastEventCreatedAt: new Date(1800000000 * 1000), plan: "quarterly", earlyBirdApplied: true },
+      existingMembership: { lastEventCreatedAt: new Date(1800000000 * 1000), plan: "quarterly", tier: "founding" },
     });
     // This event's timestamp (1700000000) is older than the recorded lastEventCreatedAt.
     await upsertMembershipFromSubscription(prisma, fakeSubscription(), 1700000000);
@@ -84,21 +84,21 @@ describe("upsertMembershipFromSubscription", () => {
   it("applies a newer event over an older recorded state", async () => {
     const prisma = fakePrisma({
       user: { id: "user_1" },
-      existingMembership: { lastEventCreatedAt: new Date(1600000000 * 1000), plan: "monthly", earlyBirdApplied: false },
+      existingMembership: { lastEventCreatedAt: new Date(1600000000 * 1000), plan: "monthly", tier: null },
     });
     await upsertMembershipFromSubscription(prisma, fakeSubscription(), 1700000000);
     expect(prisma.membership.upsert).toHaveBeenCalledTimes(1);
   });
 
-  it("falls back to the existing plan/earlyBirdApplied when subscription metadata is absent", async () => {
+  it("falls back to the existing plan/tier when subscription metadata is absent", async () => {
     const prisma = fakePrisma({
       user: { id: "user_1" },
-      existingMembership: { lastEventCreatedAt: null, plan: "quarterly", earlyBirdApplied: true },
+      existingMembership: { lastEventCreatedAt: null, plan: "quarterly", tier: "early_bird" },
     });
     await upsertMembershipFromSubscription(prisma, fakeSubscription({ metadata: {} }), 1700000000);
     const call = (prisma.membership.upsert as ReturnType<typeof vi.fn>).mock.calls[0][0];
     expect(call.create.plan).toBe("quarterly");
-    expect(call.create.earlyBirdApplied).toBe(true);
+    expect(call.create.tier).toBe("early_bird");
   });
 });
 

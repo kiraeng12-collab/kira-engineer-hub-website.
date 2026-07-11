@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { Project242Visual } from "@/components/Project242Visual";
 
 export const metadata: Metadata = {
   title: "Project 242",
-  description:
-    "Project 242 is a proprietary risk-management initiative being developed to help traders apply structured decision controls before, during and after a trade.",
+  description: "A private Kira Engineer initiative. Public details remain intentionally limited while development continues.",
   alternates: { canonical: "/project-242" },
 };
 
@@ -20,31 +18,14 @@ export default function Project242Page() {
         <p className="meta">A private Kira Engineer initiative. Public details remain intentionally limited while development continues.</p>
       </div>
       <div className="doc-body">
-        <Project242Visual />
         <div className="hero-panel">
-          <h2>A risk-management initiative</h2>
-          <p>
-            Project 242 is a proprietary risk-management initiative being developed to help traders apply structured
-            decision controls before, during and after a trade.
-          </p>
-          <p>Built to protect traders from the decisions they make under pressure.</p>
+          <h2>In development</h2>
+          <p>Project 242 is currently in development. There is no release date yet, and no public details are available at this stage.</p>
           <div className="actions">
             <Link className="button" href="/updates">Follow Official Updates</Link>
             <Link className="button secondary" href="/legal/project-242-terms">Project 242 Terms</Link>
           </div>
         </div>
-        <section>
-          <h2>What we can say publicly</h2>
-          <ul>
-            <li>It addresses a real problem: trading decisions made under pressure, without a structured process.</li>
-            <li>It is grounded in risk discipline and behavioural decision-making, not prediction.</li>
-            <li>It is currently in development. There is no release date yet.</li>
-            <li>It is not a signal service and does not tell anyone what to trade.</li>
-            <li>It cannot and does not guarantee results.</li>
-            <li>Its features may change before release.</li>
-          </ul>
-          <p>The detailed internal methodology, scoring logic, and operational framework remain protected and are not shared publicly.</p>
-        </section>
         <section>
           <h2>Join the waitlist</h2>
           <form className="form-panel" action="/api/forms" method="post" data-enhanced-form>

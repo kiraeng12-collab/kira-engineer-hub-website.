@@ -7,6 +7,11 @@ import { describeEarlyBirdStatus } from "@/lib/early-bird/status";
 
 export const metadata: Metadata = { title: "Early Bird" };
 
+const TIER_NAMES: Record<string, string> = {
+  founding: "Founding Member",
+  early_bird: "Early Bird",
+};
+
 export default async function AccountEarlyBirdPage() {
   const session = await getServerSession(authOptions);
   const prisma = getPrismaClient();
@@ -31,6 +36,7 @@ export default async function AccountEarlyBirdPage() {
       {request ? (
         <div className="notice">
           <strong>{summary?.heading}</strong>
+          {request.tier ? ` - ${TIER_NAMES[request.tier] || request.tier}` : ""}
           <br />
           {summary?.body}
           <br />
