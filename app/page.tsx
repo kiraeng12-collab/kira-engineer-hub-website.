@@ -10,6 +10,7 @@ import { getStandardPrice, getQuarterlySaving, getQuarterlyEffectiveMonthly } fr
 import { DecisionEngine } from "@/components/home/DecisionEngine";
 import { PathSelector } from "@/components/home/PathSelector";
 import { EcosystemMap } from "@/components/home/EcosystemMap";
+import { RevealOnScroll } from "@/components/RevealOnScroll";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -204,26 +205,26 @@ export default function HomePage() {
             </p>
           </div>
           <ol className="method-steps">
-            <li className="method-step">
+            <RevealOnScroll as="li" className="method-step">
               <span className="step-node" aria-hidden="true">01</span>
               <h3>Understand Context</h3>
               <p>Read market structure, key levels, and the conditions currently in play before forming a view.</p>
-            </li>
-            <li className="method-step">
+            </RevealOnScroll>
+            <RevealOnScroll as="li" className="method-step">
               <span className="step-node" aria-hidden="true">02</span>
               <h3>Define Scenarios</h3>
               <p>Set bullish and bearish scenarios with clear invalidation, instead of predicting a single outcome.</p>
-            </li>
-            <li className="method-step">
+            </RevealOnScroll>
+            <RevealOnScroll as="li" className="method-step">
               <span className="step-node" aria-hidden="true">03</span>
               <h3>Control Exposure</h3>
               <p>Size risk and plan the trade before entry, so no single decision can outweigh the process.</p>
-            </li>
-            <li className="method-step">
+            </RevealOnScroll>
+            <RevealOnScroll as="li" className="method-step">
               <span className="step-node" aria-hidden="true">04</span>
               <h3>Review Decisions</h3>
               <p>Review what happened against the plan, not just the outcome, and feed it back into the next cycle.</p>
-            </li>
+            </RevealOnScroll>
           </ol>
         </div>
       </section>
@@ -329,7 +330,9 @@ export default function HomePage() {
 
       <section className="section" id="project-242">
         <div className="container project-band">
-          <ProductLogo product="project242" size={96} className="project-mark-large" />
+          <div className="project-mark-frame">
+            <ProductLogo product="project242" size={96} className="project-mark-large" />
+          </div>
           <div>
             <p className="eyebrow">In development</p>
             <h2>A private Kira Engineer initiative.</h2>
