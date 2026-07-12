@@ -100,16 +100,22 @@ exception and are intentionally left at normal line-height.
 Official marks are used exactly as provided by the owner, never redrawn,
 recoloured, or cropped:
 
-1. **Kira Engineer Hub wordmark** (`public/kira-engineer-hub-wordmark.png`,
-   transparent PNG) — the real official company lockup (icon + "KIRA
-   ENGINEER HUB" + "TRADING EDUCATION TECH"), provided by the owner. Used via
-   `components/BrandLogo.tsx` (`context="header"` or `"footer"`, sized via
-   CSS only - same source file both places). This replaced an earlier
-   placeholder: a hand-drawn "K + candlestick" SVG (`#ke-market-mark` in
-   `components/layout/IconSprite.tsx`) built during Phase 2 of the original
-   backend/content work because no official file existed yet at the time.
-   That SVG symbol definition is left in `IconSprite.tsx` unused for now
-   rather than deleted, in case it's needed again.
+1. **Kira Engineer Hub wordmark** (`public/kira-engineer-hub-wordmark.png`) —
+   a 2775x472 transparent master trimmed from the owner's crisp 3000px
+   export (`KIRA_Engineer_Hub_Transparent_3000px.png`). Single source of
+   truth for every wordmark placement: header/footer via
+   `components/BrandLogo.tsx`, the hero Intelligence Core, and the derived
+   assets below. All derived assets are generated with `sharp` from this
+   master - regenerate them if the master changes, never hand-edit:
+   - `public/og-card.png` (1200x630 social share card, wordmark on obsidian)
+   - `public/email-logo.png` (460px email header logo)
+   - `public/icon-32/192/512.png` + `public/apple-touch-icon.png` — the
+     official K icon (the marks's own left icon region, alpha-detected at
+     x 0-355, not a redraw) centered on obsidian for favicons/PWA.
+   The old hand-drawn `#ke-market-mark` SVG and `favicon.svg` are deleted;
+   `public/ke-hub-logo.png` (the previous social card) stays on disk only
+   because already-delivered emails and previously-shared links reference
+   it - nothing in the codebase points to it anymore.
 2. **Crowned eagle crest** — the Kira Trading Community / KIRA VIP Channel
    identity, sourced from the original channel-photo PNGs. Used via
    `components/ProductLogo.tsx` (`product="community"` or `"vip"`), which

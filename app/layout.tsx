@@ -26,16 +26,20 @@ export const metadata: Metadata = {
     "Kira Engineer Hub brings structured trading education, risk-first market analysis, community access, and financial technology into one connected ecosystem.",
   manifest: "/site.webmanifest",
   icons: {
-    icon: "/favicon.svg",
+    icon: [
+      { url: "/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
   },
   openGraph: {
     type: "website",
     siteName: "Kira Engineer Hub",
-    images: ["/ke-hub-logo.png"],
+    images: ["/og-card.png"],
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/ke-hub-logo.png"],
+    images: ["/og-card.png"],
   },
 };
 

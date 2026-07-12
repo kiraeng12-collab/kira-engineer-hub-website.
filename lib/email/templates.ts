@@ -35,7 +35,7 @@ export function renderBrandedEmail({
           <table role="presentation" width="100%" style="max-width:560px;background:${BRAND_COLORS.surface};border:1px solid ${BRAND_COLORS.border};border-radius:8px;overflow:hidden;">
             <tr>
               <td style="padding:24px 32px;border-bottom:1px solid ${BRAND_COLORS.border};">
-                <img src="${siteConfig.websiteUrl}/ke-hub-logo.png" alt="Kira Engineer Hub" height="32" style="display:block;" />
+                <img src="${siteConfig.websiteUrl}/email-logo.png" alt="Kira Engineer Hub" height="32" style="display:block;" />
               </td>
             </tr>
             <tr>

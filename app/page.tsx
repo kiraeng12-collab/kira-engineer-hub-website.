@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     description:
       "Structured trading education, risk-first market analysis, community access, and financial technology in one connected ecosystem.",
     url: "/",
+    images: ["/og-card.png"],
   },
 };
 
