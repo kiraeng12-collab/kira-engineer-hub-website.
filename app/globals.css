@@ -1175,6 +1175,10 @@
       }
       .timeline li:last-child::before { background: var(--gold); }
       .timeline strong { color: var(--cyan-dark); }
+      .timeline li:nth-child(1).reveal { transition-delay: 0ms; }
+      .timeline li:nth-child(2).reveal { transition-delay: var(--stagger-step); }
+      .timeline li:nth-child(3).reveal { transition-delay: calc(var(--stagger-step) * 2); }
+      .timeline li:nth-child(4).reveal { transition-delay: calc(var(--stagger-step) * 3); }
 
       .faq-grid { grid-template-columns: minmax(260px, .8fr) minmax(0, 1.2fr); }
       details {
@@ -1271,6 +1275,13 @@
 
       .final-cta {
         text-align: center;
+      }
+      .final-cta .container {
+        width: min(760px, calc(100% - 40px));
+        padding: clamp(36px, 6vw, 56px) clamp(24px, 6vw, 56px);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: linear-gradient(160deg, rgba(43, 182, 168, .08), transparent 55%), var(--surface);
       }
       .final-cta h2, .final-cta p { margin-inline: auto; }
       .final-cta .actions {

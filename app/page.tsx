@@ -11,6 +11,8 @@ import { DecisionEngine } from "@/components/home/DecisionEngine";
 import { PathSelector } from "@/components/home/PathSelector";
 import { EcosystemMap } from "@/components/home/EcosystemMap";
 import { RevealOnScroll } from "@/components/RevealOnScroll";
+import { getAllArticles } from "@/lib/content/mdx";
+import type { ContentCategory } from "@/lib/content/types";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -68,8 +70,20 @@ const previewComparisonRows = comparisonRows.filter((row) =>
   ].includes(row.label)
 );
 
+const INSIGHTS_CATEGORIES: { category: ContentCategory; label: string }[] = [
+  { category: "updates", label: "Company Update" },
+  { category: "insights", label: "Insights" },
+  { category: "weekly-analysis", label: "Weekly Analysis" },
+];
+
+type LatestArticleEntry = { category: ContentCategory; label: string; article: ReturnType<typeof getAllArticles>[number] };
+
 export default function HomePage() {
   const quarterlySaving = getQuarterlySaving();
+  const latestArticles = INSIGHTS_CATEGORIES.map(({ category, label }): LatestArticleEntry | null => {
+    const [latest] = getAllArticles(category);
+    return latest ? { category, label, article: latest } : null;
+  }).filter((entry): entry is LatestArticleEntry => entry !== null);
   return (
     <>
       <Script
@@ -353,33 +367,26 @@ export default function HomePage() {
               <p className="eyebrow">Latest insights</p>
               <h2>Official notes from Kira Engineer Hub.</h2>
             </div>
-            <p className="lead">Educational notes and launch updates are published with clear dates, categories, and status labels.</p>
+            <p className="lead">The latest from each category - educational insights, weekly analysis, and company updates.</p>
           </div>
-          <div className="why-grid">
-            <article className="card">
-              <span className="tag" data-tone="soon">1 August 2026</span>
-              <h3>Membership and payment experience launch</h3>
-              <p>
-                A new KIRA membership and payment experience is scheduled for 1 August 2026, with loyalty pricing
-                preserved for verified eligible members.
-              </p>
-              <Link className="text-link" href="/early-bird">View Early Bird eligibility</Link>
-            </article>
-            <article className="card">
-              <span className="tag" data-tone="live">4 July 2026</span>
-              <h3>KIRA VIP Membership pricing updated</h3>
-              <p>KIRA VIP Membership is presented with explicit USD pricing, renewal context, and Early Bird eligibility language.</p>
-              <Link className="text-link" href="/membership">View membership</Link>
-            </article>
-            <article className="card">
-              <span className="tag" data-tone="soon">In development</span>
-              <h3>Project 242 remains private</h3>
-              <p>Project 242 will receive additional public details only when its product, protection, and delivery framework are ready.</p>
-              <Link className="text-link" href="/project-242">Project 242</Link>
-            </article>
-          </div>
+          {latestArticles.length > 0 ? (
+            <div className="why-grid">
+              {latestArticles.map(({ category, label, article }) => (
+                <article className="card" key={`${category}-${article.slug}`}>
+                  <span className="tag">{label}</span>
+                  <h3>{article.title}</h3>
+                  <p>{article.description}</p>
+                  <p className="small-disclosure">
+                    {new Date(article.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                  </p>
+                  <Link className="text-link" href={`/${category}/${article.slug}`}>Read article</Link>
+                </article>
+              ))}
+            </div>
+          ) : null}
           <div className="pricing-actions">
             <Link className="text-link" href="/insights">Read all insights</Link>
+            <Link className="text-link" href="/weekly-analysis">Weekly analysis</Link>
             <Link className="text-link" href="/updates">Company updates</Link>
           </div>
         </div>
@@ -402,10 +409,10 @@ export default function HomePage() {
           </div>
           <div className="story-panel">
             <ul className="timeline">
-              <li><strong>2021</strong><span>Community foundation and public market discussion.</span></li>
-              <li><strong>Now</strong><span>Free community and private educational membership.</span></li>
-              <li><strong>Next</strong><span>Project 242 development and payment checkout preparation.</span></li>
-              <li><strong>Future</strong><span>Trading technology tools subject to readiness and review.</span></li>
+              <RevealOnScroll as="li"><strong>2021</strong><span>Community foundation and public market discussion.</span></RevealOnScroll>
+              <RevealOnScroll as="li"><strong>Now</strong><span>Free community and private educational membership.</span></RevealOnScroll>
+              <RevealOnScroll as="li"><strong>Next</strong><span>Project 242 development and payment checkout preparation.</span></RevealOnScroll>
+              <RevealOnScroll as="li"><strong>Future</strong><span>Trading technology tools subject to readiness and review.</span></RevealOnScroll>
             </ul>
           </div>
         </div>
