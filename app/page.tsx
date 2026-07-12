@@ -161,6 +161,36 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="section" id="community-story">
+        <div className="container story">
+          <div>
+            <p className="eyebrow">Kira Trading Community</p>
+            <h2>Free and public since 2021.</h2>
+            <p className="lead">
+              Kira Trading Community is where Kira Engineer Hub started - a free public Telegram space for market
+              education, general insights, and community discussion, open to anyone learning the markets.
+            </p>
+            <p className="muted">
+              No paywall, no personalized advice, no guaranteed outcomes - just consistent educational content and a
+              clear pathway toward more structured, private access when you want it.
+            </p>
+            <div className="actions">
+              <a className="button cyan" href={siteConfig.social.telegramCommunity}>Join Free Community</a>
+              <Link className="text-link" href="/community">Learn more about the community</Link>
+            </div>
+          </div>
+          <div className="story-panel">
+            <p className="eyebrow">What to expect</p>
+            <ul className="check-list">
+              <li>Educational market context and public updates.</li>
+              <li>Community announcements from Kira Engineer Hub.</li>
+              <li>General learning material without personalized financial advice.</li>
+              <li>Clear pathways toward KIRA VIP Membership when private access is needed.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       <section className="section dark-section" id="method">
         <div className="container">
           <div className="section-head">
@@ -262,6 +292,37 @@ export default function HomePage() {
               <Link className="button cyan" href="/membership">View Full Membership Details</Link>
               <Link className="text-link" href="/early-bird">Check Early Bird eligibility</Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section" id="academy-story">
+        <div className="container story">
+          <div>
+            <p className="eyebrow">KIRA Academy</p>
+            <h2>Structured learning, released only when it&apos;s ready.</h2>
+            <p className="lead">
+              KIRA Academy is being built for traders who want sequenced, structured learning rather than scattered
+              content - a deeper path for anyone who has read the free community content and wants more structure.
+            </p>
+            <p className="muted">
+              Content will be published only when learning structure, delivery quality, legal boundaries, and support
+              resources are ready. No course is presented as a shortcut to guaranteed trading results.
+            </p>
+            <div className="actions">
+              <Link className="button secondary" href="/academy">Explore Academy</Link>
+              <Link className="text-link" href="/updates">Follow updates</Link>
+            </div>
+          </div>
+          <div className="story-panel">
+            <p className="eyebrow">Planned learning tracks</p>
+            <ul className="check-list">
+              <li>Beginner Education - markets, terminology, and how to learn safely.</li>
+              <li>Risk Management - position sizing and capital protection as a discipline.</li>
+              <li>Market Structure - reading price behaviour and changing conditions.</li>
+              <li>Trading Psychology - decision-making under pressure, not chasing outcomes.</li>
+              <li>Technology Tools - future decision-support tools that support judgement.</li>
+            </ul>
           </div>
         </div>
       </section>
