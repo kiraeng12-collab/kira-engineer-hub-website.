@@ -61,10 +61,29 @@ Doc-style pages (`.doc-page`, in `app/doc-page.css`) use a narrower `min(980px, 
 | `--duration-fast` | `120ms` |
 | `--duration-base` | `220ms` |
 | `--focus` | `0 0 0 3px rgba(43,182,168,.34)` — visible keyboard focus ring |
+| `--ease-out-expo` | `cubic-bezier(0.16, 1, 0.3, 1)` — scroll-reveal easing |
+| `--duration-slow` | `420ms` — scroll-reveal transition duration |
+| `--stagger-step` | `60ms` — per-item delay multiplier for staggered reveals |
 
-All motion must respect `prefers-reduced-motion` — the site has no
-animation that isn't purely decorative today, so there's nothing to gate yet,
-but any new motion added in later design phases must check this media query.
+All motion respects `prefers-reduced-motion: reduce`: the global override
+zeroes both `transition-duration` and `transition-delay` (not just duration -
+a staggered reveal with only duration zeroed would still show a visible
+delay before snapping in). The only looping animations on the site are the
+`RevealOnScroll`-driven scroll reveals (KIRA method steps, company timeline -
+one-time, not repeating) and the Project 242 mark's ambient pulse glow,
+which only runs under `prefers-reduced-motion: no-preference`.
+
+**No 3D library is used anywhere in the app** (confirmed via `package.json`
+audit and an explicit owner decision) - all "depth" and motion in the
+redesign (KIRA Decision Engine, the interactive ecosystem map, the method
+scroll-story, the Project 242 glow) is CSS/SVG only. This means there is no
+3D-specific fallback path to build or maintain; the non-3D "fallback" is the
+only implementation.
+
+**Touch targets:** standalone interactive controls (tabs, toggle buttons)
+target a 44x44px minimum hit area. Inline text links (footer navigation,
+in-paragraph links) are exempt per WCAG 2.5.8's inline-text-target
+exception and are intentionally left at normal line-height.
 
 ## Z-index scale
 
