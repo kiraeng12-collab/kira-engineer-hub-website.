@@ -8,7 +8,7 @@ import { siteConfig } from "@/lib/config/site";
  * footer placements, sized via CSS/the `width`/`height` props only.
  */
 export function BrandLogo({ context }: { context: "header" | "footer" }) {
-  const width = context === "footer" ? 195 : 247;
+  const width = context === "footer" ? 223 : 282;
   const height = context === "footer" ? 38 : 48;
 
   return (

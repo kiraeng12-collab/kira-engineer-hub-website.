@@ -391,11 +391,16 @@
         opacity: .92;
       }
       .brand-mark {
-        width: 247px;
+        width: 282px;
         height: 48px;
+        transition: filter var(--duration-base) var(--ease-out-expo);
+      }
+      .brand:hover .brand-mark,
+      .brand:focus-visible .brand-mark {
+        filter: brightness(1.12) drop-shadow(0 0 12px rgba(43, 182, 168, .55));
       }
       .brand-mark-footer {
-        width: 195px;
+        width: 223px;
         height: 38px;
       }
       .menu-button {
@@ -1644,7 +1649,7 @@
           transform: scale(.9);
           transform-origin: left center;
         }
-        .brand-mark { width: 190px; height: 37px; }
+        .brand-mark { width: 218px; height: 37px; }
         .hero { padding-top: 52px; }
         h1 { font-size: clamp(2.45rem, 14vw, 4.5rem); }
         .trust-row,

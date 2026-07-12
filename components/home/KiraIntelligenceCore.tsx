@@ -182,7 +182,7 @@ export function KiraIntelligenceCore() {
             ))}
           </svg>
           <div className="intel-hub" style={{ left: "50%", top: "50%" }}>
-            <Image src="/kira-engineer-hub-wordmark.png" width={168} height={33} alt="Kira Engineer Hub" priority />
+            <Image src="/kira-engineer-hub-wordmark.png" width={170} height={29} alt="Kira Engineer Hub" priority />
             <span>Intelligence Core</span>
           </div>
           <div role="tablist" aria-label="KIRA ecosystem products" onKeyDown={onKeyDown}>
