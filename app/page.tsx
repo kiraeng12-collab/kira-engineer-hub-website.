@@ -7,6 +7,9 @@ import { ProductLogo } from "@/components/ProductLogo";
 import { EarlyBirdBadge } from "@/components/EarlyBirdBadge";
 import { comparisonColumns, comparisonRows } from "@/lib/config/comparison";
 import { getStandardPrice, getQuarterlySaving, getQuarterlyEffectiveMonthly } from "@/lib/config/pricing";
+import { DecisionEngine } from "@/components/home/DecisionEngine";
+import { PathSelector } from "@/components/home/PathSelector";
+import { EcosystemMap } from "@/components/home/EcosystemMap";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -118,56 +121,24 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div className="market-visual" aria-label="Kira ecosystem: five connected products around one structured hub">
+          <div className="market-visual" aria-label="KIRA Decision Engine: an interactive walkthrough of the four-step KIRA method">
             <div className="visual-inner">
-              <div className="visual-top">
-                <div>
-                  <strong>Kira Ecosystem</strong>
-                  <span>One structured system, five connected products</span>
-                </div>
-                <span className="status-badge"><span className="status-dot" /> Actively developed</span>
-              </div>
-              <div className="framework-chart ecosystem-diagram" aria-hidden="true">
-                <svg viewBox="0 0 520 330" preserveAspectRatio="xMidYMid meet">
-                  <circle className="orbit-ring" cx="260" cy="165" r="125" fill="none" stroke="var(--border)" strokeWidth="1" strokeDasharray="2 6" />
-
-                  <line x1="260" y1="165" x2="260" y2="40" stroke="var(--cyan)" strokeWidth="1.5" opacity=".6" />
-                  <line x1="260" y1="165" x2="379" y2="126" stroke="var(--aqua)" strokeWidth="1.5" opacity=".55" />
-                  <line x1="260" y1="165" x2="333" y2="266" stroke="var(--gold)" strokeWidth="1.5" strokeDasharray="4 4" opacity=".45" />
-                  <line x1="260" y1="165" x2="186" y2="266" stroke="var(--muted)" strokeWidth="1.5" strokeDasharray="3 5" opacity=".4" />
-                  <line x1="260" y1="165" x2="141" y2="126" stroke="var(--border)" strokeWidth="1.5" strokeDasharray="2 6" opacity=".4" />
-
-                  <circle className="hub-glow" cx="260" cy="165" r="40" fill="var(--cyan)" opacity=".1" />
-                  <circle cx="260" cy="165" r="26" fill="var(--surface-2)" stroke="var(--cyan)" strokeWidth="1.5" />
-                  <svg x="238" y="143" width="44" height="44" viewBox="0 0 100 100">
-                    <use href="#ke-market-mark" />
-                  </svg>
-
-                  <circle cx="260" cy="40" r="9" fill="var(--cyan)" />
-                  <text x="260" y="22" textAnchor="middle" fill="var(--ink)" fontSize="13" fontWeight="700">Community</text>
-
-                  <circle cx="379" cy="126" r="9" fill="var(--aqua)" />
-                  <text x="394" y="121" textAnchor="start" fill="var(--ink)" fontSize="13" fontWeight="700">VIP</text>
-                  <text x="394" y="136" textAnchor="start" fill="var(--muted)" fontSize="10">Membership</text>
-
-                  <circle cx="333" cy="266" r="9" fill="var(--surface)" stroke="var(--gold)" strokeWidth="2" />
-                  <text x="333" y="290" textAnchor="middle" fill="var(--ink)" fontSize="13" fontWeight="700">Academy</text>
-
-                  <circle cx="186" cy="266" r="9" fill="var(--surface)" stroke="var(--muted)" strokeWidth="2" strokeDasharray="3 3" />
-                  <text x="186" y="290" textAnchor="middle" fill="var(--ink)" fontSize="13" fontWeight="700">Project 242</text>
-
-                  <circle cx="141" cy="126" r="9" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.5" strokeDasharray="2 4" />
-                  <text x="126" y="121" textAnchor="end" fill="var(--ink)" fontSize="13" fontWeight="700">Technology</text>
-                  <text x="126" y="136" textAnchor="end" fill="var(--muted)" fontSize="10">Roadmap</text>
-                </svg>
-              </div>
-              <div className="visual-legend">
-                <div className="legend-chip"><span>Kira Trading Community</span><strong>Live</strong></div>
-                <div className="legend-chip"><span>KIRA VIP Membership</span><strong>Preparing checkout</strong></div>
-                <div className="legend-chip"><span>Project 242</span><strong>In development</strong></div>
-              </div>
+              <DecisionEngine />
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="section" id="choose-path">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <p className="eyebrow">Choose Your KIRA Path</p>
+              <h2>Four ways to start, one connected ecosystem.</h2>
+            </div>
+            <p className="lead">Select the path that matches where you are today - every path stays connected to the same ecosystem.</p>
+          </div>
+          <PathSelector />
         </div>
       </section>
 
@@ -183,32 +154,7 @@ export default function HomePage() {
               and technology releases as they become ready.
             </p>
           </div>
-          <div className="ecosystem-grid">
-            <article className="card product-card">
-              <div className="product-top">
-                <ProductLogo product="community" />
-                <div><span className="tag" data-tone="live">Live</span><h3>Kira Trading Community</h3></div>
-              </div>
-              <p>A free Telegram community for public education, market updates, announcements, and community discussion.</p>
-              <a className="button secondary" href={siteConfig.social.telegramCommunity}>Join Free Community</a>
-            </article>
-            <article className="card product-card">
-              <div className="product-top">
-                <ProductLogo product="vip" />
-                <div><span className="tag" data-tone="live">Membership</span><h3>KIRA VIP Membership</h3></div>
-              </div>
-              <p>A private educational membership for structured market discussion, risk-aware planning, learning resources, community support, and regular market updates.</p>
-              <Link className="button secondary" href="/membership">View Membership</Link>
-            </article>
-            <article className="card product-card">
-              <div className="product-top">
-                <svg className="product-symbol" viewBox="0 0 100 100" aria-hidden="true"><use href="#project-242-loop" /></svg>
-                <div><span className="tag" data-tone="soon">In development</span><h3>Project 242</h3></div>
-              </div>
-              <p>In development. Public details remain intentionally limited until the initiative is ready.</p>
-              <Link className="button secondary" href="/project-242">Follow Development</Link>
-            </article>
-          </div>
+          <EcosystemMap />
           <div className="pricing-actions">
             <Link className="text-link" href="/ecosystem">See the full ecosystem</Link>
           </div>
@@ -322,7 +268,7 @@ export default function HomePage() {
 
       <section className="section" id="project-242">
         <div className="container project-band">
-          <svg className="project-mark-large" viewBox="0 0 100 100" aria-label="Project 242 logo"><use href="#project-242-loop" /></svg>
+          <ProductLogo product="project242" size={96} className="project-mark-large" />
           <div>
             <p className="eyebrow">In development</p>
             <h2>A private Kira Engineer initiative.</h2>

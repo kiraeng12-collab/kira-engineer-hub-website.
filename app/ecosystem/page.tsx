@@ -39,6 +39,7 @@ const products: {
   {
     name: "KIRA Academy",
     status: siteConfig.products.academy,
+    logo: "academy",
     audience: "Future structured learners seeking a complete course experience.",
     description: "Structured educational courses and trader-development programmes will be released only when content and delivery are ready.",
     cta: { label: "Explore Academy", href: "/academy" },
@@ -46,6 +47,7 @@ const products: {
   {
     name: "Project 242",
     status: siteConfig.products.project242,
+    logo: "project242",
     audience: "Not publicly available yet.",
     description: "A private Kira Engineer initiative. Public details remain intentionally limited while development continues.",
     cta: { label: "Discover Project 242", href: "/project-242" },

@@ -16,6 +16,26 @@ const PRODUCT_LOGOS = {
     src: "/kira-vip-channel-thumb.webp",
     alt: "KIRA VIP Membership logo",
   },
+  academy: {
+    src: "/kira-academy-thumb.webp",
+    alt: "KIRA Academy logo",
+  },
+  project242: {
+    src: "/project-242-mark-thumb.webp",
+    alt: "Project 242 mark",
+  },
+  bot: {
+    src: "/kira-bot-thumb.webp",
+    alt: "KIRA Community Bot logo",
+  },
+  vipGroup: {
+    src: "/kira-vip-group-thumb.webp",
+    alt: "KIRA VIP Group logo",
+  },
+  tradingChannel: {
+    src: "/kira-trading-channel-thumb.webp",
+    alt: "KIRA Trading Channel logo",
+  },
 } as const;
 
 export type ProductLogoName = keyof typeof PRODUCT_LOGOS;

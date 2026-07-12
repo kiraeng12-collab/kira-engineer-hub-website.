@@ -50,6 +50,20 @@
            --success / --danger UI states used elsewhere. */
         --viz-green: #4f8d65;
         --viz-red: #a84f4a;
+
+        /* KIRA Intelligence Ecosystem redesign: shared visual-language
+           tokens for glass surfaces, grid texture, and connected-node
+           visuals. No new colours - all derived from the existing palette. */
+        --glass-bg: rgba(21, 28, 36, 0.56);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --glass-blur: 16px;
+        --grid-line: rgba(255, 255, 255, 0.045);
+        --grid-line-strong: rgba(255, 255, 255, 0.08);
+        --node-line: rgba(43, 182, 168, 0.35);
+        --node-line-active: rgba(43, 182, 168, 0.9);
+        --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        --duration-slow: 420ms;
+        --stagger-step: 60ms;
       }
 
       * { box-sizing: border-box; }
@@ -124,7 +138,13 @@
       }
       .muted { color: var(--muted); }
       .dark-section {
-        background: var(--dark);
+        position: relative;
+        background:
+          radial-gradient(circle at 82% 0%, rgba(43,182,168,.07), transparent 45%),
+          linear-gradient(var(--grid-line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+          var(--dark);
+        background-size: auto, 48px 48px, 48px 48px, auto;
         color: var(--ink);
       }
       .dark-section .muted,
@@ -355,18 +375,12 @@
         color: var(--ink);
       }
       .brand-mark {
-        width: 48px;
+        width: 201px;
         height: 48px;
-        color: var(--ink);
       }
-      .brand-mark .accent, .brand-mark [data-accent] { color: var(--teal); }
-      .brand-text { line-height: 1.1; }
-      .brand-text small {
-        display: block;
-        margin-top: 5px;
-        color: var(--teal);
-        font-size: .63rem;
-        letter-spacing: .22em;
+      .brand-mark-footer {
+        width: 161px;
+        height: 38px;
       }
       .menu-button {
         display: none;
@@ -494,53 +508,151 @@
         font-weight: 700;
         white-space: nowrap;
       }
-      .status-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--aqua);
-      }
-      .framework-chart {
-        position: relative;
+
+      /* KIRA Decision Engine (interactive hero visual, Phase 3) */
+      .decision-engine {
+        display: flex;
+        flex-direction: column;
         flex: 1;
-        min-height: 330px;
+        min-height: 0;
       }
-      .framework-chart svg {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
+      .decision-engine-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 18px;
       }
-      .visual-legend {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+      .decision-engine-tab {
+        display: flex;
+        align-items: center;
         gap: 10px;
-        margin-top: 18px;
-      }
-      .legend-chip {
-        min-height: 58px;
-        padding: 12px;
-        border: 1px solid rgba(255,255,255,.14);
+        padding: 10px 14px;
+        border: 1px solid var(--border);
         border-radius: var(--radius-sm);
-        background: rgba(255,255,255,.05);
+        background: rgba(255,255,255,.03);
+        color: var(--stone);
+        font-size: .84rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: border-color var(--ease), color var(--ease), background var(--ease);
       }
-      .legend-chip span {
-        display: block;
-        color: var(--dark-muted);
+      .decision-engine-tab .step-node {
+        width: 28px;
+        height: 28px;
         font-size: .74rem;
       }
-      .legend-chip strong { font-size: .88rem; }
-
-      .ecosystem-diagram .orbit-ring { animation: none; }
-      @media (prefers-reduced-motion: no-preference) {
-        .ecosystem-diagram .hub-glow {
-          animation: hub-pulse 3.6s ease-in-out infinite;
-          transform-origin: 260px 165px;
-        }
+      .decision-engine-tab:hover { border-color: var(--cyan); color: var(--ink); }
+      .decision-engine-tab.active {
+        border-color: var(--cyan);
+        background: var(--gold-soft);
+        color: var(--ink);
       }
-      @keyframes hub-pulse {
-        0%, 100% { opacity: .1; transform: scale(1); }
-        50% { opacity: .22; transform: scale(1.12); }
+      .decision-engine-tab.active .step-node {
+        background: var(--cyan);
+        border-color: var(--cyan);
+        color: var(--surface);
+      }
+      .decision-engine-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 260px;
+        padding: 20px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: rgba(255,255,255,.02);
+      }
+      .decision-engine-panel p {
+        margin: 0;
+        color: var(--stone);
+        font-size: .95rem;
+      }
+      .decision-engine-visual {
+        flex: 1;
+        min-height: 140px;
+        margin-bottom: 16px;
+      }
+      .decision-engine-visual svg { width: 100%; height: 100%; }
+
+      /* Choose Your KIRA Path (Phase 4) */
+      .path-selector {
+        display: grid;
+        gap: 24px;
+      }
+      .path-tabs {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+      .path-tab {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 18px;
+        text-align: left;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+        cursor: pointer;
+        transition: border-color var(--ease), background var(--ease), transform var(--ease);
+      }
+      .path-tab strong { font-size: 1rem; }
+      .path-tab span { color: var(--muted); font-size: .82rem; }
+      .path-tab:hover { border-color: var(--cyan); transform: translateY(-2px); }
+      .path-tab.active {
+        border-color: var(--cyan);
+        background: linear-gradient(180deg, rgba(43,182,168,.1), transparent);
+      }
+      .path-tab.active strong { color: var(--cyan); }
+      .path-panel {
+        padding: clamp(24px, 4vw, 36px);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+      }
+      .path-panel-head {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      .path-panel-head h3 { margin: 4px 0 0; }
+      .path-panel > p { color: var(--stone); max-width: 640px; }
+      .path-benefits {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        list-style: none;
+        margin: 0 0 22px;
+        padding: 0;
+      }
+      .path-benefits li {
+        padding: 8px 14px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        color: var(--stone);
+        font-size: .82rem;
+      }
+      .placeholder-mark {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 56px;
+        height: 56px;
+        flex-shrink: 0;
+        border: 1.5px dashed var(--border);
+        border-radius: 50%;
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+      @media (max-width: 860px) {
+        .path-tabs { grid-template-columns: repeat(2, 1fr); }
+      }
+      @media (max-width: 560px) {
+        .path-tabs { grid-template-columns: 1fr; }
+        .path-panel-head { align-items: flex-start; }
       }
 
       .comparison-table {
@@ -583,21 +695,6 @@
         letter-spacing: .05em;
       }
 
-      .project242-visual {
-        width: min(100%, 320px);
-        margin: 24px auto;
-      }
-      .project242-visual svg { width: 100%; height: auto; }
-      @media (prefers-reduced-motion: no-preference) {
-        .project242-visual .ring-outer {
-          animation: ring-rotate 40s linear infinite;
-          transform-origin: 150px 150px;
-        }
-      }
-      @keyframes ring-rotate {
-        to { transform: rotate(360deg); }
-      }
-
       .section-head {
         display: grid;
         grid-template-columns: minmax(0, 760px) minmax(260px, 1fr);
@@ -607,7 +704,6 @@
       }
       .section-head p { margin-bottom: 0; }
       .method-grid,
-      .ecosystem-grid,
       .why-grid,
       .faq-grid {
         display: grid;
@@ -658,7 +754,135 @@
       }
       .method-step h3 { margin-bottom: 8px; font-size: 1.05rem; }
       .method-step p { color: var(--muted); font-size: .9rem; margin: 0; }
-      .ecosystem-grid { grid-template-columns: repeat(3, 1fr); }
+
+      /* Interactive ecosystem map: a hub node connected to four product
+         nodes via CSS-drawn lines (no SVG coordinate math, no library) -
+         each node's stem is absolutely positioned within the row's own
+         top padding, matching the .method-step connector technique above. */
+      .eco-map {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .eco-hub {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: 16px 26px;
+        margin-bottom: 44px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+      }
+      .eco-hub::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 100%;
+        width: 2px;
+        height: 44px;
+        background: var(--node-line);
+        transform: translateX(-50%);
+      }
+      .eco-hub-label {
+        font-family: var(--font-mono);
+        font-size: .72rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .eco-row {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        width: 100%;
+        list-style: none;
+        margin: 0;
+        padding: 32px 0 0;
+      }
+      .eco-row::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 12.5%;
+        right: 12.5%;
+        height: 2px;
+        background: var(--node-line);
+      }
+      .eco-node {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+      .eco-node::before {
+        content: "";
+        position: absolute;
+        top: -32px;
+        left: 50%;
+        width: 2px;
+        height: 32px;
+        background: var(--node-line);
+        transform: translateX(-50%);
+      }
+      .eco-node:hover::before,
+      .eco-node:focus-within::before {
+        background: var(--node-line-active);
+      }
+      .eco-card {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: clamp(18px, 2vw, 22px);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+        transition: border-color var(--ease);
+      }
+      .eco-node:hover .eco-card,
+      .eco-node:focus-within .eco-card {
+        border-color: var(--cyan-dark);
+      }
+      .eco-card h3 { margin: 0; font-size: 1.05rem; }
+      .eco-card h3 a { color: inherit; text-decoration: none; }
+      .eco-card h3 a:hover { color: var(--cyan-dark); text-decoration: underline; }
+      .eco-card p { margin: 0; color: var(--muted); font-size: .88rem; }
+      .eco-toggle {
+        margin-top: auto;
+        padding: 8px 0 0;
+        background: none;
+        border: none;
+        color: var(--cyan-dark);
+        font-size: .82rem;
+        font-weight: 700;
+        cursor: pointer;
+        text-align: left;
+      }
+      .eco-toggle:hover { color: var(--aqua); }
+      .eco-toggle:focus-visible { outline: none; box-shadow: var(--focus); border-radius: 4px; }
+      .eco-children {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        list-style: none;
+        margin: 4px 0 0;
+        padding: 12px 0 0;
+        border-top: 1px dashed var(--border);
+        width: 100%;
+      }
+      .eco-children li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .eco-children img { border-radius: var(--radius-sm); flex-shrink: 0; }
+      .eco-children strong { display: block; font-size: .84rem; }
+      .eco-children span { display: block; color: var(--muted); font-size: .78rem; }
+
       .why-grid { grid-template-columns: repeat(4, 1fr); }
       .card {
         border: 1px solid var(--border);
@@ -690,29 +914,12 @@
         stroke-linejoin: round;
       }
       .card p { color: var(--muted); margin-bottom: 0; }
-      .product-card {
-        min-height: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-      }
-      .product-top {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-      }
-      .product-logo,
-      .product-symbol {
+      .product-logo {
         width: 62px;
         height: 62px;
         border-radius: var(--radius-sm);
         object-fit: cover;
         background: var(--ink);
-      }
-      .product-symbol {
-        padding: 11px;
-        color: var(--ink);
-        background: var(--surface-2);
       }
       .tag {
         display: inline-flex;
@@ -728,7 +935,6 @@
       }
       .tag[data-tone="soon"] { color: var(--cyan-dark); }
       .tag[data-tone="live"] { color: #2f6f49; }
-      .product-card .button { margin-top: auto; width: fit-content; }
 
       .project-band {
         display: grid;
@@ -1058,10 +1264,6 @@
         font-weight: 800;
         text-transform: uppercase;
       }
-      .footer-brand svg {
-        width: 46px;
-        height: 46px;
-      }
       .footer-col h3 {
         margin-bottom: 14px;
         font-size: .92rem;
@@ -1160,7 +1362,8 @@
         .footer-grid {
           grid-template-columns: repeat(2, 1fr);
         }
-        .ecosystem-grid { grid-template-columns: 1fr; }
+        .eco-row { grid-template-columns: repeat(2, 1fr); }
+        .eco-row::before { left: 25%; right: 25%; }
       }
       @media (max-width: 680px) {
         .container { width: min(100% - 28px, var(--container)); }
@@ -1184,8 +1387,7 @@
           transform: scale(.9);
           transform-origin: left center;
         }
-        .brand-text small { display: none; }
-        .brand-mark { width: 42px; height: 42px; }
+        .brand-mark { width: 156px; height: 37px; }
         .hero { padding-top: 52px; }
         h1 { font-size: clamp(2.45rem, 14vw, 4.5rem); }
         .trust-row,
@@ -1194,8 +1396,7 @@
         .pricing-grid,
         .steps,
         .footer-grid,
-        .form-grid,
-        .visual-legend {
+        .form-grid {
           grid-template-columns: 1fr;
         }
         .market-visual { min-height: 390px; }
@@ -1221,6 +1422,15 @@
           width: 2px;
           height: 28px;
         }
+        .eco-hub { margin-bottom: 28px; }
+        .eco-hub::after { height: 28px; }
+        .eco-row {
+          grid-template-columns: 1fr;
+          gap: 28px;
+          padding-top: 0;
+        }
+        .eco-row::before { display: none; }
+        .eco-node::before { top: -28px; height: 28px; }
         .hero-copy .actions,
         .pricing-actions,
         .final-cta .actions {
@@ -1230,7 +1440,7 @@
         .checkout-grid {
           grid-template-columns: 1fr;
         }
-        .button, .product-card .button { width: 100%; }
+        .button { width: 100%; }
         .project-mark-large { padding: 32px; }
       }
       @media (prefers-reduced-motion: reduce) {
@@ -1240,4 +1450,58 @@
           scroll-behavior: auto !important;
           transition-duration: 0.01ms !important;
         }
+      }
+
+      /* ===== KIRA Intelligence Ecosystem: shared redesign utilities =====
+         Reduced-motion is handled globally above (transition-duration is
+         forced to ~0), so every utility below is reduced-motion-safe by
+         default with no per-rule override needed. */
+
+      .glass-panel {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius);
+        backdrop-filter: blur(var(--glass-blur));
+        -webkit-backdrop-filter: blur(var(--glass-blur));
+      }
+
+      /* Fine structural grid texture - a section background, never placed
+         directly behind body text (see brief: "do not make every object
+         glow" / no animated backgrounds behind copy). */
+      .grid-texture {
+        background-image:
+          linear-gradient(var(--grid-line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+        background-size: 48px 48px;
+      }
+
+      /* Controlled radial glow - one soft light source, positioned via
+         --glow-x/--glow-y/--glow-color custom properties per usage. Never
+         stacked more than once per section. */
+      .radial-glow {
+        --glow-x: 50%;
+        --glow-y: 0%;
+        --glow-color: rgba(43, 182, 168, 0.16);
+        position: relative;
+      }
+      .radial-glow::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(circle at var(--glow-x) var(--glow-y), var(--glow-color), transparent 55%);
+      }
+
+      /* Scroll-reveal utility - toggled by the shared RevealOnScroll
+         component's IntersectionObserver. Starts hidden only when JS has
+         confirmed it can reveal it; see the component for the no-JS/SSR
+         fallback (content renders visible by default). */
+      .reveal {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity var(--duration-slow) var(--ease-out-expo), transform var(--duration-slow) var(--ease-out-expo);
+      }
+      .reveal.is-visible {
+        opacity: 1;
+        transform: none;
       }

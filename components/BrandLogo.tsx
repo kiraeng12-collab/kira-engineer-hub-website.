@@ -1,32 +1,24 @@
+import Image from "next/image";
 import { siteConfig } from "@/lib/config/site";
 
 /**
- * The single official Kira Engineer Hub mark (geometric "K" + candlestick
- * bar, defined once in IconSprite as #ke-market-mark). Never redrawn here -
- * this component only controls which surrounding text/classes accompany it
- * for a given placement, per the Section 21 logo-usage system.
+ * The official Kira Engineer Hub wordmark (icon + company name + tagline,
+ * provided by the owner as a single transparent lockup - never redrawn,
+ * recoloured, or cropped here). Used exactly as provided in both header and
+ * footer placements, sized via CSS/the `width`/`height` props only.
  */
 export function BrandLogo({ context }: { context: "header" | "footer" }) {
-  if (context === "footer") {
-    return (
-      <>
-        <svg viewBox="0 0 100 100" aria-hidden="true">
-          <use href="#ke-market-mark" />
-        </svg>
-        <span>{siteConfig.companyName}</span>
-      </>
-    );
-  }
+  const width = context === "footer" ? 161 : 201;
+  const height = context === "footer" ? 38 : 48;
 
   return (
-    <>
-      <svg className="brand-mark" viewBox="0 0 100 100" aria-hidden="true">
-        <use href="#ke-market-mark" />
-      </svg>
-      <span className="brand-text">
-        {siteConfig.companyName}
-        <small>{siteConfig.tagline}</small>
-      </span>
-    </>
+    <Image
+      className={context === "footer" ? "brand-mark-footer" : "brand-mark"}
+      src="/kira-engineer-hub-wordmark.png"
+      width={width}
+      height={height}
+      alt={`${siteConfig.companyName} - ${siteConfig.tagline}`}
+      priority={context === "header"}
+    />
   );
 }

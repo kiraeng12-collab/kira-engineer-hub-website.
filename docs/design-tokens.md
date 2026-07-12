@@ -76,14 +76,21 @@ but any new motion added in later design phases must check this media query.
 | `--z-modal` | `2000` | Reserved for a future Modal component |
 | `--z-cookie-banner` | `9999` | Cookie consent banner (must sit above everything) |
 
-## Logo usage (Section 21)
+## Logo usage (Section 21, updated for the visual redesign)
 
-Two official marks exist, at different tiers — both are used exactly as
-provided, never redrawn, recoloured, or redrawn in CSS/SVG:
+Official marks are used exactly as provided by the owner, never redrawn,
+recoloured, or cropped:
 
-1. **Geometric "K + candlestick" mark** (`#ke-market-mark` in
-   `components/layout/IconSprite.tsx`) — the Kira Engineer Hub company mark.
-   Used via `components/BrandLogo.tsx` (`context="header"` or `"footer"`).
+1. **Kira Engineer Hub wordmark** (`public/kira-engineer-hub-wordmark.png`,
+   transparent PNG) — the real official company lockup (icon + "KIRA
+   ENGINEER HUB" + "TRADING EDUCATION TECH"), provided by the owner. Used via
+   `components/BrandLogo.tsx` (`context="header"` or `"footer"`, sized via
+   CSS only - same source file both places). This replaced an earlier
+   placeholder: a hand-drawn "K + candlestick" SVG (`#ke-market-mark` in
+   `components/layout/IconSprite.tsx`) built during Phase 2 of the original
+   backend/content work because no official file existed yet at the time.
+   That SVG symbol definition is left in `IconSprite.tsx` unused for now
+   rather than deleted, in case it's needed again.
 2. **Crowned eagle crest** — the Kira Trading Community / KIRA VIP Channel
    identity, sourced from the original channel-photo PNGs. Used via
    `components/ProductLogo.tsx` (`product="community"` or `"vip"`), which
@@ -92,7 +99,28 @@ provided, never redrawn, recoloured, or redrawn in CSS/SVG:
    originals. The original PNGs remain untouched as masters — regenerate the
    thumbnails from them with `sharp` if the source art ever changes; never
    hand-edit the `-thumb.webp` files directly.
+3. **KIRA Academy crest** (`product="academy"`) — shield/graduation-cap mark
+   with laurel wreath, provided by the owner
+   (`public/kira-academy.png` master, `-thumb.webp` rendered version). Wired
+   into `/ecosystem` and the homepage "Choose Your KIRA Path" section.
+4. **Project 242 mark** (`product="project242"`) — an intentionally abstract
+   orbit/diamond icon (`public/project-242-mark.png` master). Reveals no
+   methodology or internal detail, so it's safe to display even under the
+   "no hints yet" restriction on Project 242 content. Wired into
+   `/ecosystem` and "Choose Your KIRA Path".
+5. **KIRA Community Bot, KIRA VIP Group, KIRA Trading Channel** — provided
+   by the owner (`public/kira-bot.png`, `public/kira-vip-group.png`,
+   `public/kira-trading-channel.png` masters, all with `-thumb.webp`
+   renders; `ProductLogo` names `"bot"`, `"vipGroup"`, `"tradingChannel"`).
+   Wired into the homepage's interactive ecosystem map
+   (`components/home/EcosystemMap.tsx`, replacing the old static
+   `#ecosystem` card grid) as expandable Telegram sub-touchpoints beneath
+   Kira Trading Community (Trading Channel) and KIRA VIP Membership (VIP
+   Group, Bot) - this reflects the real product structure already live at
+   `/account/telegram`, not illustrative data.
 
 Do not introduce the eagle crest into the site-wide header/nav/footer or the
 homepage hero — per owner confirmation, it stays scoped to Community/VIP
-product contexts, while the geometric mark remains the whole-site identity.
+product contexts, while the wordmark remains the whole-site identity.
+
+**Still missing (no file provided yet):** KIRA Partner Program.

@@ -1,8 +1,8 @@
 /**
- * Hidden SVG symbol sprite shared by the brand mark, the Project 242 loop
- * icon, and the footer social icons (all referenced elsewhere via
- * <use href="#id">). Ported verbatim from the original index.html markup.
- * Rendered once in the root layout.
+ * Hidden SVG symbol sprite shared by the retired brand mark and the footer
+ * social icons (all referenced elsewhere via <use href="#id">). Ported
+ * verbatim from the original index.html markup. Rendered once in the root
+ * layout.
  */
 export function IconSprite() {
   return (
@@ -17,18 +17,6 @@ export function IconSprite() {
           <line x1="59.4" y1="78" x2="75.4" y2="78" stroke="var(--teal)" strokeWidth="7" strokeLinecap="square" />
           <rect x="19" y="40" width="12" height="20" fill="var(--teal)" />
           <line x1="25" y1="33" x2="25" y2="67" stroke="var(--cyan)" strokeWidth="3" />
-        </symbol>
-        <symbol id="project-242-loop" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="2.2" />
-          <polygon points="50,34.5 65.5,50 50,65.5 34.5,50" fill="currentColor" />
-          <circle cx="42.7" cy="8.6" r="3.8" fill="var(--aqua)" />
-          <circle cx="57.3" cy="8.6" r="3.8" fill="var(--aqua)" />
-          <circle cx="84.4" cy="25.9" r="5" fill="var(--warning)" />
-          <circle cx="91.4" cy="57.3" r="5" fill="var(--warning)" />
-          <circle cx="74.1" cy="84.4" r="5" fill="var(--warning)" />
-          <circle cx="42.7" cy="91.4" r="5" fill="var(--warning)" />
-          <circle cx="13.6" cy="71" r="3.8" fill="var(--danger)" />
-          <circle cx="8.6" cy="42.7" r="3.8" fill="var(--danger)" />
         </symbol>
         <symbol id="social-telegram" viewBox="0 0 24 24">
           <path
