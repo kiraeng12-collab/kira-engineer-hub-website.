@@ -138,8 +138,10 @@ recoloured, or cropped:
    Group, Bot) - this reflects the real product structure already live at
    `/account/telegram`, not illustrative data.
 
-Do not introduce the eagle crest into the site-wide header/nav/footer or the
-homepage hero — per owner confirmation, it stays scoped to Community/VIP
-product contexts, while the wordmark remains the whole-site identity.
+Do not use the eagle crest as the site-wide brand (header/nav/footer brand
+mark) — the wordmark remains the whole-site identity. Product crests appear
+only inside their own product's context; this includes their official nodes
+in the hero's KIRA Intelligence Core, per the owner's KIRA Intelligence
+Network brief ("Product logos appearing inside their official nodes").
 
 **Still missing (no file provided yet):** KIRA Partner Program.

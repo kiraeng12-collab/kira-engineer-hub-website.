@@ -5,6 +5,7 @@ import { siteConfig } from "@/lib/config/site";
 import { IconSprite } from "@/components/layout/IconSprite";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { AmbientLight } from "@/components/AmbientLight";
 import { SessionProviderWrapper } from "@/components/SessionProviderWrapper";
 import "./globals.css";
 import "./doc-page.css";
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <IconSprite />
+        <AmbientLight />
         <SessionProviderWrapper>
           <Header />
           <main id="main">{children}</main>

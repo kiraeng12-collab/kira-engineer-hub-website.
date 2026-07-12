@@ -219,16 +219,25 @@
         border-color: var(--ink);
       }
 
+      /* Navigation starts visually integrated with the page (transparent,
+         hairline border only), then gains a solid compacted dark surface
+         once the visitor scrolls - the nav row height shrinks via the
+         .nav rule below so the compacting is smooth, not jumpy. */
       .site-header {
         position: sticky;
         top: 0;
         z-index: var(--z-header);
-        border-bottom: 1px solid rgba(41,50,61,.9);
-        background: rgba(11,17,24,.92);
-        backdrop-filter: blur(16px);
-        transition: box-shadow var(--ease), padding var(--ease);
+        border-bottom: 1px solid transparent;
+        background: transparent;
+        transition: background var(--duration-base) var(--ease-out-expo), border-color var(--duration-base) var(--ease-out-expo), box-shadow var(--duration-base) var(--ease-out-expo);
       }
-      .site-header.scrolled { box-shadow: 0 12px 30px rgba(25,25,25,.08); }
+      .site-header.scrolled {
+        border-bottom-color: rgba(41,50,61,.9);
+        background: rgba(11,17,24,.86);
+        backdrop-filter: blur(16px);
+        box-shadow: 0 18px 40px rgba(0,0,0,.35);
+      }
+      .site-header.scrolled .nav { min-height: 66px; }
       .market-teaser {
         border-bottom: 1px solid rgba(255,255,255,.1);
         background:
@@ -328,6 +337,7 @@
         grid-template-columns: 1fr auto 1fr;
         align-items: center;
         gap: 24px;
+        transition: min-height var(--duration-base) var(--ease-out-expo);
       }
       .nav-links {
         display: flex;
@@ -515,70 +525,158 @@
         white-space: nowrap;
       }
 
-      /* KIRA Decision Engine (interactive hero visual, Phase 3) */
-      .decision-engine {
+      /* THE KIRA INTELLIGENCE CORE (immersive hero visual).
+         Depth is CSS 3D only: a perspective frame, a pointer-tilted stage,
+         and translateZ layers for the hub and product nodes. Everything
+         renders identically (just static) with JS motion disabled. */
+      .intel-core {
         display: flex;
         flex-direction: column;
+        gap: 16px;
         flex: 1;
         min-height: 0;
       }
-      .decision-engine-tabs {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 18px;
+      .intel-stage-frame {
+        perspective: 1100px;
+        width: 100%;
       }
-      .decision-engine-tab {
+      .intel-stage {
+        position: relative;
+        width: min(100%, 460px);
+        aspect-ratio: 1;
+        margin-inline: auto;
+        transform-style: preserve-3d;
+        transition: transform 180ms ease-out;
+      }
+      .intel-field {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .intel-boundary {
+        fill: none;
+        stroke: var(--node-line);
+        stroke-width: 1.5;
+        stroke-dasharray: 3 12;
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+      .intel-orbit {
+        fill: none;
+        stroke: var(--grid-line-strong);
+        stroke-width: 1;
+        stroke-dasharray: 40 18;
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .intel-boundary { animation: intel-spin 160s linear infinite; }
+        .intel-orbit { animation: intel-spin-reverse 90s linear infinite; }
+      }
+      @keyframes intel-spin { to { transform: rotate(360deg); } }
+      @keyframes intel-spin-reverse { to { transform: rotate(-360deg); } }
+      .intel-link {
+        stroke: var(--node-line);
+        stroke-width: 1.2;
+        transition: stroke var(--ease);
+      }
+      .intel-link.active { stroke: var(--node-line-active); stroke-width: 1.8; }
+      .intel-flow {
+        stroke: var(--aqua);
+        stroke-width: 2.2;
+        stroke-linecap: round;
+        stroke-dasharray: 7 89;
+        opacity: 0;
+        transition: opacity var(--duration-base) var(--ease-out-expo);
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .intel-flow.active {
+          opacity: .9;
+          animation: intel-flow-dash 2.4s linear infinite;
+        }
+      }
+      @keyframes intel-flow-dash { to { stroke-dashoffset: -96; } }
+      .intel-hub {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 7px;
+        padding: 16px 20px;
+        border: 1px solid rgba(43,182,168,.35);
+        border-radius: var(--radius);
+        background: linear-gradient(160deg, rgba(16,24,32,.96), rgba(11,17,24,.96));
+        box-shadow: 0 0 44px rgba(43,182,168,.14), var(--shadow);
+        transform: translate(-50%, -50%) translateZ(46px);
+      }
+      .intel-hub span {
+        font-family: var(--font-mono);
+        font-size: .64rem;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .intel-node {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        width: 122px;
+        padding: 8px;
+        border: 0;
+        border-radius: var(--radius-sm);
+        background: transparent;
+        color: var(--stone);
+        font-size: .76rem;
+        font-weight: 700;
+        line-height: 1.3;
+        text-align: center;
+        cursor: pointer;
+        transform: translate(-50%, -50%) translateZ(26px);
+      }
+      .intel-node .intel-node-logo {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        border: 1.5px solid var(--border);
+        background: var(--surface-2);
+        object-fit: cover;
+        transition: border-color var(--ease), box-shadow var(--ease), transform var(--ease);
+      }
+      .intel-node:hover .intel-node-logo,
+      .intel-node.active .intel-node-logo {
+        border-color: var(--cyan);
+        box-shadow: 0 0 26px rgba(43,182,168,.42);
+        transform: scale(1.07);
+      }
+      .intel-node.active { color: var(--ink); }
+      .intel-node:focus-visible { outline: none; box-shadow: var(--focus); }
+      .intel-panel {
+        min-height: 128px;
+        padding: 16px 18px;
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius);
+        background: var(--glass-bg);
+      }
+      .intel-panel-inner { animation: intel-panel-in 260ms var(--ease-out-expo); }
+      @keyframes intel-panel-in {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: none; }
+      }
+      .intel-panel-head {
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 10px 14px;
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        background: rgba(255,255,255,.03);
+        flex-wrap: wrap;
+      }
+      .intel-panel-head strong { font-size: .98rem; }
+      .intel-panel p {
+        margin: 8px 0 10px;
         color: var(--stone);
-        font-size: .84rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: border-color var(--ease), color var(--ease), background var(--ease);
+        font-size: .88rem;
       }
-      .decision-engine-tab .step-node {
-        width: 28px;
-        height: 28px;
-        font-size: .74rem;
-      }
-      .decision-engine-tab:hover { border-color: var(--cyan); color: var(--ink); }
-      .decision-engine-tab.active {
-        border-color: var(--cyan);
-        background: var(--gold-soft);
-        color: var(--ink);
-      }
-      .decision-engine-tab.active .step-node {
-        background: var(--cyan);
-        border-color: var(--cyan);
-        color: var(--surface);
-      }
-      .decision-engine-panel {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        min-height: 260px;
-        padding: 20px;
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        background: rgba(255,255,255,.02);
-      }
-      .decision-engine-panel p {
-        margin: 0;
-        color: var(--stone);
-        font-size: .95rem;
-      }
-      .decision-engine-visual {
-        flex: 1;
-        min-height: 140px;
-        margin-bottom: 16px;
-      }
-      .decision-engine-visual svg { width: 100%; height: 100%; }
 
       /* Choose Your KIRA Path (Phase 4) */
       .path-selector {
@@ -716,31 +814,6 @@
         gap: 18px;
       }
       .method-grid { grid-template-columns: repeat(4, 1fr); }
-      .method-steps {
-        display: flex;
-        align-items: flex-start;
-        gap: 0;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-      .method-step {
-        flex: 1;
-        min-width: 0;
-        position: relative;
-        padding: 0 16px;
-        text-align: center;
-      }
-      .method-step:not(:first-child)::before {
-        content: "";
-        position: absolute;
-        top: 23px;
-        left: -50%;
-        width: 100%;
-        height: 2px;
-        background: var(--border);
-        z-index: 0;
-      }
       .step-node {
         position: relative;
         z-index: 1;
@@ -758,16 +831,78 @@
         font-weight: 700;
         font-size: .92rem;
       }
-      .method-step h3 { margin-bottom: 8px; font-size: 1.05rem; }
-      .method-step p { color: var(--muted); font-size: .9rem; margin: 0; }
-      /* Scroll-story stagger: each step is its own RevealOnScroll instance,
-         so on the desktop row they trigger together but cascade left to
-         right; stacked on mobile, each triggers independently as it scrolls
-         into view. See .reveal in the scroll-reveal utility section. */
-      .method-step:nth-child(1).reveal { transition-delay: 0ms; }
-      .method-step:nth-child(2).reveal { transition-delay: var(--stagger-step); }
-      .method-step:nth-child(3).reveal { transition-delay: calc(var(--stagger-step) * 2); }
-      .method-step:nth-child(4).reveal { transition-delay: calc(var(--stagger-step) * 3); }
+
+      /* KIRA Method scroll story: sticky visual panel on the left advances
+         as the step column scrolls (IntersectionObserver in
+         KiraMethodStory.tsx). On mobile the panel is hidden and each step
+         carries its own inline visual instead - no sticky behaviour. */
+      .method-story {
+        display: grid;
+        grid-template-columns: minmax(320px, .9fr) minmax(0, 1.1fr);
+        gap: clamp(28px, 5vw, 64px);
+        align-items: start;
+      }
+      .method-story-panel {
+        position: sticky;
+        top: calc(var(--header-height) + 24px);
+        padding: clamp(22px, 3vw, 32px);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius);
+        background: linear-gradient(160deg, rgba(21,28,36,.94), rgba(11,17,24,.94));
+        box-shadow: var(--shadow);
+      }
+      .method-story-visuals {
+        position: relative;
+        aspect-ratio: 240 / 160;
+      }
+      .method-story-visual {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity var(--duration-slow) var(--ease-out-expo), transform var(--duration-slow) var(--ease-out-expo);
+      }
+      .method-story-visual.active {
+        opacity: 1;
+        transform: none;
+      }
+      .method-story-visual svg { width: 100%; height: 100%; }
+      .method-story-progress {
+        display: flex;
+        gap: 8px;
+        margin-top: 18px;
+      }
+      .method-story-progress span {
+        height: 3px;
+        flex: 1;
+        border-radius: 999px;
+        background: var(--border);
+        transition: background var(--duration-base) var(--ease-out-expo);
+      }
+      .method-story-progress span.active { background: var(--cyan); }
+      .method-story-example {
+        margin: 14px 0 0;
+        min-height: 3em;
+        color: var(--stone);
+        font-size: .88rem;
+      }
+      .method-story-steps {
+        display: grid;
+        gap: clamp(48px, 9vh, 96px);
+        list-style: none;
+        margin: 0;
+        padding: 24px 0;
+      }
+      .method-story-step {
+        max-width: 460px;
+        opacity: .45;
+        transition: opacity var(--duration-slow) var(--ease-out-expo);
+      }
+      .method-story-step.active { opacity: 1; }
+      .method-story-step .step-node { margin: 0 0 16px; }
+      .method-story-step h3 { margin-bottom: 8px; font-size: 1.2rem; }
+      .method-story-step p { color: var(--stone); font-size: .95rem; margin: 0; }
+      .method-story-step-visual { display: none; }
 
       /* Interactive ecosystem map: a hub node connected to four product
          nodes via CSS-drawn lines (no SVG coordinate math, no library) -
@@ -960,45 +1095,48 @@
         gap: clamp(28px, 6vw, 70px);
         align-items: center;
       }
-      .project-mark-large {
-        width: min(290px, 70vw);
-        height: min(290px, 70vw);
-        aspect-ratio: 1;
-        object-fit: contain;
-        margin-inline: auto;
-        color: var(--ink);
-        background: linear-gradient(145deg, var(--dark-2), #0e0d0c);
-        border: 1px solid rgba(255,255,255,.12);
-        border-radius: var(--radius);
-        padding: 44px;
-      }
-      /* Ambient "confidential, still developing" atmosphere behind the mark -
-         purely decorative, reveals nothing about Project 242 itself. A
-         wrapping frame is required because ::before/::after don't render on
-         replaced elements like <img>. */
-      .project-mark-frame {
+      /* Project 242 experience (components/home/Project242Experience.tsx):
+         2-4-2 concentric decision layers around the official mark. Layer
+         rotation is ambient and slow, runs only when motion is allowed, and
+         the static frame is the complete design. */
+      .p242-exp {
         position: relative;
-        width: min(290px, 70vw);
+        width: min(360px, 78vw);
+        aspect-ratio: 1;
         margin-inline: auto;
       }
-      .project-mark-frame::before {
-        content: "";
-        position: absolute;
-        inset: -18px;
-        border-radius: calc(var(--radius) + 18px);
-        background: radial-gradient(circle, rgba(43, 182, 168, .18), transparent 70%);
-        z-index: -1;
-        opacity: .4;
+      .p242-exp svg { width: 100%; height: 100%; }
+      .p242-boundary {
+        fill: none;
+        stroke: var(--node-line);
+        stroke-width: 1.2;
+        stroke-dasharray: 3 12;
+      }
+      .p242-layer {
+        transform-box: fill-box;
+        transform-origin: center;
       }
       @media (prefers-reduced-motion: no-preference) {
-        .project-mark-frame::before {
-          animation: project-pulse 4.5s ease-in-out infinite;
-        }
+        .p242-layer-outer { animation: intel-spin 140s linear infinite; }
+        .p242-layer-mid { animation: intel-spin-reverse 100s linear infinite; }
+        .p242-layer-inner { animation: intel-spin 70s linear infinite; }
+        .p242-mark { animation: p242-pulse 4.5s ease-in-out infinite; }
       }
-      @keyframes project-pulse {
-        0%, 100% { opacity: .3; transform: scale(1); }
-        50% { opacity: .6; transform: scale(1.06); }
+      @keyframes p242-pulse {
+        0%, 100% { box-shadow: 0 0 34px rgba(43,182,168,.16); }
+        50% { box-shadow: 0 0 54px rgba(43,182,168,.34); }
       }
+      .p242-mark {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        overflow: hidden;
+        border: 1px solid rgba(43,182,168,.35);
+        box-shadow: 0 0 34px rgba(43,182,168,.16);
+      }
+      .p242-mark img { display: block; }
       .steps {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -1023,6 +1161,48 @@
         gap: clamp(28px, 6vw, 72px);
         align-items: start;
       }
+      /* Interactive membership plan selector (homepage): a segmented
+         monthly/quarterly control driving one premium price panel. */
+      .plan-selector { display: grid; gap: 16px; }
+      .plan-toggle {
+        display: inline-flex;
+        gap: 4px;
+        padding: 4px;
+        width: fit-content;
+        border: 1px solid var(--glass-border);
+        border-radius: 999px;
+        background: var(--glass-bg);
+      }
+      .plan-toggle-option {
+        min-height: 40px;
+        padding: 8px 22px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--stone);
+        font-size: .88rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background var(--duration-base) var(--ease-out-expo), color var(--duration-base) var(--ease-out-expo);
+      }
+      .plan-toggle-option:hover { color: var(--ink); }
+      .plan-toggle-option.active {
+        background: var(--cyan);
+        color: var(--surface);
+      }
+      .plan-toggle-option:focus-visible { outline: none; box-shadow: var(--focus); }
+      .plan-panel {
+        border: 1px solid rgba(43,182,168,.3);
+        border-radius: var(--radius);
+        background: linear-gradient(160deg, rgba(43,182,168,.07), transparent 45%), var(--surface);
+        padding: clamp(22px, 3vw, 30px);
+        box-shadow: var(--shadow);
+        min-height: 430px;
+      }
+      .plan-panel-inner { animation: intel-panel-in 260ms var(--ease-out-expo); }
+      .plan-panel h3 { margin: 10px 0 6px; }
+      .plan-panel .notice { font-size: .84rem; }
+
       .pricing-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -1422,6 +1602,22 @@
         }
         .eco-row { grid-template-columns: repeat(2, 1fr); }
         .eco-row::before { left: 25%; right: 25%; }
+        /* Method story collapses to a plain vertical flow: the sticky panel
+           is hidden and each step shows its own inline visual instead. */
+        .method-story { grid-template-columns: 1fr; }
+        .method-story-panel { display: none; }
+        .method-story-steps { gap: 44px; padding: 0; }
+        .method-story-step { opacity: 1; max-width: none; }
+        .method-story-step-visual {
+          display: block;
+          max-width: 320px;
+          margin-bottom: 14px;
+          padding: 14px;
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius);
+          background: rgba(21,28,36,.6);
+        }
+        .method-story-step-visual svg { width: 100%; height: auto; }
       }
       @media (max-width: 680px) {
         .container { width: min(100% - 28px, var(--container)); }
@@ -1459,27 +1655,6 @@
         }
         .market-visual { min-height: 390px; }
         .timeline li { grid-template-columns: 1fr; gap: 4px; }
-        .method-steps {
-          flex-direction: column;
-          gap: 28px;
-        }
-        .method-step {
-          text-align: left;
-          padding: 0 0 0 60px;
-          min-height: 46px;
-        }
-        .step-node {
-          position: absolute;
-          top: 0;
-          left: 0;
-          margin: 0;
-        }
-        .method-step:not(:first-child)::before {
-          top: -28px;
-          left: 22px;
-          width: 2px;
-          height: 28px;
-        }
         .eco-hub { margin-bottom: 28px; }
         .eco-hub::after { height: 28px; }
         .eco-row {
@@ -1499,7 +1674,6 @@
           grid-template-columns: 1fr;
         }
         .button { width: 100%; }
-        .project-mark-large { padding: 32px; }
       }
       @media (prefers-reduced-motion: reduce) {
         *, *:before, *:after {
@@ -1563,4 +1737,19 @@
       .reveal.is-visible {
         opacity: 1;
         transform: none;
+      }
+
+      /* Cursor-reactive ambient lighting (see components/AmbientLight.tsx -
+         renders inert on touch devices and under reduced motion). Sits above
+         section backgrounds but below the header; screen blend keeps it
+         behaving like light on the dark surfaces rather than a tint. */
+      .ambient-light {
+        position: fixed;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 600ms var(--ease-out-expo);
+        background: radial-gradient(560px circle at var(--cursor-x, 50%) var(--cursor-y, 40%), rgba(43, 182, 168, .075), transparent 68%);
+        mix-blend-mode: screen;
       }

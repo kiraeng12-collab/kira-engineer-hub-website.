@@ -3,11 +3,11 @@ import Link from "next/link";
 import Script from "next/script";
 import { siteConfig } from "@/lib/config/site";
 import { ComparisonTable } from "@/components/ComparisonTable";
-import { ProductLogo } from "@/components/ProductLogo";
-import { EarlyBirdBadge } from "@/components/EarlyBirdBadge";
 import { comparisonColumns, comparisonRows } from "@/lib/config/comparison";
-import { getStandardPrice, getQuarterlySaving, getQuarterlyEffectiveMonthly } from "@/lib/config/pricing";
-import { DecisionEngine } from "@/components/home/DecisionEngine";
+import { KiraIntelligenceCore } from "@/components/home/KiraIntelligenceCore";
+import { KiraMethodStory } from "@/components/home/KiraMethodStory";
+import { Project242Experience } from "@/components/home/Project242Experience";
+import { MembershipSelector } from "@/components/home/MembershipSelector";
 import { PathSelector } from "@/components/home/PathSelector";
 import { EcosystemMap } from "@/components/home/EcosystemMap";
 import { RevealOnScroll } from "@/components/RevealOnScroll";
@@ -79,7 +79,6 @@ const INSIGHTS_CATEGORIES: { category: ContentCategory; label: string }[] = [
 type LatestArticleEntry = { category: ContentCategory; label: string; article: ReturnType<typeof getAllArticles>[number] };
 
 export default function HomePage() {
-  const quarterlySaving = getQuarterlySaving();
   const latestArticles = INSIGHTS_CATEGORIES.map(({ category, label }): LatestArticleEntry | null => {
     const [latest] = getAllArticles(category);
     return latest ? { category, label, article: latest } : null;
@@ -136,9 +135,9 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div className="market-visual" aria-label="KIRA Decision Engine: an interactive walkthrough of the four-step KIRA method">
+          <div className="market-visual" aria-label="KIRA Intelligence Core: an interactive map of the Kira Engineer Hub ecosystem">
             <div className="visual-inner">
-              <DecisionEngine />
+              <KiraIntelligenceCore />
             </div>
           </div>
         </div>
@@ -218,28 +217,7 @@ export default function HomePage() {
               decisions. Structured process over prediction.
             </p>
           </div>
-          <ol className="method-steps">
-            <RevealOnScroll as="li" className="method-step">
-              <span className="step-node" aria-hidden="true">01</span>
-              <h3>Understand Context</h3>
-              <p>Read market structure, key levels, and the conditions currently in play before forming a view.</p>
-            </RevealOnScroll>
-            <RevealOnScroll as="li" className="method-step">
-              <span className="step-node" aria-hidden="true">02</span>
-              <h3>Define Scenarios</h3>
-              <p>Set bullish and bearish scenarios with clear invalidation, instead of predicting a single outcome.</p>
-            </RevealOnScroll>
-            <RevealOnScroll as="li" className="method-step">
-              <span className="step-node" aria-hidden="true">03</span>
-              <h3>Control Exposure</h3>
-              <p>Size risk and plan the trade before entry, so no single decision can outweigh the process.</p>
-            </RevealOnScroll>
-            <RevealOnScroll as="li" className="method-step">
-              <span className="step-node" aria-hidden="true">04</span>
-              <h3>Review Decisions</h3>
-              <p>Review what happened against the plan, not just the outcome, and feed it back into the next cycle.</p>
-            </RevealOnScroll>
-          </ol>
+          <KiraMethodStory />
         </div>
       </section>
 
@@ -282,32 +260,7 @@ export default function HomePage() {
               broker services, or guaranteed results.
             </p>
           </div>
-          <div>
-            <div className="pricing-grid" aria-label="KIRA VIP Membership pricing">
-              <article className="price-card">
-                <span className="tag">Most Flexible</span>
-                <h3>KIRA VIP Monthly</h3>
-                <div className="price">USD {getStandardPrice("monthly")} <span>per month</span></div>
-              </article>
-              <article className="price-card featured">
-                <span className="tag">BEST VALUE</span>
-                <h3>KIRA VIP Quarterly</h3>
-                <div className="price">USD {getStandardPrice("quarterly")} <span>every three months</span></div>
-                <ul className="check-list">
-                  <li>Saving: USD {quarterlySaving.amount}, equal to {quarterlySaving.percentage}%</li>
-                  <li>Equivalent cost: USD {getQuarterlyEffectiveMonthly()} per month</li>
-                </ul>
-              </article>
-            </div>
-            <div className="notice">
-              <EarlyBirdBadge label="Early Bird Lifetime Discount Eligibility" /> Verified eligible members receive
-              20% off qualifying KIRA VIP Membership prices while the qualifying service remains available.
-            </div>
-            <div className="pricing-actions">
-              <Link className="button cyan" href="/membership">View Full Membership Details</Link>
-              <Link className="text-link" href="/early-bird">Check Early Bird eligibility</Link>
-            </div>
-          </div>
+          <MembershipSelector />
         </div>
       </section>
 
@@ -344,9 +297,7 @@ export default function HomePage() {
 
       <section className="section" id="project-242">
         <div className="container project-band">
-          <div className="project-mark-frame">
-            <ProductLogo product="project242" size={96} className="project-mark-large" />
-          </div>
+          <Project242Experience />
           <div>
             <p className="eyebrow">In development</p>
             <h2>A private Kira Engineer initiative.</h2>
