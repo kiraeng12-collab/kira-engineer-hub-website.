@@ -1604,6 +1604,9 @@
         .eco-row::before { left: 25%; right: 25%; }
         /* Method story collapses to a plain vertical flow: the sticky panel
            is hidden and each step shows its own inline visual instead. */
+        .featured-article { grid-template-columns: 1fr; }
+        .featured-article-cover { min-height: 200px; }
+        .article-grid { grid-template-columns: repeat(2, 1fr); }
         .method-story { grid-template-columns: 1fr; }
         .method-story-panel { display: none; }
         .method-story-steps { gap: 44px; padding: 0; }
@@ -1655,6 +1658,7 @@
         }
         .market-visual { min-height: 390px; }
         .timeline li { grid-template-columns: 1fr; gap: 4px; }
+        .article-grid { grid-template-columns: 1fr; }
         .eco-hub { margin-bottom: 28px; }
         .eco-hub::after { height: 28px; }
         .eco-row {
@@ -1737,6 +1741,160 @@
       .reveal.is-visible {
         opacity: 1;
         transform: none;
+      }
+
+      /* About brand story: large editorial opening statement + a richer
+         timeline treatment reusing the shared .timeline base. */
+      .brand-story-hero { padding-bottom: clamp(36px, 5vw, 64px); }
+      .brand-story-hero h1 {
+        margin: 12px 0 18px;
+        max-width: 820px;
+        font-size: clamp(2.6rem, 7vw, 4.6rem);
+        line-height: 1.04;
+        letter-spacing: -0.02em;
+      }
+      .brand-story-hero .lead {
+        max-width: 680px;
+        color: var(--stone);
+        font-size: 1.05rem;
+      }
+      .brand-timeline li { grid-template-columns: 72px 1fr; }
+      .brand-timeline em {
+        display: block;
+        margin-bottom: 2px;
+        color: var(--ink);
+        font-style: normal;
+        font-weight: 700;
+      }
+      .brand-timeline li:nth-child(1).reveal { transition-delay: 0ms; }
+      .brand-timeline li:nth-child(2).reveal { transition-delay: var(--stagger-step); }
+      .brand-timeline li:nth-child(3).reveal { transition-delay: calc(var(--stagger-step) * 2); }
+      .brand-timeline li:nth-child(4).reveal { transition-delay: calc(var(--stagger-step) * 3); }
+
+      /* Insights editorial hub: filter chips, one featured article, and a
+         cover-art grid. Covers are brand SVG geometry (ArticleCover.tsx),
+         with a gentle art shift on hover. */
+      .hub-head {
+        max-width: 760px;
+        margin-bottom: clamp(30px, 5vw, 48px);
+      }
+      .hub-head h1 {
+        margin: 10px 0 14px;
+        font-size: clamp(2.1rem, 4.6vw, 3.3rem);
+        line-height: 1.08;
+        letter-spacing: -0.015em;
+      }
+      .hub-head .lead { color: var(--stone); }
+      .insights-hub { display: grid; gap: clamp(22px, 3.5vw, 34px); }
+      .insights-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .filter-chip {
+        min-height: 40px;
+        padding: 8px 18px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: rgba(255,255,255,.03);
+        color: var(--stone);
+        font-size: .86rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: border-color var(--ease), color var(--ease), background var(--ease);
+      }
+      .filter-chip:hover { border-color: var(--cyan); color: var(--ink); }
+      .filter-chip.active {
+        border-color: var(--cyan);
+        background: var(--cyan);
+        color: var(--surface);
+      }
+      .filter-chip:focus-visible { outline: none; box-shadow: var(--focus); }
+      .article-cover-art {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .article-cover-motif {
+        transition: transform var(--duration-slow) var(--ease-out-expo);
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+      .article-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0 0 10px;
+        color: var(--muted);
+        font-size: .82rem;
+      }
+      .featured-article {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+        overflow: hidden;
+        transition: border-color var(--ease), transform var(--ease), box-shadow var(--ease);
+      }
+      .featured-article:hover,
+      .featured-article:focus-visible {
+        border-color: var(--cyan-dark);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow);
+        color: inherit;
+      }
+      .featured-article:hover .article-cover-motif { transform: scale(1.06); }
+      .featured-article-cover { min-height: 260px; }
+      .featured-article-cover svg { height: 100%; }
+      .featured-article-body {
+        padding: clamp(22px, 3.4vw, 40px);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+      .featured-article-body h2 {
+        margin: 0 0 10px;
+        font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+        line-height: 1.2;
+      }
+      .featured-article-description {
+        margin: 0 0 16px;
+        color: var(--stone);
+        font-size: .95rem;
+      }
+      .article-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+      .article-card {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+        overflow: hidden;
+        transition: border-color var(--ease), transform var(--ease), box-shadow var(--ease);
+      }
+      .article-card:hover,
+      .article-card:focus-visible {
+        border-color: var(--cyan-dark);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow);
+        color: inherit;
+      }
+      .article-card:hover .article-cover-motif { transform: scale(1.08); }
+      .article-card-cover { aspect-ratio: 360 / 170; }
+      .article-card-cover svg { height: 100%; }
+      .article-card-body { padding: 18px 20px 22px; }
+      .article-card-body h3 { margin: 0 0 8px; font-size: 1.02rem; line-height: 1.3; }
+      .article-card-body p:last-child {
+        margin: 0;
+        color: var(--muted);
+        font-size: .87rem;
       }
 
       /* Cursor-reactive ambient lighting (see components/AmbientLight.tsx -

@@ -1,43 +1,41 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { InsightsShowcase } from "@/components/insights/InsightsShowcase";
 import { getAllArticles } from "@/lib/content/mdx";
+import type { ArticleSummary } from "@/lib/content/types";
 
 export const metadata: Metadata = {
   title: "Insights",
   description:
-    "Educational insights from Kira Engineer Hub covering trading education, risk discipline, market structure, and technology updates.",
+    "Educational insights from Kira Engineer Hub covering trading education, risk discipline, market structure, weekly analysis, and company updates.",
   alternates: { canonical: "/insights" },
 };
 
 export default function InsightsPage() {
-  const articles = getAllArticles("insights");
+  const articles: ArticleSummary[] = [
+    ...getAllArticles("insights"),
+    ...getAllArticles("weekly-analysis"),
+    ...getAllArticles("updates"),
+  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div className="doc-page">
-      <div className="doc-intro">
-        <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Insights" }]} />
-        <p className="eyebrow">Insights</p>
-        <h1>Educational notes and platform updates.</h1>
-        <p className="meta">A public archive for trading education, risk discipline, and Kira Engineer Hub development notes.</p>
-      </div>
-      <div className="doc-body">
-        {articles.length > 0 ? (
-          <section className="cards">
-            {articles.map((article) => (
-              <article className="card" key={article.slug}>
-                <span className="pill">
-                  {new Date(article.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-                </span>
-                <h2>{article.title}</h2>
-                <p>{article.description}</p>
-                <Link className="button secondary" href={`/insights/${article.slug}`}>Read Article</Link>
-              </article>
-            ))}
-          </section>
-        ) : (
-          <div className="notice">No Insights articles have been published yet. Check back soon.</div>
-        )}
+    <div className="section">
+      <div className="container">
+        <div className="hub-head">
+          <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Insights" }]} />
+          <p className="eyebrow">KIRA Insights</p>
+          <h1>Educational notes and platform updates.</h1>
+          <p className="lead">
+            A public editorial archive across trading education, weekly analysis, and Kira Engineer Hub development
+            notes - published with clear dates and categories.
+          </p>
+        </div>
+        <InsightsShowcase articles={articles} />
+        <div className="pricing-actions">
+          <Link className="text-link" href="/weekly-analysis">Weekly analysis archive</Link>
+          <Link className="text-link" href="/updates">Company updates archive</Link>
+        </div>
       </div>
     </div>
   );
