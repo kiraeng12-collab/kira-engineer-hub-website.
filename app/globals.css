@@ -1560,194 +1560,6 @@
         font-size: .82rem;
       }
 
-      @media (max-width: 1040px) {
-        .market-teaser .container {
-          justify-content: flex-start;
-        }
-        .nav {
-          grid-template-columns: auto 1fr auto;
-        }
-        .nav-links {
-          position: fixed;
-          inset: var(--header-height) 0 auto 0;
-          display: none;
-          grid-template-columns: 1fr;
-          gap: 0;
-          padding: 18px 20px 24px;
-          border-bottom: 1px solid var(--border);
-          background: radial-gradient(circle at 78% 12%, rgba(43,182,168,.13), transparent 28%), radial-gradient(circle at 12% 26%, rgba(76,95,235,.16), transparent 24%), var(--bg);
-          box-shadow: 0 20px 45px rgba(25,25,25,.12);
-        }
-        .nav-links.open { display: grid; }
-        .nav-links a {
-          min-height: 50px;
-          display: flex;
-          align-items: center;
-          border-bottom: 1px solid var(--border);
-        }
-        .menu-button { display: inline-flex; }
-        .nav-actions .button { display: none; }
-        .brand { justify-self: center; }
-        .hero-grid,
-        .section-head,
-        .project-band,
-        .membership-layout,
-        .story,
-        .faq-grid,
-        .contact-grid {
-          grid-template-columns: 1fr;
-        }
-        .hero-grid { gap: 44px; }
-        .market-visual { min-height: 430px; }
-        .trust-row,
-        .method-grid,
-        .why-grid,
-        .footer-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-        .eco-row { grid-template-columns: repeat(2, 1fr); }
-        .eco-row::before { left: 25%; right: 25%; }
-        /* Method story collapses to a plain vertical flow: the sticky panel
-           is hidden and each step shows its own inline visual instead. */
-        .featured-article { grid-template-columns: 1fr; }
-        .featured-article-cover { min-height: 200px; }
-        .article-grid { grid-template-columns: repeat(2, 1fr); }
-        .method-story { grid-template-columns: 1fr; }
-        .method-story-panel { display: none; }
-        .method-story-steps { gap: 44px; padding: 0; }
-        .method-story-step { opacity: 1; max-width: none; }
-        .method-story-step-visual {
-          display: block;
-          max-width: 320px;
-          margin-bottom: 14px;
-          padding: 14px;
-          border: 1px solid var(--glass-border);
-          border-radius: var(--radius);
-          background: rgba(21,28,36,.6);
-        }
-        .method-story-step-visual svg { width: 100%; height: auto; }
-      }
-      @media (max-width: 680px) {
-        .container { width: min(100% - 28px, var(--container)); }
-        .launch-notice .container {
-          align-items: flex-start;
-          justify-content: space-between;
-          padding-top: 10px;
-          padding-bottom: 10px;
-        }
-        .market-teaser .container {
-          min-height: 46px;
-          gap: 12px;
-        }
-        .market-teaser strong {
-          font-size: .72rem;
-          letter-spacing: .12em;
-        }
-        .candlestick-strip {
-          grid-auto-columns: 7px;
-          gap: 6px;
-          transform: scale(.9);
-          transform-origin: left center;
-        }
-        .brand-mark { width: 218px; height: 37px; }
-        .hero { padding-top: 52px; }
-        h1 { font-size: clamp(2.45rem, 14vw, 4.5rem); }
-        .trust-row,
-        .method-grid,
-        .why-grid,
-        .pricing-grid,
-        .steps,
-        .footer-grid,
-        .form-grid {
-          grid-template-columns: 1fr;
-        }
-        .market-visual { min-height: 390px; }
-        .timeline li { grid-template-columns: 1fr; gap: 4px; }
-        .article-grid { grid-template-columns: 1fr; }
-        .eco-hub { margin-bottom: 28px; }
-        .eco-hub::after { height: 28px; }
-        .eco-row {
-          grid-template-columns: 1fr;
-          gap: 28px;
-          padding-top: 0;
-        }
-        .eco-row::before { display: none; }
-        .eco-node::before { top: -28px; height: 28px; }
-        .hero-copy .actions,
-        .pricing-actions,
-        .final-cta .actions {
-          align-items: stretch;
-          flex-direction: column;
-        }
-        .checkout-grid {
-          grid-template-columns: 1fr;
-        }
-        .button { width: 100%; }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        *, *:before, *:after {
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-          scroll-behavior: auto !important;
-          transition-duration: 0.01ms !important;
-          transition-delay: 0ms !important;
-        }
-      }
-
-      /* ===== KIRA Intelligence Ecosystem: shared redesign utilities =====
-         Reduced-motion is handled globally above (transition-duration is
-         forced to ~0), so every utility below is reduced-motion-safe by
-         default with no per-rule override needed. */
-
-      .glass-panel {
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
-        border-radius: var(--radius);
-        backdrop-filter: blur(var(--glass-blur));
-        -webkit-backdrop-filter: blur(var(--glass-blur));
-      }
-
-      /* Fine structural grid texture - a section background, never placed
-         directly behind body text (see brief: "do not make every object
-         glow" / no animated backgrounds behind copy). */
-      .grid-texture {
-        background-image:
-          linear-gradient(var(--grid-line) 1px, transparent 1px),
-          linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-        background-size: 48px 48px;
-      }
-
-      /* Controlled radial glow - one soft light source, positioned via
-         --glow-x/--glow-y/--glow-color custom properties per usage. Never
-         stacked more than once per section. */
-      .radial-glow {
-        --glow-x: 50%;
-        --glow-y: 0%;
-        --glow-color: rgba(43, 182, 168, 0.16);
-        position: relative;
-      }
-      .radial-glow::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        background: radial-gradient(circle at var(--glow-x) var(--glow-y), var(--glow-color), transparent 55%);
-      }
-
-      /* Scroll-reveal utility - toggled by the shared RevealOnScroll
-         component's IntersectionObserver. Starts hidden only when JS has
-         confirmed it can reveal it; see the component for the no-JS/SSR
-         fallback (content renders visible by default). */
-      .reveal {
-        opacity: 0;
-        transform: translateY(16px);
-        transition: opacity var(--duration-slow) var(--ease-out-expo), transform var(--duration-slow) var(--ease-out-expo);
-      }
-      .reveal.is-visible {
-        opacity: 1;
-        transform: none;
-      }
-
       /* About brand story: large editorial opening statement + a richer
          timeline treatment reusing the shared .timeline base. */
       .brand-story-hero { padding-bottom: clamp(36px, 5vw, 64px); }
@@ -1775,6 +1587,133 @@
       .brand-timeline li:nth-child(2).reveal { transition-delay: var(--stagger-step); }
       .brand-timeline li:nth-child(3).reveal { transition-delay: calc(var(--stagger-step) * 2); }
       .brand-timeline li:nth-child(4).reveal { transition-delay: calc(var(--stagger-step) * 3); }
+
+      /* KIRA Shop coming-soon preview: a blurred, inert mock storefront
+         (skeleton tiles, no real products or prices) behind an unblurred
+         Coming Soon panel that carries all real content. */
+      .shop-preview {
+        position: relative;
+        margin-top: 18px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+      .shop-mock {
+        display: grid;
+        gap: 18px;
+        padding: clamp(16px, 2.6vw, 26px);
+        background: linear-gradient(165deg, var(--surface-2), var(--bg-soft));
+        filter: blur(7px) saturate(.85) brightness(.82);
+        pointer-events: none;
+        user-select: none;
+      }
+      .shop-mock-bar {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .shop-mock-brand {
+        width: 118px;
+        height: 26px;
+        border-radius: var(--radius-sm);
+        background: var(--cyan);
+        opacity: .55;
+      }
+      .shop-mock-search {
+        flex: 1;
+        height: 36px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,.05);
+      }
+      .shop-mock-cart {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,.05);
+      }
+      .shop-mock-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .shop-mock-chips span {
+        height: 30px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,.04);
+      }
+      .shop-mock-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+      .shop-mock-tile {
+        display: grid;
+        gap: 8px;
+        padding: 12px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        background: var(--surface);
+      }
+      .shop-mock-art {
+        aspect-ratio: 6 / 5;
+        border-radius: var(--radius-sm);
+        background: var(--surface-2);
+      }
+      .shop-mock-art svg { width: 100%; height: 100%; }
+      .shop-mock-line {
+        height: 9px;
+        border-radius: 999px;
+        background: var(--border);
+      }
+      .shop-mock-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 2px;
+      }
+      .shop-mock-price {
+        width: 44px;
+        height: 12px;
+        border-radius: 999px;
+        background: rgba(199,204,210,.45);
+      }
+      .shop-mock-btn {
+        width: 58px;
+        height: 22px;
+        border-radius: 999px;
+        background: var(--cyan);
+        opacity: .5;
+      }
+      .shop-overlay {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        background: rgba(8, 13, 19, .44);
+      }
+      .shop-overlay-panel {
+        max-width: 560px;
+        padding: clamp(26px, 4vw, 40px);
+        border: 1px solid rgba(43,182,168,.3);
+        border-radius: var(--radius);
+        background: linear-gradient(160deg, rgba(16,24,32,.96), rgba(11,17,24,.96));
+        box-shadow: 0 0 44px rgba(43,182,168,.12), var(--shadow);
+        text-align: center;
+      }
+      .shop-overlay-panel h1 {
+        margin: 10px 0 14px;
+        font-size: clamp(2.1rem, 5vw, 3.1rem);
+        line-height: 1.05;
+      }
+      .shop-overlay-panel p { color: var(--stone); }
+      .shop-overlay-panel .small-disclosure { margin: 12px 0 18px; }
+      .shop-notify { margin-top: clamp(40px, 6vw, 64px); max-width: 760px; }
+      .shop-notify h2 { margin-bottom: 16px; }
 
       /* Insights editorial hub: filter chips, one featured article, and a
          cover-art grid. Covers are brand SVG geometry (ArticleCover.tsx),
@@ -1900,6 +1839,196 @@
         margin: 0;
         color: var(--muted);
         font-size: .87rem;
+      }
+
+      @media (max-width: 1040px) {
+        .market-teaser .container {
+          justify-content: flex-start;
+        }
+        .nav {
+          grid-template-columns: auto 1fr auto;
+        }
+        .nav-links {
+          position: fixed;
+          inset: var(--header-height) 0 auto 0;
+          display: none;
+          grid-template-columns: 1fr;
+          gap: 0;
+          padding: 18px 20px 24px;
+          border-bottom: 1px solid var(--border);
+          background: radial-gradient(circle at 78% 12%, rgba(43,182,168,.13), transparent 28%), radial-gradient(circle at 12% 26%, rgba(76,95,235,.16), transparent 24%), var(--bg);
+          box-shadow: 0 20px 45px rgba(25,25,25,.12);
+        }
+        .nav-links.open { display: grid; }
+        .nav-links a {
+          min-height: 50px;
+          display: flex;
+          align-items: center;
+          border-bottom: 1px solid var(--border);
+        }
+        .menu-button { display: inline-flex; }
+        .nav-actions .button { display: none; }
+        .brand { justify-self: center; }
+        .hero-grid,
+        .section-head,
+        .project-band,
+        .membership-layout,
+        .story,
+        .faq-grid,
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero-grid { gap: 44px; }
+        .market-visual { min-height: 430px; }
+        .trust-row,
+        .method-grid,
+        .why-grid,
+        .footer-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .eco-row { grid-template-columns: repeat(2, 1fr); }
+        .eco-row::before { left: 25%; right: 25%; }
+        /* Method story collapses to a plain vertical flow: the sticky panel
+           is hidden and each step shows its own inline visual instead. */
+        .featured-article { grid-template-columns: 1fr; }
+        .featured-article-cover { min-height: 200px; }
+        .article-grid { grid-template-columns: repeat(2, 1fr); }
+        .shop-mock-grid { grid-template-columns: repeat(3, 1fr); }
+        .method-story { grid-template-columns: 1fr; }
+        .method-story-panel { display: none; }
+        .method-story-steps { gap: 44px; padding: 0; }
+        .method-story-step { opacity: 1; max-width: none; }
+        .method-story-step-visual {
+          display: block;
+          max-width: 320px;
+          margin-bottom: 14px;
+          padding: 14px;
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius);
+          background: rgba(21,28,36,.6);
+        }
+        .method-story-step-visual svg { width: 100%; height: auto; }
+      }
+      @media (max-width: 680px) {
+        .container { width: min(100% - 28px, var(--container)); }
+        .launch-notice .container {
+          align-items: flex-start;
+          justify-content: space-between;
+          padding-top: 10px;
+          padding-bottom: 10px;
+        }
+        .market-teaser .container {
+          min-height: 46px;
+          gap: 12px;
+        }
+        .market-teaser strong {
+          font-size: .72rem;
+          letter-spacing: .12em;
+        }
+        .candlestick-strip {
+          grid-auto-columns: 7px;
+          gap: 6px;
+          transform: scale(.9);
+          transform-origin: left center;
+        }
+        .brand-mark { width: 218px; height: 37px; }
+        .hero { padding-top: 52px; }
+        h1 { font-size: clamp(2.45rem, 14vw, 4.5rem); }
+        .trust-row,
+        .method-grid,
+        .why-grid,
+        .pricing-grid,
+        .steps,
+        .footer-grid,
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+        .market-visual { min-height: 390px; }
+        .timeline li { grid-template-columns: 1fr; gap: 4px; }
+        .article-grid { grid-template-columns: 1fr; }
+        .shop-mock-grid { grid-template-columns: repeat(2, 1fr); }
+        .eco-hub { margin-bottom: 28px; }
+        .eco-hub::after { height: 28px; }
+        .eco-row {
+          grid-template-columns: 1fr;
+          gap: 28px;
+          padding-top: 0;
+        }
+        .eco-row::before { display: none; }
+        .eco-node::before { top: -28px; height: 28px; }
+        .hero-copy .actions,
+        .pricing-actions,
+        .final-cta .actions {
+          align-items: stretch;
+          flex-direction: column;
+        }
+        .checkout-grid {
+          grid-template-columns: 1fr;
+        }
+        .button { width: 100%; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *:before, *:after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+          transition-delay: 0ms !important;
+        }
+      }
+
+      /* ===== KIRA Intelligence Ecosystem: shared redesign utilities =====
+         Reduced-motion is handled globally above (transition-duration is
+         forced to ~0), so every utility below is reduced-motion-safe by
+         default with no per-rule override needed. */
+
+      .glass-panel {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius);
+        backdrop-filter: blur(var(--glass-blur));
+        -webkit-backdrop-filter: blur(var(--glass-blur));
+      }
+
+      /* Fine structural grid texture - a section background, never placed
+         directly behind body text (see brief: "do not make every object
+         glow" / no animated backgrounds behind copy). */
+      .grid-texture {
+        background-image:
+          linear-gradient(var(--grid-line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+        background-size: 48px 48px;
+      }
+
+      /* Controlled radial glow - one soft light source, positioned via
+         --glow-x/--glow-y/--glow-color custom properties per usage. Never
+         stacked more than once per section. */
+      .radial-glow {
+        --glow-x: 50%;
+        --glow-y: 0%;
+        --glow-color: rgba(43, 182, 168, 0.16);
+        position: relative;
+      }
+      .radial-glow::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(circle at var(--glow-x) var(--glow-y), var(--glow-color), transparent 55%);
+      }
+
+      /* Scroll-reveal utility - toggled by the shared RevealOnScroll
+         component's IntersectionObserver. Starts hidden only when JS has
+         confirmed it can reveal it; see the component for the no-JS/SSR
+         fallback (content renders visible by default). */
+      .reveal {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity var(--duration-slow) var(--ease-out-expo), transform var(--duration-slow) var(--ease-out-expo);
+      }
+      .reveal.is-visible {
+        opacity: 1;
+        transform: none;
       }
 
       /* Cursor-reactive ambient lighting (see components/AmbientLight.tsx -
