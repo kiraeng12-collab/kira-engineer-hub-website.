@@ -25,18 +25,18 @@ export default function ContactPage() {
           </article>
           <article className="card">
             <h2>Telegram Community</h2>
-            <p><a href={siteConfig.social.telegramCommunity}>Join the free community</a></p>
+            <p><a href={siteConfig.social.telegramCommunity} target="_blank" rel="noopener noreferrer">Join the free community</a></p>
           </article>
           <article className="card">
             <h2>Membership Contact</h2>
-            <p><a href={siteConfig.social.telegramMembershipSupport}>Request membership access</a></p>
+            <p><a href={siteConfig.social.telegramMembershipSupport} target="_blank" rel="noopener noreferrer">Request membership access</a></p>
           </article>
           <article className="card">
             <h2>Instagram</h2>
             <p>
-              <a href={siteConfig.social.instagramFounder}>@kira.engineer</a>
+              <a href={siteConfig.social.instagramFounder} target="_blank" rel="noopener noreferrer">@kira.engineer</a>
               <br />
-              <a href={siteConfig.social.instagramTrading}>@kira.tradingc</a>
+              <a href={siteConfig.social.instagramTrading} target="_blank" rel="noopener noreferrer">@kira.tradingc</a>
             </p>
           </article>
         </section>

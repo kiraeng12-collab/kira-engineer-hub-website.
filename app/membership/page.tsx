@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
+import { ActionLink } from "@/components/ActionLink";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ComparisonTable } from "@/components/ComparisonTable";
 import { EarlyBirdBadge } from "@/components/EarlyBirdBadge";
@@ -196,7 +197,7 @@ export default function MembershipPage() {
           {readiness.ready ? (
             <a className="button cyan" href="#online-checkout">Continue to Secure Checkout</a>
           ) : (
-            <Link className="button cyan" href={siteConfig.social.telegramMembershipSupport}>Request Membership Access</Link>
+            <ActionLink className="button cyan" href={siteConfig.social.telegramMembershipSupport}>Request Membership Access</ActionLink>
           )}
           <Link className="button secondary" href="/membership/compare">Compare Products</Link>
         </div>

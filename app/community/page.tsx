@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ActionLink } from "@/components/ActionLink";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { siteConfig } from "@/lib/config/site";
 
@@ -29,7 +30,7 @@ export default function CommunityPage() {
             <li>Clear pathways toward KIRA VIP Membership when private access is needed.</li>
           </ul>
           <div className="actions">
-            <Link className="button" href={siteConfig.social.telegramCommunity}>Join Free Community</Link>
+            <ActionLink className="button" href={siteConfig.social.telegramCommunity}>Join Free Community</ActionLink>
             <Link className="button secondary" href="/community-rules">Read Community Rules</Link>
           </div>
         </div>

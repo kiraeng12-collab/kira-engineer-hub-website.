@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ActionLink } from "@/components/ActionLink";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { siteConfig } from "@/lib/config/site";
 
@@ -22,7 +23,7 @@ export default function SupportPage() {
           <article className="card">
             <h2>Membership</h2>
             <p>For access and renewal questions, use the support form or official Telegram.</p>
-            <Link className="button secondary" href={siteConfig.social.telegramMembershipSupport}>Telegram Support</Link>
+            <ActionLink className="button secondary" href={siteConfig.social.telegramMembershipSupport}>Telegram Support</ActionLink>
           </article>
           <article className="card">
             <h2>Early Bird</h2>

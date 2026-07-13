@@ -147,7 +147,7 @@ export function Header() {
           <BrandLogo context="header" />
         </Link>
         <div className="nav-actions">
-          <a className="button secondary" href={siteConfig.social.telegramCommunity}>
+          <a className="button secondary" href={siteConfig.social.telegramCommunity} target="_blank" rel="noopener noreferrer">
             Join Free
           </a>
           <Link className="button" href="/membership">

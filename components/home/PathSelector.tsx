@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
-import Link from "next/link";
+import { ActionLink } from "@/components/ActionLink";
 import { ProductLogo, type ProductLogoName } from "@/components/ProductLogo";
 import { StatusBadge, type ProductStatus } from "@/components/StatusBadge";
 import { siteConfig } from "@/lib/config/site";
@@ -150,9 +150,9 @@ export function PathSelector() {
             <li key={benefit}>{benefit}</li>
           ))}
         </ul>
-        <Link className="button secondary" href={path.cta.href}>
+        <ActionLink className="button secondary" href={path.cta.href}>
           {path.cta.label}
-        </Link>
+        </ActionLink>
       </div>
     </div>
   );

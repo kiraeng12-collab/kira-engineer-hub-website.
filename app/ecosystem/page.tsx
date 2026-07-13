@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ActionLink } from "@/components/ActionLink";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { StatusBadge } from "@/components/StatusBadge";
 import { ProductLogo, type ProductLogoName } from "@/components/ProductLogo";
@@ -82,7 +83,7 @@ export default function EcosystemPage() {
               <h2>{product.name}</h2>
               <p>{product.description}</p>
               <p className="small-disclosure">{product.audience}</p>
-              <Link className="button" href={product.cta.href}>{product.cta.label}</Link>
+              <ActionLink className="button" href={product.cta.href}>{product.cta.label}</ActionLink>
             </article>
           ))}
         </section>

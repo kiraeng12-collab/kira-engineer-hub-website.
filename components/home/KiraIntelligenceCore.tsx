@@ -225,7 +225,7 @@ export function KiraIntelligenceCore() {
           {node.cta.href.startsWith("/") ? (
             <Link className="text-link" href={node.cta.href}>{node.cta.label}</Link>
           ) : (
-            <a className="text-link" href={node.cta.href}>{node.cta.label}</a>
+            <a className="text-link" href={node.cta.href} target="_blank" rel="noopener noreferrer">{node.cta.label}</a>
           )}
         </div>
       </div>
