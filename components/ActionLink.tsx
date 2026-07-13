@@ -1,11 +1,12 @@
 import Link from "next/link";
+import { TelegramLink } from "@/components/TelegramLink";
 
 /**
- * CTA link that may point at an internal route OR an external URL (e.g. a
- * Telegram join link). Internal hrefs use next/link for client navigation;
- * external hrefs (http/https) render a plain anchor that opens in a new tab
- * with safe rel attributes, so the site stays open and mobile hands off to
- * the Telegram app reliably.
+ * CTA link that may point at an internal route OR an external URL. Internal
+ * hrefs use next/link for client navigation. Telegram (t.me) URLs go through
+ * TelegramLink, which tries the Telegram app first (bypassing t.me DNS
+ * blocks) and falls back to the web link. Other external URLs render a plain
+ * new-tab anchor.
  */
 export function ActionLink({
   href,
@@ -17,6 +18,13 @@ export function ActionLink({
   children: React.ReactNode;
 }) {
   if (/^https?:\/\//.test(href)) {
+    if (href.includes("//t.me/")) {
+      return (
+        <TelegramLink href={href} className={className}>
+          {children}
+        </TelegramLink>
+      );
+    }
     return (
       <a className={className} href={href} target="_blank" rel="noopener noreferrer">
         {children}

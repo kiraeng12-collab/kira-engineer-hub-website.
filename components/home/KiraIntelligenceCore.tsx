@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { ActionLink } from "@/components/ActionLink";
 import { ProductLogo, type ProductLogoName } from "@/components/ProductLogo";
 import { StatusBadge, type ProductStatus } from "@/components/StatusBadge";
 import { siteConfig } from "@/lib/config/site";
@@ -222,11 +222,7 @@ export function KiraIntelligenceCore() {
             <strong>{node.name}</strong>
           </div>
           <p>{node.description}</p>
-          {node.cta.href.startsWith("/") ? (
-            <Link className="text-link" href={node.cta.href}>{node.cta.label}</Link>
-          ) : (
-            <a className="text-link" href={node.cta.href} target="_blank" rel="noopener noreferrer">{node.cta.label}</a>
-          )}
+          <ActionLink className="text-link" href={node.cta.href}>{node.cta.label}</ActionLink>
         </div>
       </div>
     </div>

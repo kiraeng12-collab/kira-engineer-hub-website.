@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { siteConfig } from "@/lib/config/site";
 import { BrandLogo } from "@/components/BrandLogo";
+import { TelegramLink } from "@/components/TelegramLink";
 import { AnnouncementBar } from "./AnnouncementBar";
 
 const NAV_LINKS = [
@@ -147,9 +148,9 @@ export function Header() {
           <BrandLogo context="header" />
         </Link>
         <div className="nav-actions">
-          <a className="button secondary" href={siteConfig.social.telegramCommunity} target="_blank" rel="noopener noreferrer">
+          <TelegramLink className="button secondary" href={siteConfig.social.telegramCommunity}>
             Join Free
-          </a>
+          </TelegramLink>
           <Link className="button" href="/membership">
             Become a Member
           </Link>

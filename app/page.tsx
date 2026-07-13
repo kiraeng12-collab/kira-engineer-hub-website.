@@ -11,6 +11,7 @@ import { MembershipSelector } from "@/components/home/MembershipSelector";
 import { PathSelector } from "@/components/home/PathSelector";
 import { EcosystemMap } from "@/components/home/EcosystemMap";
 import { RevealOnScroll } from "@/components/RevealOnScroll";
+import { TelegramLink } from "@/components/TelegramLink";
 import { getAllArticles } from "@/lib/content/mdx";
 import type { ContentCategory } from "@/lib/content/types";
 
@@ -113,7 +114,7 @@ export default function HomePage() {
               experience and practical technology in one evolving ecosystem.
             </p>
             <div className="actions">
-              <a className="button cyan" href={siteConfig.social.telegramCommunity} target="_blank" rel="noopener noreferrer">Join the Free Community</a>
+              <TelegramLink className="button cyan" href={siteConfig.social.telegramCommunity}>Join the Free Community</TelegramLink>
               <Link className="button secondary" href="/membership">Explore KIRA VIP</Link>
               <Link className="text-link" href="/ecosystem">Discover the Ecosystem</Link>
             </div>
@@ -190,7 +191,7 @@ export default function HomePage() {
               clear pathway toward more structured, private access when you want it.
             </p>
             <div className="actions">
-              <a className="button cyan" href={siteConfig.social.telegramCommunity} target="_blank" rel="noopener noreferrer">Join Free Community</a>
+              <TelegramLink className="button cyan" href={siteConfig.social.telegramCommunity}>Join Free Community</TelegramLink>
               <Link className="text-link" href="/community">Learn more about the community</Link>
             </div>
           </div>
@@ -409,7 +410,7 @@ export default function HomePage() {
           <h2>Build a more structured trading process.</h2>
           <p className="lead">Join the free community or request KIRA VIP Membership access when you are ready for a more structured educational environment.</p>
           <div className="actions">
-            <a className="button cyan" href={siteConfig.social.telegramCommunity} target="_blank" rel="noopener noreferrer">Join the Free Community</a>
+            <TelegramLink className="button cyan" href={siteConfig.social.telegramCommunity}>Join the Free Community</TelegramLink>
             <Link className="button secondary" href="/membership">Explore Membership</Link>
           </div>
         </div>

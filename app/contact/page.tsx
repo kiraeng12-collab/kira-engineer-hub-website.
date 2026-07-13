@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { TelegramLink } from "@/components/TelegramLink";
 import { siteConfig } from "@/lib/config/site";
 
 export const metadata: Metadata = {
@@ -25,11 +26,11 @@ export default function ContactPage() {
           </article>
           <article className="card">
             <h2>Telegram Community</h2>
-            <p><a href={siteConfig.social.telegramCommunity} target="_blank" rel="noopener noreferrer">Join the free community</a></p>
+            <p><TelegramLink href={siteConfig.social.telegramCommunity}>Join the free community</TelegramLink></p>
           </article>
           <article className="card">
             <h2>Membership Contact</h2>
-            <p><a href={siteConfig.social.telegramMembershipSupport} target="_blank" rel="noopener noreferrer">Request membership access</a></p>
+            <p><TelegramLink href={siteConfig.social.telegramMembershipSupport}>Request membership access</TelegramLink></p>
           </article>
           <article className="card">
             <h2>Instagram</h2>

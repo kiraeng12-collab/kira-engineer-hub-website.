@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/config/site";
 import { BrandLogo } from "@/components/BrandLogo";
+import { TelegramLink } from "@/components/TelegramLink";
 import { CurrentYear } from "./CurrentYear";
 
 export function Footer() {
@@ -62,16 +63,16 @@ export function Footer() {
           <h3>Connect</h3>
           <ul>
             <li>
-              <a className="footer-social" href={siteConfig.social.telegramCommunity} target="_blank" rel="noopener noreferrer">
+              <TelegramLink className="footer-social" href={siteConfig.social.telegramCommunity}>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#social-telegram" /></svg>
                 <span>Telegram Community</span>
-              </a>
+              </TelegramLink>
             </li>
             <li>
-              <a className="footer-social" href={siteConfig.social.telegramMembershipSupport} target="_blank" rel="noopener noreferrer">
+              <TelegramLink className="footer-social" href={siteConfig.social.telegramMembershipSupport}>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#social-telegram" /></svg>
                 <span>Membership Support</span>
-              </a>
+              </TelegramLink>
             </li>
             <li>
               <a className="footer-social" href={siteConfig.social.instagramFounder} target="_blank" rel="noopener noreferrer">
