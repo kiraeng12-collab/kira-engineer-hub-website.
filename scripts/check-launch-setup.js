@@ -87,7 +87,21 @@ async function checkStripe() {
 
   try {
     const account = await stripe.accounts.retrieve();
-    ok(`Connected to Stripe account: ${account.business_profile?.name || account.id}`);
+    const name =
+      account.settings?.dashboard?.display_name || account.business_profile?.name || '';
+    ok(`Connected to Stripe account: ${name || account.id} (${account.country})`);
+
+    // Identity guard. KIRA once had a second, older company account
+    // ("DAFFAR CRYPTO", GB) whose key was configured by mistake — payouts and
+    // customer receipts would have shown the wrong legal entity.
+    if (/daffar/i.test(name)) {
+      fail('WRONG ACCOUNT: this is the old DAFFAR CRYPTO account, not Kira Engineer Hub.');
+    } else if (!/kira/i.test(name)) {
+      warn(`Account name "${name}" does not mention Kira - double-check this is the right company.`);
+    }
+    if (account.country !== 'US') {
+      warn(`Account country is ${account.country}, but the legal entity is a Delaware (US) LLC.`);
+    }
     if (account.charges_enabled === false) warn('This account cannot accept charges yet');
   } catch (e) {
     fail(`Could not reach Stripe: ${e.message}`);

@@ -38,3 +38,6 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 .idea
+
+# Stripe setup output (contains webhook signing secret)
+stripe-setup-output.txt
