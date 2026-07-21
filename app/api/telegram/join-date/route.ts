@@ -39,17 +39,26 @@ export async function POST(request: Request): Promise<Response> {
   if (!member) return jsonResponse(200, { ok: true, found: false });
 
   const joinedAt = member.joinedAt;
+  // Joining position, which is the fun part of the answer: how many members
+  // were already here when they arrived.
+  const [earlier, total] = await Promise.all([
+    prisma.legacyMember.count({ where: { joinedAt: { lt: joinedAt } } }),
+    prisma.legacyMember.count(),
+  ]);
+
+  // Deliberately no tier, pricing or claim state: this endpoint answers a
+  // community question and must not leak commercial information into chat.
   return jsonResponse(200, {
     ok: true,
     found: true,
     joinedAt: joinedAt.toISOString(),
     year: joinedAt.getUTCFullYear(),
     month: joinedAt.toLocaleString("en-US", { month: "long", timeZone: "UTC" }),
-    tier: member.tier,
+    rank: earlier + 1,
+    total,
     // Dates derived from a first message/reaction rather than a real join
     // event are a LOWER BOUND (a lurker may have joined earlier), so the bot
     // words those more softly. The importer records which evidence it used.
     approximate: !(member.notes || "").includes("join_event"),
-    alreadyClaimed: Boolean(member.claimedByUserId),
   });
 }
