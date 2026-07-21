@@ -293,6 +293,55 @@ async function checkSharedSecret() {
   } catch (e) {
     warn(`Could not reach ${url} (${e.message}). Is the site deployed?`);
   }
+
+  await checkDeployedConfig(base, secret);
+}
+
+/**
+ * Everything above this point validates the LOCAL .env, which says nothing
+ * about what the deployed site holds. A variable can be missing, scoped to
+ * the wrong environment, or added after the last build, and the only symptom
+ * is a feature silently doing nothing. Ask production directly instead.
+ */
+async function checkDeployedConfig(base, secret) {
+  console.log('\nDeployed environment (what production actually has)');
+  const url = `${base}/api/telegram/config-check`;
+  let data;
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-kira-bot-secret': secret },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (response.status === 404) {
+      warn('config-check endpoint not deployed yet - deploy to enable production config verification');
+      return;
+    }
+    if (response.status === 401) {
+      fail('Production rejected the shared secret on config-check');
+      return;
+    }
+    data = await response.json();
+  } catch (e) {
+    warn(`Could not reach ${url} (${e.message})`);
+    return;
+  }
+
+  const compare = (label, localValue, deployedValue) => {
+    if (!deployedValue) {
+      fail(`${label} is NOT set in production${localValue ? ' (it is set locally - check the Production scope in Vercel, then redeploy)' : ''}`);
+    } else if (localValue && localValue !== deployedValue) {
+      fail(`${label} differs: local "${localValue}" vs production "${deployedValue}"`);
+    } else {
+      ok(`${label} matches production`);
+    }
+  };
+
+  compare('TELEGRAM_GROUP_CHAT_ID', process.env.TELEGRAM_GROUP_CHAT_ID, data.groupChatId);
+  compare('TELEGRAM_CHANNEL_CHAT_ID', process.env.TELEGRAM_CHANNEL_CHAT_ID, data.channelChatId);
+  console.log(`    production invites members into ${data.membershipChatCount} chat(s)`);
+  console.log(`    CHECKOUT_ENABLED           = ${data.checkoutEnabled}`);
+  console.log(`    PAYMENT_AUTOMATION_ENABLED = ${data.paymentAutomationEnabled}`);
 }
 
 async function checkDatabase() {
