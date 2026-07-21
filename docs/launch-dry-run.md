@@ -39,6 +39,7 @@ Both must be exactly the string `true` to activate. Anything else = off (fail-sa
 | `TELEGRAM_BOT_TOKEN` | your bot token | same |
 | `TELEGRAM_BOT_USERNAME` | bot username, no `@` | same |
 | `TELEGRAM_GROUP_CHAT_ID` | **VIP** group id | same |
+| `TELEGRAM_CHANNEL_CHAT_ID` | **VIP** channel id | same |
 | `TELEGRAM_BOT_VERIFY_SECRET` | long random string | same |
 | `CHECKOUT_ENABLED` | `true` (for the test) | `true` |
 | `PAYMENT_AUTOMATION_ENABLED` | `true` (for the test) | `true` |

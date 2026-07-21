@@ -2,6 +2,8 @@ interface TelegramConfig {
   botToken: string;
   botUsername: string;
   groupChatId: string;
+  /** VIP channel. Optional so the group-only setup keeps working unchanged. */
+  channelChatId: string | null;
 }
 
 /**
@@ -14,7 +16,20 @@ export function getTelegramConfig(): TelegramConfig | null {
   const botUsername = process.env.TELEGRAM_BOT_USERNAME;
   const groupChatId = process.env.TELEGRAM_GROUP_CHAT_ID;
   if (!botToken || !botUsername || !groupChatId) return null;
-  return { botToken, botUsername, groupChatId };
+  return {
+    botToken,
+    botUsername,
+    groupChatId,
+    channelChatId: process.env.TELEGRAM_CHANNEL_CHAT_ID || null,
+  };
+}
+
+/**
+ * Every chat a paid member is entitled to, in delivery order. The channel is
+ * only included once its id is configured.
+ */
+export function membershipChatIds(config: TelegramConfig): string[] {
+  return config.channelChatId ? [config.groupChatId, config.channelChatId] : [config.groupChatId];
 }
 
 async function callTelegramApi<T>(

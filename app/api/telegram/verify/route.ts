@@ -96,25 +96,46 @@ export async function POST(request: Request): Promise<Response> {
     },
   });
 
+  // Membership covers the VIP group and the VIP channel, so each needs its own
+  // single-use link. `inviteLink` stays the group link so an older bot build
+  // keeps working; `channelInviteLink` is additive.
   let inviteLink: string | null = null;
+  let channelInviteLink: string | null = null;
   try {
     inviteLink = await createSingleUseInviteLink(
       config.botToken,
       config.groupChatId,
       INVITE_LINK_TTL_SECONDS
     );
-  } catch {
+  } catch (error) {
+    console.error("telegram/verify: group invite failed", error);
     // Linked successfully but the invite failed — the bot tells them to contact
     // support rather than silently doing nothing.
     return jsonResponse(200, { ok: true, linked: true, inviteLink: null, entitlements, reason: "invite_failed" });
+  }
+
+  if (config.channelChatId) {
+    try {
+      channelInviteLink = await createSingleUseInviteLink(
+        config.botToken,
+        config.channelChatId,
+        INVITE_LINK_TTL_SECONDS
+      );
+    } catch (error) {
+      // The group link already worked, so deliver it rather than failing the
+      // whole redemption; the missing channel link is flagged instead.
+      console.error("telegram/verify: channel invite failed", error);
+    }
   }
 
   return jsonResponse(200, {
     ok: true,
     linked: true,
     inviteLink,
+    channelInviteLink,
     entitlements,
     name: user.name,
     expiresInMinutes: INVITE_LINK_TTL_SECONDS / 60,
+    reason: config.channelChatId && !channelInviteLink ? "channel_invite_failed" : undefined,
   });
 }

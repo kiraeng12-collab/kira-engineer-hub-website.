@@ -173,12 +173,14 @@ async function checkTelegram() {
     fail('No bot token - skipping Telegram checks');
     return;
   }
+  let botId;
   try {
     const me = await (await fetch(`https://api.telegram.org/bot${token}/getMe`)).json();
     if (!me.ok) {
       fail(`Bot token rejected by Telegram: ${me.description}`);
       return;
     }
+    botId = me.result.id;
     ok(`Bot token valid: @${me.result.username}`);
     const configured = (process.env.TELEGRAM_BOT_USERNAME || '').replace(/^@/, '');
     if (configured && configured !== me.result.username) {
@@ -194,17 +196,49 @@ async function checkTelegram() {
     fail('TELEGRAM_GROUP_CHAT_ID missing - invite links cannot be created');
     return;
   }
-  try {
-    const res = await (
-      await fetch(`https://api.telegram.org/bot${token}/getChat?chat_id=${encodeURIComponent(groupId)}`)
-    ).json();
-    if (!res.ok) {
-      fail(`Cannot see the VIP chat (${res.description}) - is the bot a member/admin?`);
-    } else {
-      ok(`VIP chat reachable: ${res.result.title || res.result.id}`);
+
+  // A membership covers the VIP group AND the VIP channel. Being "reachable"
+  // is not enough: without can_invite_users the invite silently fails at
+  // redemption, and without can_restrict_members a lapsed member cannot be
+  // removed. Check both rights on both chats.
+  const chats = [{ label: 'VIP group', id: groupId, required: true }];
+  if (process.env.TELEGRAM_CHANNEL_CHAT_ID) {
+    chats.push({ label: 'VIP channel', id: process.env.TELEGRAM_CHANNEL_CHAT_ID, required: true });
+  } else {
+    warn('TELEGRAM_CHANNEL_CHAT_ID not set - members will only be invited to the group');
+  }
+
+  for (const chat of chats) {
+    try {
+      const res = await (
+        await fetch(`https://api.telegram.org/bot${token}/getChat?chat_id=${encodeURIComponent(chat.id)}`)
+      ).json();
+      if (!res.ok) {
+        fail(`Cannot see the ${chat.label} (${res.description}) - is the bot a member/admin?`);
+        continue;
+      }
+      ok(`${chat.label} reachable: ${res.result.title || res.result.id}`);
+
+      const mem = await (
+        await fetch(
+          `https://api.telegram.org/bot${token}/getChatMember?chat_id=${encodeURIComponent(chat.id)}&user_id=${botId}`
+        )
+      ).json();
+      if (!mem.ok) {
+        fail(`Could not read the bot's rights in the ${chat.label}: ${mem.description}`);
+        continue;
+      }
+      if (mem.result.status !== 'administrator') {
+        fail(`Bot is "${mem.result.status}" in the ${chat.label}, not an administrator`);
+        continue;
+      }
+      if (mem.result.can_invite_users) ok(`${chat.label}: can invite via link`);
+      else fail(`${chat.label}: bot lacks "Invite Users via Link" - invites will fail`);
+      if (mem.result.can_restrict_members) ok(`${chat.label}: can remove lapsed members`);
+      else fail(`${chat.label}: bot lacks "Ban Users" - lapsed members cannot be removed`);
+    } catch (e) {
+      fail(`Could not check the ${chat.label}: ${e.message}`);
     }
-  } catch (e) {
-    fail(`Could not check the VIP chat: ${e.message}`);
   }
 }
 

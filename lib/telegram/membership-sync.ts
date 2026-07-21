@@ -1,4 +1,4 @@
-import { getTelegramConfig, removeChatMember } from "./client";
+import { getTelegramConfig, membershipChatIds, removeChatMember } from "./client";
 import type { PrismaClient } from "@/lib/generated/prisma";
 
 // past_due is deliberately excluded - Stripe's Smart Retries give a grace
@@ -12,9 +12,14 @@ export function shouldRevokeTelegramAccess(status: string): boolean {
 }
 
 /**
- * Removes a linked member from the private group once their membership
- * status no longer qualifies for VIP access. No-op if Telegram isn't
+ * Removes a linked member from every VIP chat (group and channel) once their
+ * membership status no longer qualifies for access. No-op if Telegram isn't
  * configured, the user was never linked, or they were already removed.
+ *
+ * Removal is attempted for every chat even if one fails, so a single API error
+ * cannot leave the member with access to the other chat. The member is only
+ * marked removed once all chats succeeded; otherwise the error propagates and
+ * the removal is retried later (banChatMember is idempotent).
  */
 export async function syncTelegramAccessForUser(
   prisma: PrismaClient,
@@ -29,6 +34,18 @@ export async function syncTelegramAccessForUser(
   const config = getTelegramConfig();
   if (!config) return;
 
-  await removeChatMember(config.botToken, config.groupChatId, user.telegramUserId);
+  const failures: string[] = [];
+  for (const chatId of membershipChatIds(config)) {
+    try {
+      await removeChatMember(config.botToken, chatId, user.telegramUserId);
+    } catch (error) {
+      failures.push(`${chatId}: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
+  if (failures.length > 0) {
+    throw new Error(`Telegram removal failed for user ${userId} - ${failures.join("; ")}`);
+  }
+
   await prisma.user.update({ where: { id: userId }, data: { telegramRemovedAt: new Date() } });
 }
