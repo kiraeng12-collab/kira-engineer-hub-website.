@@ -66,7 +66,18 @@ export async function POST(request: Request): Promise<Response> {
     // coupon applied; everyone else gets the standard Price as-is.
     const earlyBirdApplies = tier === "early_bird" && Boolean(process.env.STRIPE_EARLY_BIRD_COUPON_ID);
 
+    // A stored customer id belongs to one Stripe account. If the account ever
+    // changes, the old id is invisible to the new key and every checkout fails,
+    // so treat an unresolvable customer as absent and mint a fresh one.
     let customerId = user.stripeCustomerId;
+    if (customerId) {
+      try {
+        const existing = await stripe.customers.retrieve(customerId);
+        if (existing.deleted) customerId = null;
+      } catch {
+        customerId = null;
+      }
+    }
     if (!customerId) {
       const customer = await stripe.customers.create({
         email: user.email,
@@ -112,7 +123,10 @@ export async function POST(request: Request): Promise<Response> {
     });
 
     return jsonResponse(200, { url: checkoutSession.url });
-  } catch {
+  } catch (error) {
+    // The member only ever sees the generic message; the cause belongs in the
+    // server log, otherwise a failed checkout is undiagnosable.
+    console.error("create-checkout-session failed", error);
     return jsonResponse(500, {
       message: "Checkout could not be started safely. Please contact KE@kiraengineerhub.com.",
     });
