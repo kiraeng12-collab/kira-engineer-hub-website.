@@ -109,7 +109,12 @@ export default function MembershipPage() {
             <span className="pill">Most Flexible</span>
             <h2>KIRA VIP Monthly</h2>
             <p><strong>{getStandardPriceDisplay("monthly")}</strong></p>
-            <p>Monthly educational membership. Online recurring checkout is being prepared.</p>
+            <p>
+              Monthly educational membership.{" "}
+              {readiness.ready
+                ? "Renews automatically until you cancel."
+                : "Online recurring checkout is being prepared."}
+            </p>
           </article>
           <article className="card">
             <span className="pill">Best Value</span>
@@ -148,7 +153,11 @@ export default function MembershipPage() {
               <button className="button" type="submit" name="plan" value="monthly">Pay Monthly VIP</button>
               <button className="button secondary" type="submit" name="plan" value="quarterly">Pay Quarterly VIP</button>
             </div>
-            <p className="checkout-status" data-checkout-status aria-live="polite">Online checkout is being prepared. Telegram access remains available.</p>
+            <p className="checkout-status" data-checkout-status aria-live="polite">
+              {readiness.ready
+                ? "You'll confirm the membership documents before payment, then receive your private Telegram access key."
+                : "Online checkout is being prepared. Telegram access remains available."}
+            </p>
           </form>
         </section>
 
@@ -181,7 +190,11 @@ export default function MembershipPage() {
           <h2>FAQ</h2>
           <details>
             <summary>How is access delivered?</summary>
-            <p>Access is currently coordinated through Telegram while online checkout is being prepared. Confirm renewal, cancellation, and refund terms before payment.</p>
+            <p>
+              {readiness.ready
+                ? "After payment you confirm the membership documents, then the KIRA bot sends you a private, single-use invite to the VIP Telegram group. Confirm renewal, cancellation, and refund terms before payment."
+                : "Access is currently coordinated through Telegram while online checkout is being prepared. Confirm renewal, cancellation, and refund terms before payment."}
+            </p>
           </details>
           <details>
             <summary>Can I switch between Monthly and Quarterly?</summary>
