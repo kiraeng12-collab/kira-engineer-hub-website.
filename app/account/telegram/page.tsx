@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth/config";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { TelegramLinkButton } from "@/components/account/TelegramLinkButton";
+import { ResendInvitesButton } from "@/components/account/ResendInvitesButton";
 
 export const metadata: Metadata = { title: "Telegram" };
 
@@ -31,17 +32,23 @@ export default async function AccountTelegramPage() {
       <p className="meta">Connect your Telegram account to receive KIRA VIP Membership access automatically.</p>
 
       {isLinked ? (
-        <div className="notice">
-          <strong>Connected{user?.telegramUsername ? ` as @${user.telegramUsername}` : ""}</strong>
-          <br />
-          Linked on{" "}
-          {user?.telegramLinkedAt?.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-          . To relink a different Telegram account, contact support.
-        </div>
+        <>
+          <div className="notice">
+            <strong>Connected{user?.telegramUsername ? ` as @${user.telegramUsername}` : ""}</strong>
+            <br />
+            Linked on{" "}
+            {user?.telegramLinkedAt?.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+            . To relink a different Telegram account, contact support.
+          </div>
+          {/* Being linked does not mean they are in the chats: the invite can
+              fail, expire, or they can leave. Without this they'd have no way
+              back in, since the access key is single-use. */}
+          {isActive ? <ResendInvitesButton /> : null}
+        </>
       ) : isActive ? (
         <TelegramLinkButton />
       ) : (
