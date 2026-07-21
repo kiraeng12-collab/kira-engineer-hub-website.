@@ -5,6 +5,8 @@ import { authOptions } from "@/lib/auth/config";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { getStandardPriceDisplay, getEarlyBirdPriceDisplay, getFoundingPriceDisplay, type PlanId } from "@/lib/config/pricing";
 import { SubscribeButtons } from "@/components/account/SubscribeButtons";
+import { isCheckoutReady } from "@/lib/config/checkout-readiness";
+import { ClaimDiscountButton } from "@/components/account/ClaimDiscountButton";
 
 export const metadata: Metadata = { title: "Membership" };
 
@@ -41,6 +43,8 @@ export default async function AccountMembershipPage() {
         ])
       : [null, null];
 
+  const checkoutReady = isCheckoutReady();
+
   return (
     <div>
       <h1>Membership</h1>
@@ -68,10 +72,24 @@ export default async function AccountMembershipPage() {
           <div className="notice">
             <strong>No active membership</strong>
             <br />
-            You don&apos;t have an active KIRA VIP Membership yet. Online checkout is being prepared - in the
-            meantime, membership access is coordinated through Telegram.
+            {checkoutReady
+              ? "You don't have an active KIRA VIP Membership yet. Choose a plan below, confirm the membership documents, and your private Telegram access key is issued as soon as payment is confirmed."
+              : "You don't have an active KIRA VIP Membership yet. Online checkout is being prepared - in the meantime, membership access is coordinated through Telegram."}
           </div>
-          <SubscribeButtons tier={user?.membershipTier === "founding" || user?.membershipTier === "early_bird" ? user.membershipTier : null} />
+          {/* Only offer signing when checkout can actually complete, so nobody
+              signs the agreement and then hits a disabled payment step. */}
+          {/* Members who joined the community before the cutoff can unlock
+              their permanent price before purchasing. */}
+          {user?.membershipTier === "founding" || user?.membershipTier === "early_bird" ? (
+            <p className="form-note">
+              Community pricing active: {TIER_LABELS[user.membershipTier]?.trim() || user.membershipTier}
+            </p>
+          ) : (
+            <ClaimDiscountButton />
+          )}
+          {checkoutReady ? (
+            <SubscribeButtons tier={user?.membershipTier === "founding" || user?.membershipTier === "early_bird" ? user.membershipTier : null} />
+          ) : null}
           <div className="actions">
             <Link className="button secondary" href="/membership">Compare Plans</Link>
             <Link className="button secondary" href="/account/early-bird">Check Early Bird eligibility</Link>

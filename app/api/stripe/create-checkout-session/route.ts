@@ -42,6 +42,23 @@ export async function POST(request: Request): Promise<Response> {
     const user = await prisma.user.findUnique({ where: { id: session.user.id } });
     if (!user) return jsonResponse(401, { message: "Please sign in before starting checkout." });
 
+    // Signing happens before payment. Without a consent record belonging to
+    // this member there is nothing to charge against, so refuse rather than
+    // create a subscription we cannot evidence consent for.
+    const consentRecordId = safeText(fields.consentRecordId, 40);
+    const consentRecord = consentRecordId
+      ? await prisma.consentRecord.findUnique({ where: { id: consentRecordId } })
+      : null;
+    if (
+      !consentRecord ||
+      consentRecord.userId !== user.id ||
+      consentRecord.product !== "vip_membership"
+    ) {
+      return jsonResponse(400, {
+        message: "Please review and confirm the membership documents before continuing.",
+      });
+    }
+
     // Server-side truth only - never trust a client-supplied tier.
     const tier = user.membershipTier === "founding" || user.membershipTier === "early_bird" ? user.membershipTier : null;
     // Founding Members get their own permanently-discounted Price (no coupon
@@ -81,12 +98,15 @@ export async function POST(request: Request): Promise<Response> {
         plan,
         userId: user.id,
         tier: tier || "",
+        // Only the id travels to Stripe; the audit detail stays in our database.
+        consentRecordId: consentRecord.id,
       },
       subscription_data: {
         metadata: {
           userId: user.id,
           plan,
           tier: tier || "",
+          consentRecordId: consentRecord.id,
         },
       },
     });

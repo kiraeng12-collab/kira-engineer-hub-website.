@@ -7,6 +7,7 @@ import {
   upsertMembershipFromSubscription,
   setMembershipStatusByCustomer,
 } from "@/lib/stripe/membership-sync";
+import { markConsentEffective } from "@/lib/agreements/service";
 import type { PrismaClient } from "@/lib/generated/prisma";
 
 export const runtime = "nodejs";
@@ -47,6 +48,14 @@ async function handleEvent(prisma: PrismaClient, stripe: Stripe, event: Stripe.E
         const subscription = await stripe.subscriptions.retrieve(subscriptionId);
         await upsertMembershipFromSubscription(prisma, subscription, event.created);
       }
+      // The agreement becomes effective at payment, not at signing. Stamping it
+      // here gives an exact, evidenced moment the contract took effect.
+      await markConsentEffective(
+        prisma,
+        checkoutSession.metadata?.consentRecordId,
+        checkoutSession.id,
+        event.created
+      ).catch(() => {});
       break;
     }
     case "invoice.paid": {

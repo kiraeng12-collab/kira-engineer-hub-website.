@@ -36,15 +36,20 @@ export type LegalConfig = {
 };
 
 export const legalConfig: LegalConfig = {
-  legalEntityName: "[INSERT LEGAL ENTITY NAME]",
+  // Verified against the Delaware Certificate of Formation (executed 18 July 2026).
+  legalEntityName: "Kira Engineer Hub, LLC",
   tradingName: "Kira Engineer Hub",
-  legalStructure: "[INSERT LEGAL STRUCTURE]",
+  legalStructure: "Limited Liability Company (LLC)",
   tradeLicenceNumber: "[INSERT TRADE LICENCE NUMBER]",
   licensingAuthority: "[INSERT LICENSING AUTHORITY]",
-  registeredAddress: "[INSERT REGISTERED ADDRESS]",
-  registrationCountry: "United Arab Emirates",
-  governingLaw: "[INSERT GOVERNING LAW]",
-  courtJurisdiction: "[INSERT COURT JURISDICTION]",
+  // Registered office of the Company in Delaware (registered agent: Legalinc
+  // Corporate Services Inc.).
+  registeredAddress: "131 Continental Drive, Suite 305, Newark, DE 19713, New Castle County, Delaware, United States",
+  registrationCountry: "United States",
+  // Delaware is the natural default for a Delaware LLC. Confirm with counsel
+  // before launch if you sell into jurisdictions with mandatory local venue.
+  governingLaw: "State of Delaware, United States",
+  courtJurisdiction: "Courts of the State of Delaware, United States",
   vatNumber: "[INSERT VAT/TRN IF APPLICABLE]",
   regulatoryStatus: "[INSERT COUNSEL-REVIEWED REGULATORY STATUS]",
   minimumAge: "18",

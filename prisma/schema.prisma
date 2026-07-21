@@ -73,12 +73,173 @@ model User {
   telegramInviteTokenExpiresAt DateTime?
   telegramRemovedAt            DateTime?
 
+  // Loyalty discount claim. Deliberately separate from the paid-access invite
+  // token above: a discount claim proves community tenure and must work
+  // BEFORE any purchase, whereas the invite token requires an active
+  // membership. Keeping them apart means one can never be redeemed as the
+  // other.
+  discountClaimTokenHash      String?   @unique
+  discountClaimTokenExpiresAt DateTime?
+  discountClaimedAt           DateTime?
+
   emailVerificationTokens EmailVerificationToken[]
   passwordResetTokens     PasswordResetToken[]
   membership              Membership?
   earlyBirdRequests       EarlyBirdRequest[]
+  entitlements            Entitlement[]
+  agreementAcceptances    AgreementAcceptance[]
+  consentRecords          ConsentRecord[]
 
   @@index([email])
+}
+
+// Loyalty registry: when each Telegram account joined Kira Trading Community,
+// which decides their permanent pricing tier (founding / early_bird).
+//
+// Telegram's Bot API exposes neither a join date nor a way to enumerate a
+// group's members, so historical rows are seeded from a Telegram Desktop chat
+// export and new joins are captured live from `chat_member` updates.
+model LegacyMember {
+  id String @id @default(cuid())
+
+  // Numeric Telegram user id — the only stable identifier (usernames change).
+  telegramUserId   String  @unique
+  telegramUsername String?
+  displayName      String?
+
+  joinedAt DateTime
+  // Resolved tier at import time: founding | early_bird | null (standard).
+  tier     String?
+
+  // Where the join date came from: chat_export | chat_member | admin
+  source String @default("chat_export")
+
+  // Which named invite link they joined through, when known. Only available
+  // for live `chat_member` updates — historical exports record the inviter,
+  // not the link. Useful for attributing joins to a campaign/cohort.
+  inviteLinkName String?
+
+  // Set once the member links this Telegram account to a website account.
+  claimedByUserId String?
+  claimedAt       DateTime?
+
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([telegramUsername])
+  @@index([tier])
+  @@index([claimedByUserId])
+}
+
+// A single "signing" event, created on the KIRA-controlled consent screen
+// BEFORE the Stripe Checkout Session. Its id is the only consent value put in
+// Stripe metadata — the full audit record stays here (per the launch guide).
+// Never updated except to stamp effectiveAt/certificate once payment settles.
+model ConsentRecord {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // ProductId this signing covers (vip_membership for the Aug 2026 launch).
+  product String
+
+  // Identity typed by the customer at signing — required evidence alongside
+  // the ticked consents.
+  legalName        String
+  country          String
+  telegramUsername String?
+
+  ipAddress String?
+  userAgent String?
+
+  // Set from the Stripe webhook once payment settles: the moment the
+  // agreement actually became effective.
+  effectiveAt          DateTime?
+  stripeCheckoutId     String?
+  certificateIssuedAt  DateTime?
+
+  createdAt DateTime @default(now())
+
+  items AgreementAcceptance[]
+
+  @@index([userId, product])
+  @@index([stripeCheckoutId])
+}
+
+// Immutable consent log: one row per ticked consent, never updated or deleted.
+// Storing the exact (agreement, version) accepted — with timestamp, IP and user
+// agent — is what makes consent provable after the wording changes. The
+// document text lives in version control (app/legal/*), so a stored version is
+// always reproducible.
+model AgreementAcceptance {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Groups the individual consents ticked in one signing event.
+  consentRecordId String?
+  consentRecord   ConsentRecord? @relation(fields: [consentRecordId], references: [id], onDelete: SetNull)
+
+  // What was consented to. The launch guide requires these to be separate
+  // affirmative acts, not one blanket checkbox:
+  //   agreement | recurring_billing | risk | e_records
+  consentType String @default("agreement")
+
+  // AgreementKey from lib/config/agreements.ts (null for consents that are not
+  // tied to a specific document, e.g. recurring_billing).
+  agreement String?
+  // Exact document version accepted, e.g. "2026.07".
+  version   String
+  // SHA-256 of the exact document presented. Null until retainable PDFs exist;
+  // the version string + version control already gives reproducibility.
+  documentHash String?
+
+  // Where the acceptance happened: web | checkout | bot | admin
+  method String @default("web")
+
+  ipAddress  String?
+  userAgent  String?
+  acceptedAt DateTime @default(now())
+
+  @@index([userId, agreement])
+  @@index([agreement, version])
+  @@index([consentRecordId])
+}
+
+// Payment automation (Aug 2026): a member may hold several products at once —
+// VIP membership, Academy, and the Copy-trading add-on — so entitlements are
+// rows rather than fields on a single Membership. `Membership` stays as the
+// VIP subscription mirror Stripe writes to; Entitlement is the access-control
+// source of truth the Telegram verify endpoint reads.
+model Entitlement {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // ProductId from lib/config/products.ts: vip_membership | academy | copy_trading
+  product String
+  // active | past_due | cancelled | expired | refunded | disputed
+  status  String
+  // How it was granted: stripe | crypto_manual | admin_grant
+  source  String @default("stripe")
+
+  stripeSubscriptionId String?
+  // null for one-off purchases that never lapse (e.g. Academy).
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean   @default(false)
+  // Guards against out-of-order Stripe webhook delivery, mirroring Membership.
+  lastEventCreatedAt   DateTime?
+  // Free-text audit note, used for manual crypto/admin grants.
+  note                 String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, product])
+  @@index([status])
+  @@index([product, status])
+  @@index([stripeSubscriptionId])
 }
 
 // Tokens are stored as hashes, never in raw form - only the raw value ever

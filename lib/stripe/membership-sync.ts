@@ -1,6 +1,8 @@
 import type Stripe from "stripe";
 import { mapSubscriptionStatus } from "@/lib/stripe/status";
 import { syncTelegramAccessForUser } from "@/lib/telegram/membership-sync";
+import { syncCopyBridgeForUser } from "@/lib/copy-bridge/sync";
+import { grantEntitlement, setEntitlementStatus } from "@/lib/entitlements/service";
 import type { PrismaClient } from "@/lib/generated/prisma";
 
 // Extracted from app/api/stripe/webhook/route.ts so this business logic -
@@ -61,9 +63,26 @@ export async function upsertMembershipFromSubscription(
     },
   });
 
+  // Entitlements are the access-control source of truth the access-key gate
+  // reads, so they follow the subscription on every path (new, renewal,
+  // cancellation, refund).
+  await grantEntitlement(prisma, {
+    userId: user.id,
+    product: "vip_membership",
+    status,
+    source: "stripe",
+    stripeSubscriptionId: subscription.id,
+    currentPeriodEnd,
+    cancelAtPeriodEnd: subscription.cancel_at_period_end,
+    eventCreatedAt: eventCreated,
+  }).catch(() => {});
+
   // Telegram removal failures shouldn't fail the whole webhook and trigger a
   // Stripe retry - log it and move on; it can be resolved manually.
   await syncTelegramAccessForUser(prisma, user.id, status).catch(() => {});
+
+  // Mirror copy-trading access to the MT5 copy bridge (no-op until configured).
+  await syncCopyBridgeForUser(prisma, user.id).catch(() => {});
 }
 
 export async function setMembershipStatusByCustomer(
@@ -86,5 +105,7 @@ export async function setMembershipStatusByCustomer(
     data: { status, lastEventCreatedAt: eventCreatedAt },
   });
 
+  await setEntitlementStatus(prisma, user.id, "vip_membership", status, eventCreated).catch(() => {});
   await syncTelegramAccessForUser(prisma, user.id, status).catch(() => {});
+  await syncCopyBridgeForUser(prisma, user.id).catch(() => {});
 }
