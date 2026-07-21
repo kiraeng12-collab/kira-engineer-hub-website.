@@ -12,15 +12,20 @@ interface TelegramConfig {
  * env vars are handled elsewhere in this repo).
  */
 export function getTelegramConfig(): TelegramConfig | null {
-  const botToken = process.env.TELEGRAM_BOT_TOKEN;
-  const botUsername = process.env.TELEGRAM_BOT_USERNAME;
-  const groupChatId = process.env.TELEGRAM_GROUP_CHAT_ID;
+  // Trimmed because these are pasted into a dashboard by hand: a single
+  // leading space makes Telegram reject the chat id, and the only symptom is
+  // an invite that silently never arrives.
+  const read = (name: string) => (process.env[name] || "").trim() || null;
+
+  const botToken = read("TELEGRAM_BOT_TOKEN");
+  const botUsername = read("TELEGRAM_BOT_USERNAME");
+  const groupChatId = read("TELEGRAM_GROUP_CHAT_ID");
   if (!botToken || !botUsername || !groupChatId) return null;
   return {
     botToken,
     botUsername,
     groupChatId,
-    channelChatId: process.env.TELEGRAM_CHANNEL_CHAT_ID || null,
+    channelChatId: read("TELEGRAM_CHANNEL_CHAT_ID"),
   };
 }
 
