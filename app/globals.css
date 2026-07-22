@@ -1553,6 +1553,16 @@
         color: var(--stone);
         font-size: .84rem;
       }
+      .company-notice {
+        border-top: 1px solid rgba(255,255,255,.14);
+        padding: 24px 0;
+        color: var(--stone);
+        font-size: .8rem;
+        line-height: 1.5;
+      }
+      .company-notice p { margin: 0 0 8px; max-width: 900px; }
+      .company-notice p:last-child { margin-bottom: 0; }
+      .company-notice a { color: inherit; text-decoration: underline; }
       .copyright {
         border-top: 1px solid rgba(255,255,255,.14);
         padding: 18px 0;

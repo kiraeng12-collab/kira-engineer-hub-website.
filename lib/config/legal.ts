@@ -51,7 +51,11 @@ export const legalConfig: LegalConfig = {
   governingLaw: "State of Delaware, United States",
   courtJurisdiction: "Courts of the State of Delaware, United States",
   vatNumber: "[INSERT VAT/TRN IF APPLICABLE]",
-  regulatoryStatus: "[INSERT COUNSEL-REVIEWED REGULATORY STATUS]",
+  // Education-only disclaimer (owner-approved 22 July 2026). States what the
+  // company is NOT rather than claiming any authorisation, which is the safe
+  // posture for an unregulated trading-education business.
+  regulatoryStatus:
+    "Kira Engineer Hub, LLC provides trading and financial-market education and related technology only. It is not a licensed or regulated financial adviser, broker-dealer, or investment manager, does not execute trades or hold client funds, and does not provide personalized investment advice.",
   minimumAge: "18",
   supportEmail: "KE@kiraengineerhub.com",
   complaintsEmail: "KE@kiraengineerhub.com",

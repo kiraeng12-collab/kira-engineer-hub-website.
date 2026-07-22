@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/config/site";
+import { legalConfig } from "@/lib/config/legal";
 import { BrandLogo } from "@/components/BrandLogo";
 import { TelegramLink } from "@/components/TelegramLink";
 import { CurrentYear } from "./CurrentYear";
@@ -101,9 +102,22 @@ export function Footer() {
         capital. Kira Engineer Hub content is education and general information only and is not personalized
         financial, investment, legal or tax advice.
       </div>
+      <div className="container company-notice">
+        <p>
+          {siteConfig.companyName} is a trading name of <strong>{legalConfig.legalEntityName}</strong>, a Delaware{" "}
+          {legalConfig.legalStructure} in the {legalConfig.registrationCountry}.
+        </p>
+        <p>Registered office: {legalConfig.registeredAddress}.</p>
+        <p>
+          {legalConfig.legalEntityName} provides trading and financial-market education and related technology only.
+          It is not a licensed or regulated financial adviser, broker-dealer, or investment manager, does not execute
+          trades or hold client funds, and does not provide personalized investment advice. See the{" "}
+          <Link href="/legal/regulatory-notice">Regulatory Notice</Link>.
+        </p>
+      </div>
       <div className="container copyright">
         <span>
-          &copy; <CurrentYear /> {siteConfig.companyName}. All rights reserved.
+          &copy; <CurrentYear /> {legalConfig.legalEntityName}. All rights reserved.
         </span>
       </div>
     </footer>
