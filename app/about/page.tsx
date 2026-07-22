@@ -68,8 +68,8 @@ export default function AboutPage() {
               practical challenges traders face when applying discipline under pressure.
             </p>
             <p className="muted">
-              The company is not a broker, investment manager, account-management service, copy-trading provider, or
-              provider of guaranteed financial returns.
+              The company is not a broker, investment manager, account-management service, or provider of guaranteed
+              financial returns.
             </p>
           </div>
           <div className="story-panel">

@@ -25,7 +25,7 @@ export default function TermsPage() {
       <p>
         Kira Engineer Hub provides trading education, financial-market education, risk discipline, market-analysis
         education, community learning, technology updates, and trading-related digital products. It is not a
-        broker, investment manager, fund manager, copy-trading provider, engineering consultancy, or personalized
+        broker, investment manager, fund manager, engineering consultancy, or personalized
         financial-advisory business.
       </p>
       <h2>5. No personalized financial advice or brokerage</h2>

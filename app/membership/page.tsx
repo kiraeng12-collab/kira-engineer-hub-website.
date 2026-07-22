@@ -68,7 +68,7 @@ export default function MembershipPage() {
           <h2>Who it is not for</h2>
           <ul>
             <li>Anyone looking for guaranteed profits or personal financial advice.</li>
-            <li>Anyone seeking account management, copy trading, or broker services.</li>
+            <li>Anyone seeking account management or broker services.</li>
             <li>Anyone who plans to redistribute private content.</li>
           </ul>
         </section>
