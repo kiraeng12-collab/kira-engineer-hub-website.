@@ -112,7 +112,9 @@ async function handleEvent(prisma: PrismaClient, stripe: Stripe, event: Stripe.E
 export async function POST(request: Request): Promise<Response> {
   const stripe = getStripeClient();
   const prisma = getPrismaClient();
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  // Trimmed: a stray space from a manual paste breaks signature verification
+  // and every webhook silently fails, so paid members never get access.
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET?.trim();
 
   if (!stripe || !prisma || !webhookSecret) {
     return jsonResponse(503, { message: "Stripe webhook is not configured." });

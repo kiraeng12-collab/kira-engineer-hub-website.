@@ -9,7 +9,9 @@ import { getPrismaClient } from "@/lib/db/prisma";
 export const runtime = "nodejs";
 
 function requireEnv(name: string): string {
-  const value = process.env[name];
+  // Trimmed: price/coupon ids are pasted by hand, and a stray space makes
+  // Stripe reject the id and the whole checkout fail.
+  const value = process.env[name]?.trim();
   if (!value) throw new Error(`Missing ${name}`);
   return value;
 }
@@ -64,7 +66,8 @@ export async function POST(request: Request): Promise<Response> {
     // Founding Members get their own permanently-discounted Price (no coupon
     // needed); Early Bird members get the standard Price with the shared
     // coupon applied; everyone else gets the standard Price as-is.
-    const earlyBirdApplies = tier === "early_bird" && Boolean(process.env.STRIPE_EARLY_BIRD_COUPON_ID);
+    const earlyBirdCoupon = process.env.STRIPE_EARLY_BIRD_COUPON_ID?.trim();
+    const earlyBirdApplies = tier === "early_bird" && Boolean(earlyBirdCoupon);
 
     // A stored customer id belongs to one Stripe account. If the account ever
     // changes, the old id is invisible to the new key and every checkout fails,
@@ -102,7 +105,7 @@ export async function POST(request: Request): Promise<Response> {
       success_url: `${successUrl}?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: cancelUrl,
       line_items: [{ price: priceId, quantity: 1 }],
-      discounts: earlyBirdApplies ? [{ coupon: process.env.STRIPE_EARLY_BIRD_COUPON_ID }] : undefined,
+      discounts: earlyBirdApplies ? [{ coupon: earlyBirdCoupon }] : undefined,
       metadata: {
         brand: "Kira Engineer Hub",
         product: selected.name,

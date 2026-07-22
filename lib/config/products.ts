@@ -82,9 +82,13 @@ export function productForPriceId(
   env: NodeJS.ProcessEnv = process.env
 ): ProductDefinition | null {
   if (!priceId) return null;
+  // Trim both sides: a stray space in a pasted price env would stop the
+  // webhook mapping a completed checkout back to its product, silently
+  // skipping the entitlement grant so the payer never gets access.
+  const wanted = priceId.trim();
   for (const product of Object.values(productCatalog)) {
     for (const envName of product.stripePriceIdEnvs) {
-      if (env[envName] && env[envName] === priceId) return product;
+      if (env[envName]?.trim() === wanted) return product;
     }
   }
   return null;
