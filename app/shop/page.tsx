@@ -3,8 +3,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Shop",
-  description:
-    "KIRA Shop is coming soon. Future official brand merchandise including apparel, stickers, accessories, and selected community items will appear when checkout and delivery are ready.",
+  description: "KIRA Shop is coming soon. Join the notify list to hear when it opens.",
   alternates: { canonical: "/shop" },
 };
 
@@ -116,14 +115,7 @@ export default function ShopPage() {
             <div className="shop-overlay-panel">
               <p className="eyebrow">KIRA Shop</p>
               <h1>Coming Soon.</h1>
-              <p>
-                The future KIRA brand shop will feature official merchandise such as apparel, laptop stickers, desk
-                items, and selected community collectibles once checkout, delivery, and support are ready.
-              </p>
-              <p className="small-disclosure">
-                Online payment remains disabled until merchandise checkout, shipping, refund workflow, and customer
-                support are fully prepared.
-              </p>
+              <p>The official KIRA brand shop is on its way.</p>
               <a className="button cyan" href="#notify">Get Notified</a>
             </div>
           </div>
@@ -141,17 +133,6 @@ export default function ShopPage() {
               <p><label>Full name<input name="full_name" required /></label></p>
               <p><label>Email<input type="email" name="email" required /></label></p>
               <p><label>Telegram username<input name="telegram_username" /></label></p>
-              <p>
-                <label>
-                  Interest
-                  <select name="interest" required>
-                    <option>Apparel</option>
-                    <option>Laptop stickers</option>
-                    <option>Desk accessories</option>
-                    <option>Limited brand items</option>
-                  </select>
-                </label>
-              </p>
             </div>
             <p><label>Message<textarea name="message" required /></label></p>
             <p>
