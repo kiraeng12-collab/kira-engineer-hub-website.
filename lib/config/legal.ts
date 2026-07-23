@@ -11,6 +11,7 @@ export type LegalConfig = {
   legalEntityName: string;
   tradingName: string;
   legalStructure: string;
+  companyRegistrationNumber: string;
   tradeLicenceNumber: string;
   licensingAuthority: string;
   registeredAddress: string;
@@ -40,8 +41,14 @@ export const legalConfig: LegalConfig = {
   legalEntityName: "Kira Engineer Hub, LLC",
   tradingName: "Kira Engineer Hub",
   legalStructure: "Limited Liability Company (LLC)",
-  tradeLicenceNumber: "[INSERT TRADE LICENCE NUMBER]",
-  licensingAuthority: "[INSERT LICENSING AUTHORITY]",
+  // Delaware Secretary of State file number, from the approved Certificate of
+  // Formation (filed 20 July 2026). Public record - searchable at
+  // icis.corp.delaware.gov.
+  companyRegistrationNumber: "10704476",
+  // A US LLC has no trade licence, financial licensing authority, or VAT -
+  // these are Gulf-jurisdiction concepts that do not apply.
+  tradeLicenceNumber: "Not applicable (United States LLC)",
+  licensingAuthority: "Not applicable (United States LLC)",
   // Registered office of the Company in Delaware (registered agent: Legalinc
   // Corporate Services Inc.).
   registeredAddress: "131 Continental Drive, Suite 305, Newark, DE 19713, New Castle County, Delaware, United States",
@@ -50,7 +57,7 @@ export const legalConfig: LegalConfig = {
   // before launch if you sell into jurisdictions with mandatory local venue.
   governingLaw: "State of Delaware, United States",
   courtJurisdiction: "Courts of the State of Delaware, United States",
-  vatNumber: "[INSERT VAT/TRN IF APPLICABLE]",
+  vatNumber: "Not applicable (United States LLC)",
   // Education-only disclaimer (owner-approved 22 July 2026). States what the
   // company is NOT rather than claiming any authorisation, which is the safe
   // posture for an unregulated trading-education business.

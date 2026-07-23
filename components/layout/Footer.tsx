@@ -107,7 +107,10 @@ export function Footer() {
           {siteConfig.companyName} is a trading name of <strong>{legalConfig.legalEntityName}</strong>, a Delaware{" "}
           {legalConfig.legalStructure} in the {legalConfig.registrationCountry}.
         </p>
-        <p>Registered office: {legalConfig.registeredAddress}.</p>
+        <p>
+          Delaware File Number {legalConfig.companyRegistrationNumber}. Registered office:{" "}
+          {legalConfig.registeredAddress}.
+        </p>
         <p>
           {legalConfig.legalEntityName} provides trading and financial-market education and related technology only.
           It is not a licensed or regulated financial adviser, broker-dealer, or investment manager, does not execute

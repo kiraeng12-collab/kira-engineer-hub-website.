@@ -15,9 +15,9 @@ export default function TermsPage() {
       <p>
         The website, educational content, community access and related digital services are operated by{" "}
         {legalConfig.legalEntityName}, a Delaware {legalConfig.legalStructure} in the{" "}
-        {legalConfig.registrationCountry}, with its registered office at {legalConfig.registeredAddress}.
-        &ldquo;{legalConfig.tradingName}&rdquo; is the trading name used for these services. These Terms are
-        governed by the law stated in section 14.
+        {legalConfig.registrationCountry} (Delaware File Number {legalConfig.companyRegistrationNumber}), with its
+        registered office at {legalConfig.registeredAddress}. &ldquo;{legalConfig.tradingName}&rdquo; is the trading
+        name used for these services. These Terms are governed by the law stated in section 14.
       </p>
       <h2>2. Acceptance</h2>
       <p>By using the website, joining official communities, requesting access, or using educational materials, you agree to these Terms and the policies linked from the Legal Center.</p>

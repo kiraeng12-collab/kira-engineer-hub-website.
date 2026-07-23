@@ -13,8 +13,8 @@ export default function RegulatoryNoticePage() {
     <LegalPageLayout title="Regulatory Notice" lastUpdated="4 July 2026">
       <p>
         This website and its products are operated by {legalConfig.legalEntityName}, a Delaware{" "}
-        {legalConfig.legalStructure} in the {legalConfig.registrationCountry}, with its registered office at{" "}
-        {legalConfig.registeredAddress}.
+        {legalConfig.legalStructure} in the {legalConfig.registrationCountry} (Delaware File Number{" "}
+        {legalConfig.companyRegistrationNumber}), with its registered office at {legalConfig.registeredAddress}.
       </p>
       <p>Kira Engineer Hub provides trading education, financial-market education, risk discipline, market-analysis education, community learning, trading technology updates and related digital products.</p>
       <ul>
