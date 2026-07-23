@@ -432,6 +432,17 @@
         background-size: 72px 72px;
         mask-image: linear-gradient(180deg, rgba(0,0,0,.72), transparent 76%);
       }
+      /* Animated candlestick backdrop: sits between the grid texture and the
+         hero content, masked so it stays a whisper under the headline and
+         strengthens toward the lower half. pointer-events off - pure decor. */
+      .hero-candles {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        mask-image: linear-gradient(180deg, transparent 4%, rgba(0, 0, 0, 0.5) 32%, rgba(0, 0, 0, 0.95) 68%, rgba(0, 0, 0, 0.6) 100%);
+        -webkit-mask-image: linear-gradient(180deg, transparent 4%, rgba(0, 0, 0, 0.5) 32%, rgba(0, 0, 0, 0.95) 68%, rgba(0, 0, 0, 0.6) 100%);
+      }
+      .hero-candles canvas { display: block; }
       .hero-grid {
         position: relative;
         display: grid;

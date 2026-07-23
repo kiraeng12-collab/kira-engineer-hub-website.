@@ -9,6 +9,7 @@ import { KiraMethodStory } from "@/components/home/KiraMethodStory";
 import { Project242Experience } from "@/components/home/Project242Experience";
 import { MembershipSelector } from "@/components/home/MembershipSelector";
 import { PathSelector } from "@/components/home/PathSelector";
+import { CandleField } from "@/components/home/CandleField";
 import { EcosystemMap } from "@/components/home/EcosystemMap";
 import { RevealOnScroll } from "@/components/RevealOnScroll";
 import { TelegramLink } from "@/components/TelegramLink";
@@ -99,6 +100,7 @@ export default function HomePage() {
       />
 
       <section className="hero" id="home">
+        <CandleField />
         <div className="container hero-grid">
           <div className="hero-copy">
             <p className="eyebrow">Trading Education &bull; Risk Discipline &bull; Financial Technology</p>
