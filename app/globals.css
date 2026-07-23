@@ -705,7 +705,7 @@
         cursor: pointer;
         transition: border-color var(--ease), background var(--ease), transform var(--ease);
       }
-      .path-tab strong { font-size: 1rem; }
+      .path-tab strong { font-size: 1rem; color: var(--ink); }
       .path-tab span { color: var(--muted); font-size: .82rem; }
       .path-tab:hover { border-color: var(--cyan); transform: translateY(-2px); }
       .path-tab.active {
