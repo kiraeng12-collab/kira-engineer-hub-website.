@@ -16,7 +16,7 @@ const documents = [
   { href: "/legal/privacy", title: "Privacy Policy", description: "How website, contact, Telegram, membership, payment, and analytics information may be handled." },
   { href: "/legal/cookie-policy", title: "Cookie Policy", description: "Cookie categories, consent choices, and actual deployed cookie use." },
   { href: "/legal/complaints", title: "Complaints Procedure", description: "How to raise a complaint and what information to include." },
-  { href: "/legal/affiliate-terms", title: "Partner Program Terms", description: "Approval, attribution, commissions, prohibited advertising, disclosures, and termination." },
+  { href: "/legal/affiliate-terms", title: "KIRA Partner Terms", description: "Eligibility, attribution, Net Eligible Revenue, commissions, payouts, prohibited advertising, disclosures, and termination." },
   { href: "/legal/affiliate-disclosure", title: "Affiliate and Conflicts Disclosure", description: "How commercial relationships and partner compensation must be disclosed." },
   { href: "/community-rules", title: "Community Rules", description: "Rules for free and private Telegram spaces, content protection, moderation, and appeals." },
   { href: "/legal/regulatory-notice", title: "Regulatory Notice", description: "Boundaries around education, market commentary, technology, and user responsibility." },

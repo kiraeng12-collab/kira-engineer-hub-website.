@@ -45,7 +45,7 @@ export function Footer() {
             <li><Link href="/updates">Company Updates</Link></li>
             <li><Link href="/support">Support</Link></li>
             <li><Link href="/community-rules">Community Rules</Link></li>
-            <li><Link href="/partner-program">Partner Program</Link></li>
+            <li><Link href="/partner-program">Partner Network</Link></li>
           </ul>
         </div>
         <div className="footer-col">
@@ -57,6 +57,7 @@ export function Footer() {
             <li><Link href="/legal/risk-disclosure">Risk Disclosure</Link></li>
             <li><Link href="/legal/privacy">Privacy Policy</Link></li>
             <li><Link href="/legal/refund-policy">Refund &amp; Cancellation</Link></li>
+            <li><Link href="/legal/affiliate-terms">Partner Terms</Link></li>
             <li><button type="button" data-cookie-settings>Cookie Settings</button></li>
           </ul>
         </div>
