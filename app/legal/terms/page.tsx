@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPageLayout } from "@/components/LegalPageLayout";
+import { legalConfig } from "@/lib/config/legal";
 
 export const metadata: Metadata = {
   title: "Terms of Use",
@@ -9,13 +10,14 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <LegalPageLayout title="Terms of Use" lastUpdated="4 July 2026">
+    <LegalPageLayout title="Terms of Use" lastUpdated="22 July 2026">
       <h2>1. Operator information</h2>
       <p>
-        Kira Engineer Hub is the trading name used for the website, educational content, community access and
-        related digital services. The formal legal entity, registration number, registered address and governing
-        law are not yet published because the owner has not provided final registration details. Online checkout
-        remains disabled until those fields are complete.
+        The website, educational content, community access and related digital services are operated by{" "}
+        {legalConfig.legalEntityName}, a Delaware {legalConfig.legalStructure} in the{" "}
+        {legalConfig.registrationCountry}, with its registered office at {legalConfig.registeredAddress}.
+        &ldquo;{legalConfig.tradingName}&rdquo; is the trading name used for these services. These Terms are
+        governed by the law stated in section 14.
       </p>
       <h2>2. Acceptance</h2>
       <p>By using the website, joining official communities, requesting access, or using educational materials, you agree to these Terms and the policies linked from the Legal Center.</p>
@@ -60,7 +62,11 @@ export default function TermsPage() {
         raised through the contact route so they can be reviewed in good faith.
       </p>
       <h2>14. Governing law</h2>
-      <p>Governing law and court jurisdiction will be published after final legal entity details are provided. Checkout remains disabled until the required legal fields are complete.</p>
+      <p>
+        These Terms, and any dispute arising from or relating to them, are governed by the laws of{" "}
+        {legalConfig.governingLaw}, and the {legalConfig.courtJurisdiction} have jurisdiction &mdash; without
+        prejudice to any mandatory consumer-protection rights you may have in your country of residence.
+      </p>
       <h2>15. Contact</h2>
       <p>Contact: <a href="mailto:KE@kiraengineerhub.com">KE@kiraengineerhub.com</a>.</p>
     </LegalPageLayout>
