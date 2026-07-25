@@ -98,7 +98,9 @@ export function EcosystemMap() {
   return (
     <div className="eco-map">
       <div className="eco-hub">
-        <Image src="/kira-engineer-hub-wordmark.png" width={161} height={38} alt="Kira Engineer Hub" />
+        {/* Dimensions keep the wordmark's true 2775x472 (~5.88:1) aspect so it
+            is never stretched; 200x34 matches that ratio exactly. */}
+        <Image src="/kira-engineer-hub-wordmark.png" width={200} height={34} alt="Kira Engineer Hub" />
         <span className="eco-hub-label">Parent brand</span>
       </div>
       <ul className="eco-row">
