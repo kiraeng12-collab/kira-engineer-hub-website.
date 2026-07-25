@@ -6,7 +6,7 @@ import { comparisonColumns, comparisonRows } from "@/lib/config/comparison";
 export const metadata: Metadata = {
   title: "Compare KIRA Products",
   description:
-    "Compare Kira Trading Community, KIRA VIP Membership, KIRA Academy, and Project 242 by feature, availability, and payment model.",
+    "Compare Kira Trading Community, KIRA VIP Membership, and KIRA Academy by feature, availability, and payment model.",
   alternates: { canonical: "/membership/compare" },
 };
 
@@ -22,7 +22,7 @@ export default function MembershipComparePage() {
         <ComparisonTable
           columns={comparisonColumns}
           rows={comparisonRows}
-          caption="Feature comparison across Kira Trading Community, KIRA VIP Membership, KIRA Academy, and Project 242"
+          caption="Feature comparison across Kira Trading Community, KIRA VIP Membership, and KIRA Academy"
         />
         <div className="risk-warning">
           <strong>Important</strong>

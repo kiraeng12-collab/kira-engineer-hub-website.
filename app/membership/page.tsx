@@ -99,7 +99,7 @@ export default function MembershipPage() {
           <ComparisonTable
             columns={comparisonColumns}
             rows={membershipComparisonRows}
-            caption="Feature comparison between Kira Trading Community, KIRA VIP Membership, KIRA Academy, and Project 242"
+            caption="Feature comparison between Kira Trading Community, KIRA VIP Membership, and KIRA Academy"
           />
           <p><Link className="text-link" href="/membership/compare">See the full product comparison</Link></p>
         </section>

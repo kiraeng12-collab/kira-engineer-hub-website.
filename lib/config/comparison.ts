@@ -1,54 +1,54 @@
 import type { ComparisonColumn, ComparisonRow } from "@/components/ComparisonTable";
 
 /**
- * Single source of truth for the Free vs VIP (and Academy / Project 242)
- * feature comparison, shared by the homepage preview and the full
- * /membership/compare page. Keeping this in one place avoids the two
- * surfaces silently drifting out of sync.
+ * Single source of truth for the Free vs VIP (and Academy) feature comparison,
+ * shared by the homepage preview and the full /membership/compare page.
+ * Keeping this in one place avoids the two surfaces silently drifting out of
+ * sync. Project 242 is deliberately excluded - its public details remain
+ * intentionally limited, so it is not compared here.
  */
 export const comparisonColumns: ComparisonColumn[] = [
   { key: "community", label: "Kira Trading Community" },
   { key: "vip", label: "KIRA VIP Membership" },
   { key: "academy", label: "KIRA Academy" },
-  { key: "project242", label: "Project 242" },
 ];
 
 export const comparisonRows: ComparisonRow[] = [
   {
     label: "Public educational updates",
-    values: { community: "Yes", vip: "Yes", academy: "No", project242: "No" },
+    values: { community: "Yes", vip: "Yes", academy: "No" },
   },
   {
     label: "Private educational analysis",
-    values: { community: "No", vip: "Yes", academy: "Planned", project242: "No" },
+    values: { community: "No", vip: "Yes", academy: "Planned" },
   },
   {
     label: "Market scenarios",
-    values: { community: "General", vip: "Structured", academy: "Planned", project242: "No" },
+    values: { community: "General", vip: "Structured", academy: "Planned" },
   },
   {
     label: "Community discussion",
-    values: { community: "Public", vip: "Private", academy: "No", project242: "No" },
+    values: { community: "Public", vip: "Private", academy: "No" },
   },
   {
     label: "Structured course material",
-    values: { community: "No", vip: "No", academy: "Planned", project242: "No" },
+    values: { community: "No", vip: "No", academy: "Planned" },
   },
   {
     label: "Risk-management framework",
-    values: { community: "General", vip: "Risk-aware planning", academy: "Planned", project242: "Core focus" },
+    values: { community: "General", vip: "Risk-aware planning", academy: "Planned" },
   },
   {
     label: "Telegram delivery",
-    values: { community: "Yes", vip: "Yes", academy: "To be announced", project242: "Not applicable" },
+    values: { community: "Yes", vip: "Yes", academy: "To be announced" },
   },
   {
     label: "Recurring membership",
-    values: { community: "No, free", vip: "Yes", academy: "To be announced", project242: "Not available" },
+    values: { community: "No, free", vip: "Yes", academy: "To be announced" },
   },
   {
     label: "Current availability",
-    values: { community: "Live", vip: "Live / checkout preparing", academy: "Coming soon", project242: "In development" },
+    values: { community: "Live", vip: "Live / checkout preparing", academy: "Coming soon" },
   },
   {
     label: "Intended participant",
@@ -56,11 +56,10 @@ export const comparisonRows: ComparisonRow[] = [
       community: "Anyone learning the markets",
       vip: "Traders wanting structured discussion",
       academy: "Future structured learners",
-      project242: "Not public yet",
     },
   },
   {
     label: "Payment model",
-    values: { community: "Free", vip: "Recurring monthly or quarterly", academy: "To be announced", project242: "Not available for purchase" },
+    values: { community: "Free", vip: "Recurring monthly or quarterly", academy: "To be announced" },
   },
 ];
