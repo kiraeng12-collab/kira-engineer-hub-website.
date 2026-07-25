@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function RefundPolicyPage() {
   return (
-    <LegalPageLayout title="Refund and Cancellation Policy" lastUpdated="4 July 2026">
+    <LegalPageLayout title="Refund and Cancellation Policy" lastUpdated="25 July 2026">
       <h2>How to cancel</h2>
       <p>
         Until online checkout is activated, cancellation or access-removal requests should be sent to{" "}
@@ -22,14 +22,26 @@ export default function RefundPolicyPage() {
       <h2>Access after cancellation</h2>
       <p>Unless required by law or removed for policy breach, access may continue until the end of the paid period. Cancellation stops future renewal; it does not automatically create a refund for time already provided.</p>
       <h2>Refund eligibility</h2>
-      <p>Refund requests are reviewed for duplicate charges, technical billing errors, confirmed failure to deliver paid access after reasonable support review, material misdescription, or mandatory consumer rights that apply in the user&apos;s location.</p>
+      <p>
+        KIRA VIP Membership gives immediate access to educational content and a private Telegram space as soon as
+        payment is taken, so purchases are final. A refund is issued only when:
+      </p>
+      <ul>
+        <li>a payment was <strong>duplicated</strong> or charged in error (for example, charged twice, or charged after a cancellation that had already taken effect); or</li>
+        <li>there was a <strong>genuine billing or technical error on our side</strong>, including being charged for access that was never delivered and cannot be resolved through support.</li>
+      </ul>
+      <p>
+        These issues must be reported to us <strong>immediately</strong> after the charge, with the payment reference,
+        email, and Telegram username, so we can verify and correct them promptly. Outside these situations, and except
+        where mandatory consumer law provides otherwise, payments are non-refundable.
+      </p>
       <h2>Non-refundable situations</h2>
       <ul>
-        <li>Trading losses, market movement, non-use of the membership, disagreement with educational views, or a change of mind after access has been delivered are not automatic refund reasons.</li>
-        <li>Redistribution, abuse, chargeback misuse, fraud or community-rule violations may make a refund unavailable unless applicable law requires otherwise.</li>
+        <li>A <strong>change of mind</strong> after access has been delivered &mdash; including requests made hours or days after subscribing.</li>
+        <li>Not using the membership, disagreement with educational views, or trading losses and market movement.</li>
+        <li>Cancelling partway through a paid period (cancellation stops future renewals; it does not refund the current period).</li>
+        <li>Redistribution, abuse, chargeback misuse, fraud, or community-rule violations, unless applicable law requires otherwise.</li>
       </ul>
-      <h2>Duplicate charges and billing errors</h2>
-      <p>Duplicate charges and clear billing errors should be reported as soon as possible with the payment reference, email, Telegram username and relevant evidence.</p>
       <h2>Processing time and method</h2>
       <p>Approved refunds are normally returned to the original payment method where possible. Payment-provider processing times may vary and are not fully controlled by Kira Engineer Hub.</p>
       <h2>Chargebacks</h2>
