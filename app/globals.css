@@ -1106,9 +1106,11 @@
         border: 1px solid var(--border);
         align-self: flex-start;
       }
+      /* White disc: the community crest was designed on white, so this shows
+         its true teal-and-gold colours, kept circular rather than a square. */
       .eco-card .eco-emblem--community {
-        background: radial-gradient(circle, rgba(111,224,210,.12), rgba(21,28,36,0) 72%);
-        border-color: rgba(111,224,210,.42);
+        background: radial-gradient(circle, #ffffff, #eef1f3 82%);
+        border-color: rgba(255,255,255,.6);
       }
       .eco-card .eco-emblem--vip {
         background: radial-gradient(circle, rgba(7,9,13,.9), rgba(7,9,13,.3) 72%);
