@@ -64,7 +64,7 @@ const NODES: {
     logo: "project242",
     name: "Project 242",
     status: siteConfig.products.project242,
-    description: "Future risk-management systems and technology development. Details intentionally limited.",
+    description: "A private Kira Engineer initiative. Public details remain intentionally limited.",
     cta: { label: "Follow Development", href: "/project-242" },
     x: 411,
     y: 421,

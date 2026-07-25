@@ -60,7 +60,7 @@ const PATHS: {
   {
     id: "innovation",
     pathLabel: "Follow Innovation",
-    pathDescription: "For Project 242 and future risk technology.",
+    pathDescription: "For Project 242, our in-development initiative.",
     productName: "Project 242",
     logo: "project242",
     status: siteConfig.products.project242,
