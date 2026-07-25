@@ -1,5 +1,6 @@
-// Local-only Stripe setup: creates the KIRA VIP products, prices, coupon and
-// webhook endpoint in whichever Stripe account STRIPE_SECRET_KEY belongs to.
+// Local-only Stripe setup: creates the KIRA VIP product, prices (standard,
+// founding and early-bird) and webhook endpoint in whichever Stripe account
+// STRIPE_SECRET_KEY belongs to.
 //
 //   node scripts/stripe-setup.js            # dry run - shows what it WOULD do
 //   node scripts/stripe-setup.js --apply    # actually creates things
@@ -25,6 +26,8 @@ const PRICES = [
   { key: 'STRIPE_PRICE_KIRA_VIP_QUARTERLY', nickname: 'KIRA VIP Quarterly', cents: 18900, months: 3 },
   { key: 'STRIPE_PRICE_KIRA_VIP_MONTHLY_FOUNDING', nickname: 'KIRA VIP Monthly (Founding)', cents: 5000, months: 1 },
   { key: 'STRIPE_PRICE_KIRA_VIP_QUARTERLY_FOUNDING', nickname: 'KIRA VIP Quarterly (Founding)', cents: 15000, months: 3 },
+  { key: 'STRIPE_PRICE_KIRA_VIP_MONTHLY_EARLYBIRD', nickname: 'KIRA VIP Monthly (Early Bird)', cents: 5600, months: 1 },
+  { key: 'STRIPE_PRICE_KIRA_VIP_QUARTERLY_EARLYBIRD', nickname: 'KIRA VIP Quarterly (Early Bird)', cents: 16000, months: 3 },
 ];
 
 const WEBHOOK_EVENTS = [
@@ -85,7 +88,6 @@ async function main() {
     for (const p of PRICES) {
       line(`  price   : ${p.nickname} - ${(p.cents / 100).toFixed(2)} USD every ${p.months} month(s)`);
     }
-    line('  coupon  : 20% off, forever (Early Bird)');
     line(`  webhook : ${WEBHOOK_URL} (${WEBHOOK_EVENTS.length} events)`);
     return;
   }
@@ -131,20 +133,7 @@ async function main() {
     envLines.push(`${spec.key}=${price.id}`);
   }
 
-  // --- Early Bird coupon ---
-  const coupons = await stripe.coupons.list({ limit: 100 });
-  let coupon = coupons.data.find((c) => c.percent_off === 20 && c.duration === 'forever' && c.valid);
-  if (coupon) {
-    line(`Coupon exists: ${coupon.id}`);
-  } else {
-    coupon = await stripe.coupons.create({
-      percent_off: 20,
-      duration: 'forever',
-      name: 'KIRA Early Bird',
-    });
-    line(`Coupon created: ${coupon.id}`);
-  }
-  envLines.push(`STRIPE_EARLY_BIRD_COUPON_ID=${coupon.id}`);
+  // Early Bird now has its own fixed Prices (above), like Founding - no coupon.
 
   // --- Webhook endpoint ---
   const endpoints = await stripe.webhookEndpoints.list({ limit: 100 });

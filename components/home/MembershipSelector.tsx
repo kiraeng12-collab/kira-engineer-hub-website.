@@ -80,8 +80,9 @@ export function MembershipSelector() {
           </ul>
           <p className="small-disclosure">{plan.billing}</p>
           <div className="notice">
-            <EarlyBirdBadge label="Early Bird Lifetime Discount Eligibility" /> Verified eligible members receive 20%
-            off qualifying KIRA VIP Membership prices while the qualifying service remains available.
+            <EarlyBirdBadge label="Early Bird Lifetime Discount Eligibility" /> Verified eligible members receive
+            reduced Early Bird pricing on qualifying KIRA VIP Membership plans while the qualifying service remains
+            available.
           </div>
           <div className="pricing-actions">
             <Link className="button cyan" href="/membership">View Full Membership Details</Link>

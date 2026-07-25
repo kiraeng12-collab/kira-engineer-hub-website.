@@ -399,7 +399,7 @@ export default function HomePage() {
             </details>
             <details>
               <summary>What does Early Bird Lifetime Discount Eligibility mean?</summary>
-              <p>It means lifetime eligibility for a 20% discount on qualifying KIRA VIP Membership prices while the qualifying service remains available. It does not mean lifetime VIP access, free access, or access without an active paid subscription.</p>
+              <p>It means lifetime eligibility for reduced Early Bird pricing on qualifying KIRA VIP Membership plans while the qualifying service remains available. It does not mean lifetime VIP access, free access, or access without an active paid subscription.</p>
             </details>
             <p><Link className="text-link" href="/faq">See all frequently asked questions</Link></p>
           </div>

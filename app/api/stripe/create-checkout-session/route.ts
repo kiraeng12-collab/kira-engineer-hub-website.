@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth/config";
 import { jsonResponse, safeText, parseRequestBody } from "@/lib/api-utils";
 import { getStripeClient } from "@/lib/stripe/client";
-import { pricingConfig, type PlanId } from "@/lib/config/pricing";
+import { pricingConfig, getStripePriceEnvForTier, type PlanId } from "@/lib/config/pricing";
 import { getCheckoutReadiness } from "@/lib/config/checkout-readiness";
 import { getPrismaClient } from "@/lib/db/prisma";
 
@@ -63,11 +63,6 @@ export async function POST(request: Request): Promise<Response> {
 
     // Server-side truth only - never trust a client-supplied tier.
     const tier = user.membershipTier === "founding" || user.membershipTier === "early_bird" ? user.membershipTier : null;
-    // Founding Members get their own permanently-discounted Price (no coupon
-    // needed); Early Bird members get the standard Price with the shared
-    // coupon applied; everyone else gets the standard Price as-is.
-    const earlyBirdCoupon = process.env.STRIPE_EARLY_BIRD_COUPON_ID?.trim();
-    const earlyBirdApplies = tier === "early_bird" && Boolean(earlyBirdCoupon);
 
     // A stored customer id belongs to one Stripe account. If the account ever
     // changes, the old id is invisible to the new key and every checkout fails,
@@ -92,8 +87,10 @@ export async function POST(request: Request): Promise<Response> {
     }
 
     const selected = pricingConfig.plans[plan];
-    const priceEnvName = tier === "founding" ? selected.stripePriceIdEnvFounding : selected.stripePriceIdEnv;
-    const priceId = requireEnv(priceEnvName);
+    // Each tier (founding / early_bird / standard) has its own fixed Stripe
+    // Price - no coupon is applied, so the amount charged always matches the
+    // price shown on the site.
+    const priceId = requireEnv(getStripePriceEnvForTier(plan, tier));
     const successUrl =
       process.env.STRIPE_SUCCESS_URL || "https://www.kiraengineerhub.com/checkout/success";
     const cancelUrl =
@@ -105,7 +102,6 @@ export async function POST(request: Request): Promise<Response> {
       success_url: `${successUrl}?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: cancelUrl,
       line_items: [{ price: priceId, quantity: 1 }],
-      discounts: earlyBirdApplies ? [{ coupon: earlyBirdCoupon }] : undefined,
       metadata: {
         brand: "Kira Engineer Hub",
         product: selected.name,

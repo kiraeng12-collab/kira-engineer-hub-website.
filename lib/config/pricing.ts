@@ -10,27 +10,31 @@
 export type PlanId = "monthly" | "quarterly";
 
 // null = standard pricing. "founding" = permanent flat discounted price for
-// members who joined Kira Trading Community 2024-2025. "early_bird" =
-// permanent 20% off standard, for members who joined 2025 through the
-// 1 Aug 2026 cutoff. Both are set by an admin (Phase 8 review), never by
-// the member or a client request.
+// members who joined Kira Trading Community before 2025 (2024 or earlier).
+// "early_bird" = permanent flat discounted price for members who joined from
+// 2025 through the 1 Aug 2026 cutoff. Each tier has its own fixed prices (not
+// a percentage), set by an admin (Phase 8 review), never by the member or a
+// client request.
 export type MembershipTier = "founding" | "early_bird";
 
 export const pricingConfig = {
   currency: "USD",
+  // Nominal headline used only on the Early Bird request record; Early Bird
+  // pricing is now set as explicit amounts per plan below, not a flat percent.
   earlyBirdDiscountPercentage: 20,
   earlyBirdCutoffDate: "2026-08-01T00:00:00+04:00",
   earlyBirdCutoffDisplay: "1 August 2026 at 12:00 AM Gulf Standard Time",
   earlyBirdLastQualifyingMomentDisplay: "31 July 2026 at 11:59 PM Gulf Standard Time",
   // Loyalty window for the deepest ("founding") tier - members who joined
   // Kira Trading Community in this window keep this price permanently.
-  foundingWindowDisplay: "2024 through 2025",
+  foundingWindowDisplay: "2024 or earlier",
   plans: {
     monthly: {
       id: "monthly" as const,
       name: "KIRA VIP Monthly",
       amountCents: 7000,
       foundingAmountCents: 5000,
+      earlyBirdAmountCents: 5600,
       billingMonths: 1,
       recurringInterval: "month" as const,
       intervalCount: 1,
@@ -38,12 +42,14 @@ export const pricingConfig = {
         "Automatically renews monthly until cancelled when online recurring billing is activated.",
       stripePriceIdEnv: "STRIPE_PRICE_KIRA_VIP_MONTHLY",
       stripePriceIdEnvFounding: "STRIPE_PRICE_KIRA_VIP_MONTHLY_FOUNDING",
+      stripePriceIdEnvEarlyBird: "STRIPE_PRICE_KIRA_VIP_MONTHLY_EARLYBIRD",
     },
     quarterly: {
       id: "quarterly" as const,
       name: "KIRA VIP Quarterly",
       amountCents: 18900,
       foundingAmountCents: 15000,
+      earlyBirdAmountCents: 16000,
       billingMonths: 3,
       recurringInterval: "month" as const,
       intervalCount: 3,
@@ -51,6 +57,7 @@ export const pricingConfig = {
         "Automatically renews every three months until cancelled when online recurring billing is activated.",
       stripePriceIdEnv: "STRIPE_PRICE_KIRA_VIP_QUARTERLY",
       stripePriceIdEnvFounding: "STRIPE_PRICE_KIRA_VIP_QUARTERLY_FOUNDING",
+      stripePriceIdEnvEarlyBird: "STRIPE_PRICE_KIRA_VIP_QUARTERLY_EARLYBIRD",
     },
   },
 } as const;
@@ -91,9 +98,7 @@ export function getQuarterlyEffectiveMonthly(): number {
 
 /** Early Bird (discounted) price for a plan, in whole currency units. */
 export function getEarlyBirdPrice(plan: PlanId): number {
-  const standard = getStandardPrice(plan);
-  const discounted = standard * (1 - pricingConfig.earlyBirdDiscountPercentage / 100);
-  return Math.round(discounted * 100) / 100;
+  return pricingConfig.plans[plan].earlyBirdAmountCents / 100;
 }
 
 export function getEarlyBirdPriceDisplay(plan: PlanId): string {
@@ -130,5 +135,7 @@ export function getPriceForTier(plan: PlanId, tier: MembershipTier | null | unde
 /** Resolves the correct Stripe Price env var name for whichever tier a member is on. */
 export function getStripePriceEnvForTier(plan: PlanId, tier: MembershipTier | null | undefined): string {
   const planConfig = pricingConfig.plans[plan];
-  return tier === "founding" ? planConfig.stripePriceIdEnvFounding : planConfig.stripePriceIdEnv;
+  if (tier === "founding") return planConfig.stripePriceIdEnvFounding;
+  if (tier === "early_bird") return planConfig.stripePriceIdEnvEarlyBird;
+  return planConfig.stripePriceIdEnv;
 }

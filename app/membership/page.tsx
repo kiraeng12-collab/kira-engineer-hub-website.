@@ -130,7 +130,7 @@ export default function MembershipPage() {
             <EarlyBirdBadge />
             <h2>Loyalty pricing</h2>
             <p>
-              <strong>Founding Members</strong> (joined 2024-2025): {formatUSD(getFoundingPrice("monthly"))} per
+              <strong>Founding Members</strong> (joined 2024 or earlier): {formatUSD(getFoundingPrice("monthly"))} per
               month, or {formatUSD(getFoundingPrice("quarterly"))} every three months.
             </p>
             <p>

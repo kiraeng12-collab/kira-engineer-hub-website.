@@ -33,12 +33,12 @@ export default function EarlyBirdPage() {
         <p>Eligibility is grouped into two loyalty tiers based on when a member first joined an official Kira space:</p>
         <ul>
           <li>
-            <strong>Founding Members</strong> (joined Kira Trading Community in 2024 or 2025): USD 50 per month or
+            <strong>Founding Members</strong> (joined Kira Trading Community in 2024 or earlier): USD 50 per month or
             USD 150 every three months.
           </li>
           <li>
-            <strong>Early Bird</strong> (joined from 2025 through 1 August 2026): 20% off standard pricing - USD 56
-            per month or USD 151.20 every three months.
+            <strong>Early Bird</strong> (joined from 2025 through 1 August 2026): USD 56 per month or USD 160 every
+            three months.
           </li>
         </ul>
         <p>

@@ -29,6 +29,8 @@ const EXPECTED_PRICES = [
   { env: 'STRIPE_PRICE_KIRA_VIP_QUARTERLY', label: 'Quarterly', cents: 18900, months: 3, required: false },
   { env: 'STRIPE_PRICE_KIRA_VIP_MONTHLY_FOUNDING', label: 'Founding monthly', cents: 5000, months: 1, required: false },
   { env: 'STRIPE_PRICE_KIRA_VIP_QUARTERLY_FOUNDING', label: 'Founding quarterly', cents: 15000, months: 3, required: false },
+  { env: 'STRIPE_PRICE_KIRA_VIP_MONTHLY_EARLYBIRD', label: 'Early Bird monthly', cents: 5600, months: 1, required: false },
+  { env: 'STRIPE_PRICE_KIRA_VIP_QUARTERLY_EARLYBIRD', label: 'Early Bird quarterly', cents: 16000, months: 3, required: false },
 ];
 
 function keyMode(value) {
@@ -136,18 +138,7 @@ async function checkStripe() {
     }
   }
 
-  const coupon = process.env.STRIPE_EARLY_BIRD_COUPON_ID;
-  if (!coupon) {
-    warn('STRIPE_EARLY_BIRD_COUPON_ID not set - Early Bird members will pay standard price');
-  } else {
-    try {
-      const c = await stripe.coupons.retrieve(coupon);
-      if (c.percent_off === 20) ok(`Early Bird coupon: ${c.percent_off}% off`);
-      else fail(`Early Bird coupon is ${c.percent_off ?? '?'}% off, expected 20%`);
-    } catch (e) {
-      fail(`Early Bird coupon not found: ${e.message.split('\n')[0]}`);
-    }
-  }
+  // Early Bird now uses its own fixed prices (checked above), not a coupon.
 
   try {
     const endpoints = await stripe.webhookEndpoints.list({ limit: 10 });

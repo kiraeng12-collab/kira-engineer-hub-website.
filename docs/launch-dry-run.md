@@ -33,7 +33,8 @@ Both must be exactly the string `true` to activate. Anything else = off (fail-sa
 | `STRIPE_PRICE_KIRA_VIP_QUARTERLY` | test price id | live price id |
 | `STRIPE_PRICE_KIRA_VIP_MONTHLY_FOUNDING` | test price id | live price id |
 | `STRIPE_PRICE_KIRA_VIP_QUARTERLY_FOUNDING` | test price id | live price id |
-| `STRIPE_EARLY_BIRD_COUPON_ID` | test coupon (20% off) | live coupon |
+| `STRIPE_PRICE_KIRA_VIP_MONTHLY_EARLYBIRD` | test price id | live price id |
+| `STRIPE_PRICE_KIRA_VIP_QUARTERLY_EARLYBIRD` | test price id | live price id |
 | `STRIPE_SUCCESS_URL` | `https://<domain>/checkout/success` | same |
 | `STRIPE_CANCEL_URL` | `https://<domain>/checkout/cancelled` | same |
 | `TELEGRAM_BOT_TOKEN` | your bot token | same |
@@ -64,7 +65,8 @@ The bot derives `/verify-discount` and `/record-join` from that URL automaticall
 2. **Products** → create *KIRA VIP Membership* with recurring prices:
    - Monthly **USD 70**, Quarterly **USD 189** (every 3 months)
    - Founding Monthly **USD 50**, Founding Quarterly **USD 150**
-3. **Coupons** → create **20% off**, forever → copy id into `STRIPE_EARLY_BIRD_COUPON_ID`.
+   - Early Bird Monthly **USD 56**, Early Bird Quarterly **USD 160**
+   (or just run `node scripts/stripe-setup.js --apply`, which creates all six.)
 4. **Developers → Webhooks → Add endpoint**
    - URL: `https://<domain>/api/stripe/webhook`
    - Events: `checkout.session.completed`, `customer.subscription.created`,

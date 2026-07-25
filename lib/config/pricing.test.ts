@@ -31,9 +31,9 @@ describe("pricing utilities", () => {
     expect(getQuarterlyEffectiveMonthly()).toBe(63);
   });
 
-  it("applies the 20% Early Bird discount correctly", () => {
+  it("returns the flat Early Bird prices", () => {
     expect(getEarlyBirdPrice("monthly")).toBe(56);
-    expect(getEarlyBirdPrice("quarterly")).toBe(151.2);
+    expect(getEarlyBirdPrice("quarterly")).toBe(160);
   });
 
   it("treats the Early Bird window as open before the cutoff", () => {
@@ -57,7 +57,7 @@ describe("pricing utilities", () => {
 
     it("returns the early bird price for the early_bird tier", () => {
       expect(getPriceForTier("monthly", "early_bird")).toBe(56);
-      expect(getPriceForTier("quarterly", "early_bird")).toBe(151.2);
+      expect(getPriceForTier("quarterly", "early_bird")).toBe(160);
     });
 
     it("returns the standard price for null/undefined tier", () => {
@@ -72,8 +72,12 @@ describe("pricing utilities", () => {
       expect(getStripePriceEnvForTier("quarterly", "founding")).toBe("STRIPE_PRICE_KIRA_VIP_QUARTERLY_FOUNDING");
     });
 
-    it("resolves the standard env var name for early_bird and null tiers", () => {
-      expect(getStripePriceEnvForTier("monthly", "early_bird")).toBe("STRIPE_PRICE_KIRA_VIP_MONTHLY");
+    it("resolves the early_bird env var name for the early_bird tier", () => {
+      expect(getStripePriceEnvForTier("monthly", "early_bird")).toBe("STRIPE_PRICE_KIRA_VIP_MONTHLY_EARLYBIRD");
+      expect(getStripePriceEnvForTier("quarterly", "early_bird")).toBe("STRIPE_PRICE_KIRA_VIP_QUARTERLY_EARLYBIRD");
+    });
+
+    it("resolves the standard env var name for the null tier", () => {
       expect(getStripePriceEnvForTier("monthly", null)).toBe("STRIPE_PRICE_KIRA_VIP_MONTHLY");
     });
   });

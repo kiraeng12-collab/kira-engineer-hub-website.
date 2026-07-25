@@ -33,8 +33,8 @@ export default function MembershipTermsPage() {
       <p>Members must follow the Community Rules. Kira Engineer Hub may pause or remove access for abuse, redistribution, harassment, unauthorized promotion, fake claims, chargeback abuse or security risk.</p>
       <h2>Early Bird terms</h2>
       <p>
-        Verified Early Bird Members may be eligible for a 20% discount on qualifying KIRA VIP Membership prices.
-        Current Early Bird pricing is USD 56 per month or USD 151.20 every three months. Eligibility may remain
+        Verified Early Bird Members may be eligible for reduced pricing on qualifying KIRA VIP Membership plans.
+        Current Early Bird pricing is USD 56 per month or USD 160 every three months. Eligibility may remain
         available for the member&apos;s lifetime, but access always requires an active paid subscription. The
         benefit is personal, non-transferable, not normally combinable with other offers, and does not apply to
         Project 242 unless officially extended.
