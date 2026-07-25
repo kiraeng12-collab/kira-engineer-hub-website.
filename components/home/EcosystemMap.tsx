@@ -108,7 +108,11 @@ export function EcosystemMap() {
           return (
             <li key={node.id} className="eco-node">
               <div className="eco-card">
-                <ProductLogo product={node.logo} size={48} />
+                <ProductLogo
+                  product={node.logo}
+                  size={112}
+                  className={`product-logo eco-emblem eco-emblem--${node.id}`}
+                />
                 <StatusBadge status={node.status} />
                 <h3>
                   <Link href={node.href}>{node.name}</Link>

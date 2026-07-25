@@ -1088,8 +1088,43 @@
         width: 62px;
         height: 62px;
         border-radius: var(--radius-sm);
-        object-fit: cover;
-        background: var(--ink);
+        /* Emblems are transparent PNGs now - contain (never crop) and no tile
+           behind them, so they float on the dark UI like the header logo. */
+        object-fit: contain;
+      }
+      /* Ecosystem parent cards: show the emblem large on a circular disc
+         tinted to each product's identity - Community bright/teal, VIP dark
+         with a premium gold ring, Academy teal, Project 242 neutral. Scoped to
+         .eco-card so no other placement is affected. */
+      .eco-card .eco-emblem {
+        width: 112px;
+        height: 112px;
+        padding: 18px;
+        box-sizing: border-box;
+        border-radius: 50%;
+        object-fit: contain;
+        border: 1px solid var(--border);
+        align-self: flex-start;
+      }
+      .eco-card .eco-emblem--community {
+        background: radial-gradient(circle, rgba(111,224,210,.12), rgba(21,28,36,0) 72%);
+        border-color: rgba(111,224,210,.42);
+      }
+      .eco-card .eco-emblem--vip {
+        background: radial-gradient(circle, rgba(7,9,13,.9), rgba(7,9,13,.3) 72%);
+        border-color: rgba(201,162,74,.6);
+        box-shadow: 0 0 22px rgba(201,162,74,.2);
+      }
+      .eco-card .eco-emblem--academy {
+        background: radial-gradient(circle, rgba(43,182,168,.1), rgba(21,28,36,0) 72%);
+        border-color: rgba(43,182,168,.4);
+      }
+      .eco-card .eco-emblem--project242 {
+        background: radial-gradient(circle, rgba(255,255,255,.05), rgba(21,28,36,0) 72%);
+        border-color: rgba(152,162,174,.38);
+      }
+      @media (max-width: 560px) {
+        .eco-card .eco-emblem { width: 92px; height: 92px; padding: 15px; }
       }
       .tag {
         display: inline-flex;

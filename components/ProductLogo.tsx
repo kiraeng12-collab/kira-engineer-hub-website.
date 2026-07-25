@@ -1,40 +1,39 @@
 import Image from "next/image";
 
 /**
- * The official crowned-eagle crest artwork for Kira Trading Community and
- * KIRA VIP Channel - used exactly as provided, never redrawn or recoloured.
- * Renders the pre-optimized 128x128 WebP thumbnail (see
- * scripts note in docs/design-tokens.md); the original 2MB+ PNGs stay
- * untouched as masters at /public/kira-*-channel.png.
+ * Official crest emblems, cropped to just the mark (no baked wordmark or
+ * background) from the owner-provided transparent logos and centred on a
+ * square transparent canvas, so they sit cleanly on the dark UI at any size.
+ * Full lockups with text remain elsewhere (header wordmark, master PNGs).
  */
 const PRODUCT_LOGOS = {
   community: {
-    src: "/kira-trading-community-channel-thumb.webp",
-    alt: "Kira Trading Community logo",
+    src: "/kira-community-emblem.png",
+    alt: "Kira Trading Community emblem",
   },
   vip: {
-    src: "/kira-vip-channel-thumb.webp",
-    alt: "KIRA VIP Membership logo",
+    src: "/kira-vip-emblem.png",
+    alt: "KIRA VIP Membership emblem",
   },
   academy: {
-    src: "/kira-academy-thumb.webp",
-    alt: "KIRA Academy logo",
+    src: "/kira-academy-emblem.png",
+    alt: "KIRA Academy emblem",
   },
   project242: {
-    src: "/project-242-mark-thumb.webp",
+    src: "/project-242-emblem.png",
     alt: "Project 242 mark",
   },
   bot: {
-    src: "/kira-bot-thumb.webp",
-    alt: "KIRA Community Bot logo",
+    src: "/kira-bot-emblem.png",
+    alt: "KIRA Community Bot emblem",
   },
   vipGroup: {
-    src: "/kira-vip-group-thumb.webp",
-    alt: "KIRA VIP Group logo",
+    src: "/kira-vip-group-emblem.png",
+    alt: "KIRA VIP Group emblem",
   },
   tradingChannel: {
-    src: "/kira-trading-channel-thumb.webp",
-    alt: "KIRA Trading Channel logo",
+    src: "/kira-trading-channel-emblem.png",
+    alt: "KIRA Trading Channel emblem",
   },
 } as const;
 
