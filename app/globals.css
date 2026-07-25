@@ -1088,8 +1088,31 @@
         width: 62px;
         height: 62px;
         border-radius: var(--radius-sm);
-        object-fit: cover;
-        background: var(--ink);
+        /* Logos are transparent PNGs (disc badges or floating marks) - contain
+           and no tile behind them. */
+        object-fit: contain;
+      }
+      /* Ecosystem parent cards: show the logo large. Community and VIP are
+         circular disc badges and get a thin identity rim (VIP a premium gold
+         ring); Academy and Project 242 are transparent marks and float. Scoped
+         to .eco-card so no other placement is affected. */
+      .eco-card .eco-emblem {
+        width: 112px;
+        height: 112px;
+        object-fit: contain;
+        align-self: flex-start;
+      }
+      .eco-card .eco-emblem--community {
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,.45);
+      }
+      .eco-card .eco-emblem--vip {
+        border-radius: 50%;
+        border: 1px solid rgba(201,162,74,.5);
+        box-shadow: 0 0 20px rgba(201,162,74,.18);
+      }
+      @media (max-width: 560px) {
+        .eco-card .eco-emblem { width: 96px; height: 96px; }
       }
       .tag {
         display: inline-flex;
