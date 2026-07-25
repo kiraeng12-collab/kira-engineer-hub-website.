@@ -619,11 +619,13 @@
         flex-direction: column;
         align-items: center;
         gap: 7px;
-        padding: 16px 20px;
-        border: 1px solid rgba(43,182,168,.35);
-        border-radius: var(--radius);
-        background: linear-gradient(160deg, rgba(16,24,32,.96), rgba(11,17,24,.96));
-        box-shadow: 0 0 44px rgba(43,182,168,.14), var(--shadow);
+        padding: 16px 30px;
+        /* No card: a soft radial backdrop keeps the logo legible where the
+           flow lines converge, fading to nothing so there is no box edge, plus
+           a gentle teal halo that hugs the logo shape (not a rectangle). */
+        border: 0;
+        background: radial-gradient(ellipse at center, rgba(11,17,24,.96), rgba(11,17,24,.82) 46%, rgba(11,17,24,0) 80%);
+        filter: drop-shadow(0 0 18px rgba(43,182,168,.16));
         transform: translate(-50%, -50%) translateZ(46px);
       }
       .intel-hub span {
@@ -934,12 +936,11 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
-        padding: 16px 26px;
+        gap: 8px;
+        padding: 4px 0 0;
         margin-bottom: 44px;
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        background: var(--surface);
+        /* No card behind the parent-brand logo - it sits directly on the
+           section like the header. The connector line below is kept. */
       }
       .eco-hub::after {
         content: "";
