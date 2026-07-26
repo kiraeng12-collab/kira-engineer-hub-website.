@@ -155,9 +155,23 @@ export function Header() {
             Become a Member
           </Link>
           {session ? (
-            <Link className="button secondary" href="/account">
-              Account
-            </Link>
+            (() => {
+              const firstName =
+                session.user?.name?.trim().split(/\s+/)[0] ||
+                session.user?.email?.split("@")[0] ||
+                "My Account";
+              const initial = firstName.charAt(0).toUpperCase() || "?";
+              return (
+                <Link
+                  className="button secondary account-chip"
+                  href="/account"
+                  aria-label={`Your account — signed in as ${firstName}`}
+                >
+                  <span className="account-avatar" aria-hidden="true">{initial}</span>
+                  <span className="account-chip-name">{firstName}</span>
+                </Link>
+              );
+            })()
           ) : null}
         </div>
       </div>

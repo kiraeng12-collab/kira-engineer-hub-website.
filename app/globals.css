@@ -2605,3 +2605,25 @@
       .invoice-table tbody tr:last-child td, .invoice-table tr:last-child td { border-bottom: 0; }
       .invoice-table td { color: var(--ink); }
       .invoice-table a { color: var(--cyan); text-decoration: underline; }
+
+      /* Signed-in account chip in the header: avatar initial + first name, so a
+         logged-in member sees who they are instead of a generic "Account". */
+      .account-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding-left: 8px;
+      }
+      .account-avatar {
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--cyan);
+        color: var(--bg);
+        font-size: .78rem;
+        font-weight: 800;
+        flex: 0 0 auto;
+      }
+      .account-chip-name { max-width: 12ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
