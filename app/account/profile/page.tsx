@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth/config";
 import { ProfileForm } from "@/components/account/ProfileForm";
+import { ChangePasswordForm } from "@/components/account/ChangePasswordForm";
 
 export const metadata: Metadata = { title: "Profile" };
 
@@ -22,6 +23,10 @@ export default async function AccountProfilePage() {
         <p className="small-disclosure">
           To change the email address on your account, please contact <a href="mailto:KE@kiraengineerhub.com">support</a>.
         </p>
+      </section>
+      <section>
+        <h2>Password</h2>
+        <ChangePasswordForm />
       </section>
     </div>
   );
