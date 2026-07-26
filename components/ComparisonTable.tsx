@@ -40,6 +40,7 @@ export function ComparisonTable({
   caption?: string;
 }) {
   return (
+    <div className="comparison-wrap">
     <table className="comparison-table">
       {caption ? <caption className="visually-hidden">{caption}</caption> : null}
       <thead>
@@ -63,5 +64,6 @@ export function ComparisonTable({
         ))}
       </tbody>
     </table>
+    </div>
   );
 }
