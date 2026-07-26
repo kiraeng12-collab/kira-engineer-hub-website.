@@ -67,7 +67,11 @@ export async function POST(request: Request): Promise<Response> {
 
     // Server-side truth only - never trust a client-supplied tier.
     const tier = user.membershipTier === "founding" || user.membershipTier === "early_bird" ? user.membershipTier : null;
-    const amount = getCryptoAmount(plan, tier);
+    // Temporary launch-test override: when CRYPTO_TEST_AMOUNT is a positive
+    // number, charge that (e.g. a few USDT) instead of the real price so a live
+    // end-to-end test costs almost nothing. REMOVE this env var after testing.
+    const testOverride = Number(process.env.CRYPTO_TEST_AMOUNT);
+    const amount = testOverride > 0 ? testOverride : getCryptoAmount(plan, tier);
     const accessDays = CRYPTO_ACCESS_DAYS[plan];
     const orderId = `cpay_${crypto.randomBytes(12).toString("hex")}`;
 
