@@ -19,6 +19,26 @@ import { getCryptoAmountDisplay, CRYPTO_ACCESS_DAYS, CRYPTO_NETWORK_LABEL } from
 
 type PayMethod = "card" | "crypto";
 
+function CardGlyph() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+      <path d="M2.5 9.5h19" strokeWidth="2.2" />
+      <path d="M6 15h4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function CryptoGlyph() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M8 9.5h8" strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M12 9.5V16" strokeWidth="2.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function priceLabel(plan: PlanId, tier: MembershipTier | null): string {
   if (tier === "founding") return getFoundingPriceDisplay(plan);
   if (tier === "early_bird") return getEarlyBirdPriceDisplay(plan);
@@ -145,22 +165,30 @@ export function SubscribeButtons({
   return (
     <form className="form-panel" onSubmit={handleSign}>
       {showMethodToggle ? (
-        <div className="actions" role="group" aria-label="Payment method">
+        <div className="pay-method-tabs" role="group" aria-label="Choose a payment method">
           <button
             type="button"
-            className={`button${method === "card" ? "" : " secondary"}`}
+            className={`pay-method-tab${method === "card" ? " active" : ""}`}
             aria-pressed={method === "card"}
             onClick={() => setMethod("card")}
           >
-            Pay by card
+            <span className="pay-method-icon"><CardGlyph /></span>
+            <span className="pay-method-text">
+              <strong>Card</strong>
+              <span>Secured by Stripe</span>
+            </span>
           </button>
           <button
             type="button"
-            className={`button${method === "crypto" ? "" : " secondary"}`}
+            className={`pay-method-tab${method === "crypto" ? " active" : ""}`}
             aria-pressed={method === "crypto"}
             onClick={() => setMethod("crypto")}
           >
-            Pay with crypto (USDT)
+            <span className="pay-method-icon"><CryptoGlyph /></span>
+            <span className="pay-method-text">
+              <strong>Crypto</strong>
+              <span>USDT · TRC20</span>
+            </span>
           </button>
         </div>
       ) : null}
