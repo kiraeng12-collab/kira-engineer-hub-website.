@@ -43,7 +43,8 @@ export function getCryptoAmountDisplay(plan: PlanId, tier: MembershipTier | null
  * global kill-switch used before launch.
  */
 export function isCryptoCheckoutEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
-  return env.CRYPTO_CHECKOUT_ENABLED === "true";
+  // Tolerant of case and stray whitespace from hand-entered dashboard values.
+  return (env.CRYPTO_CHECKOUT_ENABLED || "").trim().toLowerCase() === "true";
 }
 
 export const cryptoConfig = {
