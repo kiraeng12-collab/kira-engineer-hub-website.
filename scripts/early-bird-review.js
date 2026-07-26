@@ -10,9 +10,10 @@
 //   node scripts/early-bird-review.js mark    <reference> <status> [verifiedBy] [note]
 //
 // Tiers:
-//   founding    - joined Kira Trading Community 2024-2025. Permanent flat
+//   founding    - joined Kira Trading Community 2024 or earlier. Permanent flat
 //                 discounted price ($50/mo, $150/qtr).
-//   early_bird  - joined 2025 through 1 Aug 2026. Permanent 20% off standard.
+//   early_bird  - joined 2025 through 1 Aug 2026. Permanent flat Early Bird
+//                 price ($56/mo, $160/qtr).
 
 require('dotenv/config');
 const { PrismaNeon } = require('@prisma/adapter-neon');
@@ -33,6 +34,15 @@ const VALID_TIERS = ['founding', 'early_bird'];
 
 const GRANTS_ELIGIBILITY = new Set(['approved', 'code_issued', 'redeemed']);
 const REVOKES_ELIGIBILITY = new Set(['rejected', 'suspended']);
+
+// Upgrade-only tier resolution, mirroring lib/config/legacy-tiers.bestTier:
+// founding beats early_bird beats none. Never downgrades a member.
+function tierRank(t) {
+  return t === 'founding' ? 2 : t === 'early_bird' ? 1 : 0;
+}
+function bestTier(current, incoming) {
+  return tierRank(current) >= tierRank(incoming) ? current || null : incoming || null;
+}
 
 function getPrisma() {
   const connectionString = process.env.DATABASE_URL;
@@ -105,22 +115,34 @@ async function applyDecision(prisma, reference, status, verifiedBy, tier, note) 
     },
   });
 
-  let userId = request.userId;
-  if (!userId) {
-    const matchedUser = await prisma.user.findUnique({ where: { email: request.email }, select: { id: true } });
-    userId = matchedUser?.id || null;
+  let user = request.userId
+    ? await prisma.user.findUnique({ where: { id: request.userId }, select: { id: true, membershipTier: true, discountClaimedAt: true } })
+    : null;
+  if (!user) {
+    user = await prisma.user.findUnique({ where: { email: request.email }, select: { id: true, membershipTier: true, discountClaimedAt: true } });
   }
 
-  if (userId && (grants || revokes)) {
+  if (user && (grants || revokes)) {
+    let newTier;
+    if (grants) {
+      // Upgrade-only: approving Early Bird must never downgrade a member who
+      // already holds the deeper Founding tier (e.g. from the registry claim).
+      newTier = bestTier(user.membershipTier, resolvedTier);
+    } else {
+      // Revoke: only clear the tier if it came from THIS Early Bird path. A
+      // registry claim (discountClaimedAt set) is a separate, valid grant and
+      // must not be wiped by an Early Bird rejection.
+      newTier = user.discountClaimedAt ? user.membershipTier : null;
+    }
     await prisma.user.update({
-      where: { id: userId },
+      where: { id: user.id },
       data: {
-        membershipTier: grants ? resolvedTier : null,
+        membershipTier: newTier,
         earlyBirdVerifiedAt: grants ? new Date() : null,
       },
     });
-    console.log(`Updated ${reference} to "${status}" and set User.membershipTier=${grants ? resolvedTier : 'null'}.`);
-  } else if (!userId && grants) {
+    console.log(`Updated ${reference} to "${status}" and set User.membershipTier=${newTier ?? 'null'} (was ${user.membershipTier ?? 'none'}).`);
+  } else if (!user && grants) {
     console.log(
       `Updated ${reference} to "${status}" (tier: ${resolvedTier}). No account exists yet for ${request.email} - the tier will apply automatically once they register with this email.`
     );
