@@ -89,6 +89,7 @@ model User {
   entitlements            Entitlement[]
   agreementAcceptances    AgreementAcceptance[]
   consentRecords          ConsentRecord[]
+  cryptoPayments          CryptoPayment[]
 
   @@index([email])
 }
@@ -221,7 +222,7 @@ model Entitlement {
   product String
   // active | past_due | cancelled | expired | refunded | disputed
   status  String
-  // How it was granted: stripe | crypto_manual | admin_grant
+  // How it was granted: stripe | crypto | crypto_manual | admin_grant
   source  String @default("stripe")
 
   stripeSubscriptionId String?
@@ -240,6 +241,48 @@ model Entitlement {
   @@index([status])
   @@index([product, status])
   @@index([stripeSubscriptionId])
+}
+
+// Crypto payments (USDT/TRC20 via NOWPayments). One row per invoice. The
+// processor webhook is matched back to the buyer through `orderId`, and
+// `providerPaymentId` + a paid-once guard keep a replayed or duplicated
+// webhook from granting access twice. Amounts are stored for the audit trail;
+// the entitlement remains the access source of truth.
+model CryptoPayment {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Our own reference sent to the processor as order_id (e.g. "cpay_<cuid>").
+  orderId String @unique
+  // Processor identifiers (populated as the invoice/payment progresses).
+  providerInvoiceId String?
+  providerPaymentId String?
+
+  // vip_membership; plan = monthly | quarterly; resolved tier at purchase time.
+  product String @default("vip_membership")
+  plan    String
+  tier    String?
+
+  amount      Float // USDT amount owed (1:1 USD)
+  currency    String @default("usd")
+  payCurrency String @default("usdttrc20")
+
+  // pending | confirming | paid | failed | expired | refunded
+  status String @default("pending")
+  // The consent signing this purchase is tied to.
+  consentRecordId String?
+  // Access window granted once paid.
+  accessDays     Int
+  periodEnd      DateTime?
+  paidAt         DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([providerPaymentId])
 }
 
 // Tokens are stored as hashes, never in raw form - only the raw value ever

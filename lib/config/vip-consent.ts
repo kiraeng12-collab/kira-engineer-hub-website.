@@ -13,7 +13,7 @@ import { legalConfig } from "./legal";
  * Kept short on purpose: four ticks plus name/country is a ~20 second signing.
  */
 
-export type ConsentType = "agreement" | "recurring_billing" | "risk" | "e_records";
+export type ConsentType = "agreement" | "recurring_billing" | "fixed_term" | "risk" | "e_records";
 
 export type ConsentItemDefinition = {
   type: ConsentType;
@@ -81,8 +81,41 @@ export const VIP_CONSENT_TYPES: ConsentType[] = [
   "e_records",
 ];
 
+/**
+ * Crypto VIP consents. Crypto is a one-time payment for a fixed access window,
+ * so the recurring-billing authorization is replaced by a fixed-term
+ * acknowledgement; the other three affirmative acts are unchanged.
+ */
+export function getCryptoVipConsentItems(): ConsentItemDefinition[] {
+  return getVipConsentItems().map((item) =>
+    item.type === "recurring_billing"
+      ? {
+          type: "fixed_term",
+          label:
+            "I understand this is a one-time crypto payment for a fixed access period that does NOT renew automatically, that crypto payments are final and non-refundable, and that access ends when the period lapses unless I pay again.",
+          agreement: null,
+          version: item.version,
+          documents: [{ title: "Refund and Cancellation Policy", href: "/legal/refund-policy" }],
+        }
+      : item
+  );
+}
+
+export const CRYPTO_VIP_CONSENT_TYPES: ConsentType[] = [
+  "agreement",
+  "fixed_term",
+  "risk",
+  "e_records",
+];
+
 /** Every consent must be ticked — returns the ones that are missing. */
 export function missingConsentTypes(provided: string[]): ConsentType[] {
   const given = new Set(provided);
   return VIP_CONSENT_TYPES.filter((type) => !given.has(type));
+}
+
+/** Crypto variant of {@link missingConsentTypes}. */
+export function missingCryptoConsentTypes(provided: string[]): ConsentType[] {
+  const given = new Set(provided);
+  return CRYPTO_VIP_CONSENT_TYPES.filter((type) => !given.has(type));
 }

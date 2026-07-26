@@ -335,6 +335,24 @@ async function checkDeployedConfig(base, secret) {
   console.log(`    PAYMENT_AUTOMATION_ENABLED = ${data.paymentAutomationEnabled}`);
 }
 
+function checkCrypto() {
+  console.log('\nCrypto payments (USDT / NOWPayments)');
+  const enabled = process.env.CRYPTO_CHECKOUT_ENABLED === 'true';
+  console.log(`  CRYPTO_CHECKOUT_ENABLED = ${process.env.CRYPTO_CHECKOUT_ENABLED ?? '(unset)'}  -> crypto ${enabled ? 'ON' : 'OFF'}`);
+  if (!enabled) {
+    ok('Crypto checkout is disabled (fine until you launch it)');
+    return;
+  }
+  if (!process.env.NOWPAYMENTS_API_KEY) fail('CRYPTO is ON but NOWPAYMENTS_API_KEY is missing');
+  else ok('NOWPAYMENTS_API_KEY is set');
+  if (!process.env.NOWPAYMENTS_IPN_SECRET) fail('CRYPTO is ON but NOWPAYMENTS_IPN_SECRET is missing (webhooks cannot be verified)');
+  else ok('NOWPAYMENTS_IPN_SECRET is set');
+  if (!process.env.CRON_SECRET) warn('CRON_SECRET not set - the crypto expiry sweep cannot be authorized');
+  else ok('CRON_SECRET is set (expiry sweep can run)');
+  console.log('  Reminder: set the NOWPayments IPN callback to https://www.kiraengineerhub.com/api/crypto/webhook');
+  console.log('  Reminder: set the NOWPayments payout wallet to your Trust Wallet USDT (TRC20) address');
+}
+
 async function checkDatabase() {
   console.log('\nDatabase');
   if (!process.env.DATABASE_URL) {
@@ -366,6 +384,7 @@ async function main() {
   checkEnv();
   checkSwitches();
   await checkStripe();
+  checkCrypto();
   await checkTelegram();
   await checkSharedSecret();
   await checkDatabase();

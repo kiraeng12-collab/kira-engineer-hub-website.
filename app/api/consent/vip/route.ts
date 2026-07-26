@@ -2,7 +2,12 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth/config";
 import { jsonResponse } from "@/lib/api-utils";
 import { getPrismaClient } from "@/lib/db/prisma";
-import { getVipConsentItems, missingConsentTypes } from "@/lib/config/vip-consent";
+import {
+  getVipConsentItems,
+  getCryptoVipConsentItems,
+  missingConsentTypes,
+  missingCryptoConsentTypes,
+} from "@/lib/config/vip-consent";
 
 export const runtime = "nodejs";
 
@@ -35,6 +40,7 @@ export async function POST(request: Request): Promise<Response> {
     country?: unknown;
     telegramUsername?: unknown;
     consents?: unknown;
+    paymentMethod?: unknown;
   } | null;
 
   const legalName = clean(body?.legalName, 120);
@@ -43,6 +49,9 @@ export async function POST(request: Request): Promise<Response> {
   const consents = Array.isArray(body?.consents)
     ? body.consents.filter((c): c is string => typeof c === "string")
     : [];
+  // Crypto is a one-time purchase, so it signs the fixed-term consent set
+  // (no recurring-billing authorization) instead of the card set.
+  const isCrypto = clean(body?.paymentMethod, 16) === "crypto";
 
   if (legalName.length < 2) {
     return jsonResponse(400, { message: "Please type your full legal name." });
@@ -52,7 +61,7 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   // Every consent is mandatory — partial signing is not a signing.
-  const missing = missingConsentTypes(consents);
+  const missing = isCrypto ? missingCryptoConsentTypes(consents) : missingConsentTypes(consents);
   if (missing.length > 0) {
     return jsonResponse(400, {
       message: "Please confirm every statement before continuing.",
@@ -60,7 +69,7 @@ export async function POST(request: Request): Promise<Response> {
     });
   }
 
-  const items = getVipConsentItems();
+  const items = isCrypto ? getCryptoVipConsentItems() : getVipConsentItems();
   const ipAddress = clientIp(request);
   const userAgent = request.headers.get("user-agent")?.slice(0, 512) ?? null;
 

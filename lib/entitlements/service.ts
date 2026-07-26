@@ -71,7 +71,7 @@ export type GrantInput = {
   userId: string;
   product: ProductId;
   status?: string;
-  source?: "stripe" | "crypto_manual" | "admin_grant";
+  source?: "stripe" | "crypto" | "crypto_manual" | "admin_grant";
   stripeSubscriptionId?: string | null;
   currentPeriodEnd?: Date | null;
   cancelAtPeriodEnd?: boolean;

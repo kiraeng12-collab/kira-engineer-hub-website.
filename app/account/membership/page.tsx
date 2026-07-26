@@ -5,7 +5,8 @@ import { authOptions } from "@/lib/auth/config";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { getStandardPriceDisplay, getEarlyBirdPriceDisplay, getFoundingPriceDisplay, type PlanId } from "@/lib/config/pricing";
 import { SubscribeButtons } from "@/components/account/SubscribeButtons";
-import { isCheckoutReady } from "@/lib/config/checkout-readiness";
+import { isCheckoutReady, getCheckoutReadiness } from "@/lib/config/checkout-readiness";
+import { isCryptoCheckoutEnabled } from "@/lib/config/crypto";
 import { ClaimDiscountButton } from "@/components/account/ClaimDiscountButton";
 
 export const metadata: Metadata = { title: "Membership" };
@@ -44,6 +45,9 @@ export default async function AccountMembershipPage() {
       : [null, null];
 
   const checkoutReady = isCheckoutReady();
+  // Crypto requires its own switch plus the shared legal-fields readiness.
+  const cryptoReady = isCryptoCheckoutEnabled() && getCheckoutReadiness().missingLegalFields.length === 0;
+  const anyPaymentReady = checkoutReady || cryptoReady;
 
   return (
     <div>
@@ -72,7 +76,7 @@ export default async function AccountMembershipPage() {
           <div className="notice">
             <strong>No active membership</strong>
             <br />
-            {checkoutReady
+            {anyPaymentReady
               ? "You don't have an active KIRA VIP Membership yet. Choose a plan below, confirm the membership documents, and your private Telegram access key is issued as soon as payment is confirmed."
               : "You don't have an active KIRA VIP Membership yet. Online checkout is being prepared - in the meantime, membership access is coordinated through Telegram."}
           </div>
@@ -87,8 +91,12 @@ export default async function AccountMembershipPage() {
           ) : (
             <ClaimDiscountButton />
           )}
-          {checkoutReady ? (
-            <SubscribeButtons tier={user?.membershipTier === "founding" || user?.membershipTier === "early_bird" ? user.membershipTier : null} />
+          {anyPaymentReady ? (
+            <SubscribeButtons
+              tier={user?.membershipTier === "founding" || user?.membershipTier === "early_bird" ? user.membershipTier : null}
+              cardEnabled={checkoutReady}
+              cryptoEnabled={cryptoReady}
+            />
           ) : null}
           <div className="actions">
             <Link className="button secondary" href="/membership">Compare Plans</Link>

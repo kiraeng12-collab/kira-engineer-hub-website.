@@ -29,6 +29,18 @@ export default function MembershipTermsPage() {
       <p>Cancellation stops future renewals when processed before the next renewal date. Unless required by law or stated otherwise, cancellation does not automatically refund already-paid periods and access may continue until the end of the paid period.</p>
       <h2>Failed payments and expiry</h2>
       <p>Failed, reversed or disputed payments may delay activation or lead to access removal. Expired membership may require a new access review.</p>
+      <h2>Crypto payments</h2>
+      <p>
+        Membership may also be purchased with cryptocurrency (USDT on the TRON/TRC20 network) through a third-party
+        crypto payment processor. Crypto payments are a <strong>one-time payment for a fixed access period</strong>
+        {" "}(30 days for the monthly plan, 90 days for the quarterly plan) and do <strong>not</strong> renew
+        automatically &mdash; access ends when the period lapses unless a new payment is made. The price is the same
+        USD amount, paid in USDT. Because blockchain transactions are irreversible, <strong>crypto payments are final
+        and non-refundable</strong> except where mandatory consumer law provides otherwise; see the{" "}
+        <Link href="/legal/refund-policy">Refund and Cancellation Policy</Link>. Members are responsible for sending
+        the correct amount on the correct network; payments sent on the wrong network or below the required amount may
+        not be credited.
+      </p>
       <h2>Community conduct</h2>
       <p>Members must follow the Community Rules. Kira Engineer Hub may pause or remove access for abuse, redistribution, harassment, unauthorized promotion, fake claims, chargeback abuse or security risk.</p>
       <h2>Early Bird terms</h2>

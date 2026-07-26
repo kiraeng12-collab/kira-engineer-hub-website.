@@ -1,5 +1,8 @@
 {
   "cleanUrls": true,
+  "crons": [
+    { "path": "/api/crypto/sweep", "schedule": "0 3 * * *" }
+  ],
   "headers": [
     {
       "source": "/:path*",
