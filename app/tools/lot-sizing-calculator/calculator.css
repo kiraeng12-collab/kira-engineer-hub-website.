@@ -1,0 +1,433 @@
+/* KIRA Lot Sizing Calculator — page-scoped styles.
+   All rules are namespaced under .lot-calc so they never collide with the
+   homepage-derived global rules. Colours come exclusively from the design
+   tokens in globals.css — no new palette. Mobile-first: single column by
+   default, two columns from 640px up. */
+
+.lot-calc {
+  --lc-gap: 16px;
+  display: grid;
+  gap: 22px;
+}
+
+.lot-calc__intro .eyebrow {
+  margin-bottom: 10px;
+}
+.lot-calc__powered {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* ---- Layout: form on the left, result on the right from 960px ---- */
+.lot-calc__panels {
+  display: grid;
+  gap: 22px;
+}
+@media (min-width: 960px) {
+  .lot-calc__panels {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.lot-calc__panel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: clamp(18px, 3vw, 26px);
+}
+
+.lot-calc__panel h2 {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+}
+
+/* ---- Form ---- */
+.lot-calc__grid {
+  display: grid;
+  gap: 14px;
+}
+@media (min-width: 640px) {
+  .lot-calc__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .lot-calc__grid .field.full {
+    grid-column: 1 / -1;
+  }
+}
+
+.lot-calc .field small {
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 0.74rem;
+}
+
+/* Risk mode selector */
+.lot-calc__modes {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 520px) {
+  .lot-calc__modes {
+    grid-template-columns: 1fr;
+  }
+}
+.lot-calc__mode {
+  text-align: left;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink);
+  padding: 12px 13px;
+  cursor: pointer;
+  transition: border-color var(--ease), background var(--ease), transform var(--ease);
+}
+.lot-calc__mode:hover {
+  border-color: rgba(43, 182, 168, 0.5);
+}
+.lot-calc__mode[aria-pressed="true"] {
+  border-color: var(--teal);
+  background: rgba(43, 182, 168, 0.12);
+  box-shadow: var(--focus);
+}
+.lot-calc__mode-name {
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+.lot-calc__mode-risk {
+  color: var(--teal);
+  font-weight: 800;
+  font-size: 0.82rem;
+  margin-top: 2px;
+}
+.lot-calc__mode-desc {
+  color: var(--muted);
+  font-size: 0.72rem;
+  margin-top: 6px;
+  line-height: 1.35;
+}
+
+.lot-calc__toggle-adv {
+  background: none;
+  border: 0;
+  color: var(--teal);
+  font-weight: 800;
+  cursor: pointer;
+  padding: 4px 0;
+  font-size: 0.86rem;
+}
+
+.lot-calc__advanced {
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
+}
+
+.lot-calc__checks {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+.lot-calc__check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 0.86rem;
+}
+.lot-calc__check input {
+  width: auto;
+}
+
+.lot-calc__submit {
+  margin-top: 18px;
+  width: 100%;
+}
+
+/* ---- Result ---- */
+.lot-calc__result-empty {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.lot-calc__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  border: 1px solid var(--border);
+}
+.lot-calc__status[data-tone="within_parameters"] {
+  color: var(--success);
+  border-color: rgba(61, 186, 131, 0.5);
+  background: rgba(61, 186, 131, 0.1);
+}
+.lot-calc__status[data-tone="caution"] {
+  color: var(--gold);
+  border-color: rgba(201, 162, 74, 0.5);
+  background: var(--gold-soft);
+}
+.lot-calc__status[data-tone="high_risk"],
+.lot-calc__status[data-tone="no_trade"] {
+  color: var(--danger);
+  border-color: rgba(223, 100, 113, 0.5);
+  background: rgba(223, 100, 113, 0.1);
+}
+
+.lot-calc__headline {
+  margin: 16px 0 4px;
+}
+.lot-calc__number {
+  font-family: var(--font-mono);
+  font-size: clamp(3rem, 12vw, 4.6rem);
+  line-height: 1;
+  font-weight: 800;
+  color: var(--aqua);
+  letter-spacing: -0.02em;
+}
+.lot-calc__number-unit {
+  font-size: 1.1rem;
+  color: var(--muted);
+  font-weight: 700;
+  margin-left: 8px;
+}
+.lot-calc__no-trade-title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--danger);
+}
+
+.lot-calc__kpis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin: 18px 0;
+}
+.lot-calc__kpi {
+  background: var(--surface);
+  padding: 12px 13px;
+}
+.lot-calc__kpi-label {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.lot-calc__kpi-value {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-top: 3px;
+}
+
+.lot-calc__entries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0 16px;
+}
+.lot-calc__entry-chip {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  border: 1px solid var(--teal);
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: var(--aqua);
+  font-size: 0.85rem;
+}
+
+.lot-calc__list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 14px;
+  display: grid;
+  gap: 8px;
+}
+.lot-calc__list li {
+  padding-left: 22px;
+  position: relative;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--stone);
+}
+.lot-calc__list li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+.lot-calc__list[data-tone="warning"] li::before {
+  background: var(--gold);
+}
+.lot-calc__list[data-tone="assumption"] li::before {
+  background: var(--muted);
+}
+.lot-calc__list[data-tone="reject"] li::before {
+  background: var(--danger);
+}
+
+.lot-calc__explain {
+  border-left: 3px solid var(--teal);
+  padding: 4px 0 4px 14px;
+  color: var(--stone);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 4px 0 16px;
+}
+
+.lot-calc__section-label {
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 0 0 8px;
+}
+
+.lot-calc__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+.lot-calc__actions .button {
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: 10px 16px;
+}
+
+.lot-calc__meta {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.lot-calc__disclaimer {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+
+.lot-calc__error {
+  color: var(--danger);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+.lot-calc__signal-notice {
+  border: 1px solid rgba(201, 162, 74, 0.5);
+  background: var(--gold-soft);
+  color: var(--gold);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin: 0 0 14px;
+  line-height: 1.45;
+}
+
+/* Telegram Mini App: hide the website chrome so only the calculator shows. */
+body.tg-miniapp .site-header,
+body.tg-miniapp .site-footer,
+body.tg-miniapp .announcement-bar,
+body.tg-miniapp .skip-link {
+  display: none !important;
+}
+body.tg-miniapp .section {
+  padding-top: 12px;
+}
+
+/* ---- VIP: saved accounts + history ---- */
+.lot-calc__vip-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.lot-calc__vip-bar select {
+  flex: 1 1 auto;
+}
+.lot-calc__vip-bar .button {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 10px 14px;
+  white-space: nowrap;
+}
+.lot-calc__profile-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.lot-calc__profile-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 6px 4px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--stone);
+}
+.lot-calc__profile-chip button {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 1;
+}
+.lot-calc__profile-chip button:hover {
+  color: var(--danger);
+}
+
+.lot-calc__history {
+  margin-top: 22px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+.lot-calc__history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.lot-calc__history-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+}
+.lot-calc__history-inst {
+  font-weight: 800;
+  min-width: 120px;
+}
+.lot-calc__history-pos {
+  font-family: var(--font-mono);
+  color: var(--stone);
+  flex: 1 1 auto;
+}

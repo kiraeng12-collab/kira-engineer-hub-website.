@@ -90,6 +90,8 @@ model User {
   agreementAcceptances    AgreementAcceptance[]
   consentRecords          ConsentRecord[]
   cryptoPayments          CryptoPayment[]
+  tradingAccountProfiles  TradingAccountProfile[]
+  lotSizeCalculations     LotSizeCalculation[]
 
   @@index([email])
 }
@@ -378,4 +380,67 @@ model EarlyBirdRequest {
 
   @@index([email])
   @@index([status])
+}
+
+// KIRA Lot Sizing Calculator — VIP saved account profile. Stores the reusable
+// account settings a member sizes trades against, so they don't re-enter them
+// each time. Deliberately holds NO broker/MT5 credentials and no card data —
+// only the parameters the calculator needs (per the product's data policy).
+model TradingAccountProfile {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  label           String // member-chosen name, e.g. "Exness $10k"
+  accountCurrency String
+  leverage        Int
+  brokerName      String?
+  accountType     String? // e.g. standard | raw | cent — informational only
+  // Optional defaults pre-filled into the form; equity is optional because it
+  // moves with open P&L and is usually entered fresh each session.
+  defaultEquity   Float?
+  defaultRiskMode String? // small | medium | big
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// KIRA Lot Sizing Calculator — persisted calculation, powering VIP history and
+// (later) Project 242 events. Free calculations are NOT stored; a row is
+// written only for an authenticated VIP. Inputs/outputs are kept as JSON for
+// forward-compatibility, with a few scalar columns promoted for querying. No
+// secrets or unnecessary financial data are stored.
+model LotSizeCalculation {
+  id     String  @id @default(cuid())
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  calculationVersion    String
+  riskMode              String // small | medium | big
+  riskModeVersion       String
+  instrumentSymbol      String
+  instrumentSpecVersion String
+  direction             String // BUY | SELL
+
+  // within_parameters | caution | high_risk | no_trade
+  status String
+
+  // Promoted scalars for history display / analytics.
+  accountCurrency     String
+  equity              Float
+  recommendedPosition Float?
+  normalRiskAmount    Float?
+  requiredMargin      Float?
+
+  // Full echo for auditability and later Project 242 replay.
+  inputs  Json
+  outputs Json
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([status])
+  @@index([riskMode])
 }
