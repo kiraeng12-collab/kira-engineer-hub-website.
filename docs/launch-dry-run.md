@@ -64,7 +64,7 @@ The bot derives `/verify-discount` and `/record-join` from that URL automaticall
 1. Stripe Dashboard → toggle **Test mode** (top right).
 2. **Products** → create *KIRA VIP Membership* with recurring prices:
    - Monthly **USD 70**, Quarterly **USD 189** (every 3 months)
-   - Founding Monthly **USD 50**, Founding Quarterly **USD 150**
+   - Founding Monthly **USD 50**, Founding Quarterly **USD 140**
    - Early Bird Monthly **USD 56**, Early Bird Quarterly **USD 160**
    (or just run `node scripts/stripe-setup.js --apply`, which creates all six.)
 4. **Developers → Webhooks → Add endpoint**

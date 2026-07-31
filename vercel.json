@@ -1,7 +1,8 @@
 {
   "cleanUrls": true,
   "crons": [
-    { "path": "/api/crypto/sweep", "schedule": "0 3 * * *" }
+    { "path": "/api/crypto/sweep", "schedule": "0 3 * * *" },
+    { "path": "/api/telegram/expiry-reminders", "schedule": "0 8 * * *" }
   ],
   "headers": [
     {

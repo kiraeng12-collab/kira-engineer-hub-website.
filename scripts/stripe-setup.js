@@ -25,7 +25,7 @@ const PRICES = [
   { key: 'STRIPE_PRICE_KIRA_VIP_MONTHLY', nickname: 'KIRA VIP Monthly', cents: 7000, months: 1 },
   { key: 'STRIPE_PRICE_KIRA_VIP_QUARTERLY', nickname: 'KIRA VIP Quarterly', cents: 18900, months: 3 },
   { key: 'STRIPE_PRICE_KIRA_VIP_MONTHLY_FOUNDING', nickname: 'KIRA VIP Monthly (Founding)', cents: 5000, months: 1 },
-  { key: 'STRIPE_PRICE_KIRA_VIP_QUARTERLY_FOUNDING', nickname: 'KIRA VIP Quarterly (Founding)', cents: 15000, months: 3 },
+  { key: 'STRIPE_PRICE_KIRA_VIP_QUARTERLY_FOUNDING', nickname: 'KIRA VIP Quarterly (Founding)', cents: 14000, months: 3 },
   { key: 'STRIPE_PRICE_KIRA_VIP_MONTHLY_EARLYBIRD', nickname: 'KIRA VIP Monthly (Early Bird)', cents: 5600, months: 1 },
   { key: 'STRIPE_PRICE_KIRA_VIP_QUARTERLY_EARLYBIRD', nickname: 'KIRA VIP Quarterly (Early Bird)', cents: 16000, months: 3 },
 ];

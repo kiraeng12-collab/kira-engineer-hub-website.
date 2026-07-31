@@ -1,6 +1,7 @@
 import type Stripe from "stripe";
 import { mapSubscriptionStatus } from "@/lib/stripe/status";
-import { syncTelegramAccessForUser } from "@/lib/telegram/membership-sync";
+import { syncTelegramAccessForUser, shouldRevokeTelegramAccess } from "@/lib/telegram/membership-sync";
+import { notifyOwnerAccessRevoked } from "@/lib/telegram/owner-alert";
 import { syncCopyBridgeForUser } from "@/lib/copy-bridge/sync";
 import { grantEntitlement, setEntitlementStatus } from "@/lib/entitlements/service";
 import type { PrismaClient } from "@/lib/generated/prisma";
@@ -108,4 +109,9 @@ export async function setMembershipStatusByCustomer(
   await setEntitlementStatus(prisma, user.id, "vip_membership", status, eventCreated).catch(() => {});
   await syncTelegramAccessForUser(prisma, user.id, status).catch(() => {});
   await syncCopyBridgeForUser(prisma, user.id).catch(() => {});
+
+  // Real-time owner alert on a genuine lapse (not on past_due grace / active).
+  if (shouldRevokeTelegramAccess(status)) {
+    await notifyOwnerAccessRevoked(prisma, user.id, "vip_membership", `card subscription ${status}`);
+  }
 }

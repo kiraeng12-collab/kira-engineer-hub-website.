@@ -34,7 +34,7 @@ export default function EarlyBirdPage() {
         <ul>
           <li>
             <strong>Founding Members</strong> (joined Kira Trading Community in 2024 or earlier): USD 50 per month or
-            USD 150 every three months.
+            USD 140 every three months.
           </li>
           <li>
             <strong>Early Bird</strong> (joined from 2025 through 1 August 2026): USD 56 per month or USD 160 every

@@ -7,7 +7,12 @@ import {
 } from "./membership-sync";
 import type { PrismaClient } from "@/lib/generated/prisma";
 
-vi.mock("@/lib/telegram/membership-sync", () => ({ syncTelegramAccessForUser: vi.fn().mockResolvedValue(undefined) }));
+vi.mock("@/lib/telegram/membership-sync", () => ({
+  syncTelegramAccessForUser: vi.fn().mockResolvedValue(undefined),
+  shouldRevokeTelegramAccess: (status: string) =>
+    new Set(["cancelled", "expired", "suspended", "refunded", "disputed"]).has(status),
+}));
+vi.mock("@/lib/telegram/owner-alert", () => ({ notifyOwnerAccessRevoked: vi.fn().mockResolvedValue(undefined) }));
 
 function fakePrisma(overrides: {
   user?: unknown;

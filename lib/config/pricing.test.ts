@@ -46,13 +46,13 @@ describe("pricing utilities", () => {
 
   it("returns the flat Founding Member prices", () => {
     expect(getFoundingPrice("monthly")).toBe(50);
-    expect(getFoundingPrice("quarterly")).toBe(150);
+    expect(getFoundingPrice("quarterly")).toBe(140);
   });
 
   describe("getPriceForTier", () => {
     it("returns the founding price for the founding tier", () => {
       expect(getPriceForTier("monthly", "founding")).toBe(50);
-      expect(getPriceForTier("quarterly", "founding")).toBe(150);
+      expect(getPriceForTier("quarterly", "founding")).toBe(140);
     });
 
     it("returns the early bird price for the early_bird tier", () => {

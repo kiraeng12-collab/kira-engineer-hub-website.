@@ -9,12 +9,12 @@ the member or trusted from client input.
 
 | Tier | Who qualifies | Monthly | Quarterly | How it's applied |
 |---|---|---|---|---|
-| **Founding Member** | Joined Kira Trading Community in 2024 or 2025 | USD 50 | USD 150 | A dedicated Stripe Price, used directly - no coupon |
+| **Founding Member** | Joined Kira Trading Community in 2024 or 2025 | USD 50 | USD 140 | A dedicated Stripe Price, used directly - no coupon |
 | **Early Bird** | Joined 2025 through 1 Aug 2026 | USD 56 (20% off) | USD 151.20 (20% off) | Standard Stripe Price + the shared `STRIPE_EARLY_BIRD_COUPON_ID` coupon |
 | **Standard** | Joined after 1 Aug 2026, or not otherwise eligible | USD 70 | USD 189 | Standard Stripe Price, no discount |
 
 Founding Member pricing doesn't reduce to a clean percentage of standard
-($50/$70 is ~28.6% off; $150/$189 is ~20.6% off) - reusing the percentage
+($50/$70 is ~28.6% off; $140/$189 is ~26% off) - reusing the percentage
 coupon mechanism from the Early Bird tier wouldn't work here without two
 different coupons per plan. Instead, Founding Members check out against
 their own dedicated Stripe Prices (`STRIPE_PRICE_KIRA_VIP_MONTHLY_FOUNDING`,
@@ -52,7 +52,7 @@ STRIPE_PRICE_KIRA_VIP_QUARTERLY_FOUNDING=
 
 Create these the same way as the standard Prices (see
 `docs/backend-phase-6.md`): two recurring Stripe Prices, USD 50/month and
-USD 150/3-months, under whatever Product naming you prefer.
+USD 140/3-months, under whatever Product naming you prefer.
 
 ## Migration note
 

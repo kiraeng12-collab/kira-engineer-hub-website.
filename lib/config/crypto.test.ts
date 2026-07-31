@@ -11,7 +11,7 @@ describe("crypto pricing", () => {
     expect(getCryptoAmount("monthly", null)).toBe(70);
     expect(getCryptoAmount("quarterly", null)).toBe(189);
     expect(getCryptoAmount("monthly", "founding")).toBe(50);
-    expect(getCryptoAmount("quarterly", "founding")).toBe(150);
+    expect(getCryptoAmount("quarterly", "founding")).toBe(140);
     expect(getCryptoAmount("monthly", "early_bird")).toBe(56);
     expect(getCryptoAmount("quarterly", "early_bird")).toBe(160);
   });

@@ -2,6 +2,7 @@ import { jsonResponse } from "@/lib/api-utils";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { setEntitlementStatus } from "@/lib/entitlements/service";
 import { syncTelegramAccessForUser } from "@/lib/telegram/membership-sync";
+import { notifyOwnerAccessRevoked } from "@/lib/telegram/owner-alert";
 import { isProductId } from "@/lib/config/products";
 
 export const runtime = "nodejs";
@@ -43,6 +44,7 @@ async function runSweep(request: Request): Promise<Response> {
     await syncTelegramAccessForUser(prisma, row.userId, "expired").catch((e) =>
       console.error("crypto sweep: telegram removal failed", row.userId, e)
     );
+    await notifyOwnerAccessRevoked(prisma, row.userId, row.product, "crypto membership period ended");
     expired += 1;
   }
 

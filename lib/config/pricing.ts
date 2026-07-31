@@ -48,7 +48,7 @@ export const pricingConfig = {
       id: "quarterly" as const,
       name: "KIRA VIP Quarterly",
       amountCents: 18900,
-      foundingAmountCents: 15000,
+      foundingAmountCents: 14000,
       earlyBirdAmountCents: 16000,
       billingMonths: 3,
       recurringInterval: "month" as const,

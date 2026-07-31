@@ -28,7 +28,7 @@ const EXPECTED_PRICES = [
   { env: 'STRIPE_PRICE_KIRA_VIP_MONTHLY', label: 'Monthly', cents: 7000, months: 1, required: true },
   { env: 'STRIPE_PRICE_KIRA_VIP_QUARTERLY', label: 'Quarterly', cents: 18900, months: 3, required: false },
   { env: 'STRIPE_PRICE_KIRA_VIP_MONTHLY_FOUNDING', label: 'Founding monthly', cents: 5000, months: 1, required: false },
-  { env: 'STRIPE_PRICE_KIRA_VIP_QUARTERLY_FOUNDING', label: 'Founding quarterly', cents: 15000, months: 3, required: false },
+  { env: 'STRIPE_PRICE_KIRA_VIP_QUARTERLY_FOUNDING', label: 'Founding quarterly', cents: 14000, months: 3, required: false },
   { env: 'STRIPE_PRICE_KIRA_VIP_MONTHLY_EARLYBIRD', label: 'Early Bird monthly', cents: 5600, months: 1, required: false },
   { env: 'STRIPE_PRICE_KIRA_VIP_QUARTERLY_EARLYBIRD', label: 'Early Bird quarterly', cents: 16000, months: 3, required: false },
 ];
