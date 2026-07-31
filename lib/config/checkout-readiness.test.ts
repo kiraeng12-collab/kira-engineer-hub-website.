@@ -18,6 +18,31 @@ describe("checkout readiness fail-safe", () => {
   });
 });
 
+describe("public launch gate", () => {
+  const before = new Date("2026-07-01T00:00:00Z");
+  const after = new Date("2026-12-01T00:00:00Z");
+  const enabled = { ...process.env, CHECKOUT_ENABLED: "true" };
+
+  it("is ready but NOT open before the launch moment", () => {
+    const r = getCheckoutReadiness(enabled, before);
+    expect(r.ready).toBe(true);
+    expect(r.launched).toBe(false);
+    expect(r.open).toBe(false);
+  });
+
+  it("opens once the launch moment has passed", () => {
+    const r = getCheckoutReadiness(enabled, after);
+    expect(r.launched).toBe(true);
+    expect(r.open).toBe(true);
+  });
+
+  it("honours a LAUNCH_AT override", () => {
+    const r = getCheckoutReadiness({ ...enabled, LAUNCH_AT: "2020-01-01T00:00:00Z" }, before);
+    expect(r.launched).toBe(true);
+    expect(r.open).toBe(true);
+  });
+});
+
 // The whole point of this module is that a missing legal value can never be
 // overridden by the env switch. Prove that guarantee still holds by putting a
 // placeholder back through a mocked legalConfig.

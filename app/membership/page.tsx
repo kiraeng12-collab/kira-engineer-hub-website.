@@ -17,6 +17,11 @@ import {
   formatUSD,
 } from "@/lib/config/pricing";
 import { getCheckoutReadiness } from "@/lib/config/checkout-readiness";
+import { LAUNCH_DISPLAY } from "@/lib/config/launch";
+
+// Rendered per request so the launch gate opens itself at the exact launch
+// moment without a redeploy.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "KIRA VIP Membership",
@@ -38,6 +43,7 @@ const membershipComparisonRows = comparisonRows.filter((row) =>
 
 export default function MembershipPage() {
   const readiness = getCheckoutReadiness();
+  const preLaunch = readiness.ready && !readiness.launched;
   const quarterlySaving = getQuarterlySaving();
 
   return (
@@ -111,7 +117,7 @@ export default function MembershipPage() {
             <p><strong>{getStandardPriceDisplay("monthly")}</strong></p>
             <p>
               Monthly educational membership.{" "}
-              {readiness.ready
+              {readiness.open
                 ? "Renews automatically until you cancel."
                 : "Online recurring checkout is being prepared."}
             </p>
@@ -143,22 +149,31 @@ export default function MembershipPage() {
 
         <section className="checkout-panel" id="online-checkout">
           <h2>Online checkout</h2>
-          <p className="small-disclosure">
-            Checkout is connected to Stripe and remains controlled by the backend safety switch. You&apos;ll need to{" "}
-            <Link href="/login?callbackUrl=/membership">sign in</Link> (or{" "}
-            <Link href="/register">create an account</Link>) before choosing a plan when checkout is enabled.
-          </p>
-          <form data-checkout-form>
-            <div className="checkout-grid">
-              <button className="button" type="submit" name="plan" value="monthly">Pay Monthly VIP</button>
-              <button className="button secondary" type="submit" name="plan" value="quarterly">Pay Quarterly VIP</button>
-            </div>
-            <p className="checkout-status" data-checkout-status aria-live="polite">
-              {readiness.ready
-                ? "You'll confirm the membership documents before payment, then receive your private Telegram access key."
-                : "Online checkout is being prepared. Telegram access remains available."}
+          {readiness.open ? (
+            <>
+              <p className="small-disclosure">
+                Checkout is connected to Stripe. You&apos;ll need to{" "}
+                <Link href="/login?callbackUrl=/membership">sign in</Link> (or{" "}
+                <Link href="/register">create an account</Link>) before choosing a plan.
+              </p>
+              <form data-checkout-form>
+                <div className="checkout-grid">
+                  <button className="button" type="submit" name="plan" value="monthly">Pay Monthly VIP</button>
+                  <button className="button secondary" type="submit" name="plan" value="quarterly">Pay Quarterly VIP</button>
+                </div>
+                <p className="checkout-status" data-checkout-status aria-live="polite">
+                  You&apos;ll confirm the membership documents before payment, then receive your private Telegram access key.
+                </p>
+              </form>
+            </>
+          ) : preLaunch ? (
+            <p className="checkout-status">
+              🚀 Online checkout opens at launch &mdash; {LAUNCH_DISPLAY}. Until then, membership access is coordinated
+              through Telegram.
             </p>
-          </form>
+          ) : (
+            <p className="checkout-status">Online checkout is being prepared. Telegram access remains available.</p>
+          )}
         </section>
 
         <section>
@@ -191,7 +206,7 @@ export default function MembershipPage() {
           <details>
             <summary>How is access delivered?</summary>
             <p>
-              {readiness.ready
+              {readiness.open
                 ? "After payment you confirm the membership documents, then the KIRA bot sends you a private, single-use invite to the VIP Telegram group. Confirm renewal, cancellation, and refund terms before payment."
                 : "Access is currently coordinated through Telegram while online checkout is being prepared. Confirm renewal, cancellation, and refund terms before payment."}
             </p>
@@ -207,7 +222,7 @@ export default function MembershipPage() {
         </section>
 
         <div className="pricing-actions">
-          {readiness.ready ? (
+          {readiness.open ? (
             <a className="button cyan" href="#online-checkout">Continue to Secure Checkout</a>
           ) : (
             <ActionLink className="button cyan" href={siteConfig.social.telegramMembershipSupport}>Request Membership Access</ActionLink>

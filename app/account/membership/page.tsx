@@ -5,7 +5,7 @@ import { authOptions } from "@/lib/auth/config";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { getStandardPriceDisplay, getEarlyBirdPriceDisplay, getFoundingPriceDisplay, type PlanId } from "@/lib/config/pricing";
 import { SubscribeButtons } from "@/components/account/SubscribeButtons";
-import { isCheckoutReady, getCheckoutReadiness } from "@/lib/config/checkout-readiness";
+import { getCheckoutReadiness } from "@/lib/config/checkout-readiness";
 import { isCryptoCheckoutEnabled } from "@/lib/config/crypto";
 import { ClaimDiscountButton } from "@/components/account/ClaimDiscountButton";
 
@@ -44,9 +44,12 @@ export default async function AccountMembershipPage() {
         ])
       : [null, null];
 
-  const checkoutReady = isCheckoutReady();
-  // Crypto requires its own switch plus the shared legal-fields readiness.
-  const cryptoReady = isCryptoCheckoutEnabled() && getCheckoutReadiness().missingLegalFields.length === 0;
+  const readiness = getCheckoutReadiness();
+  // Both paths are gated by the public launch moment: fully wired now, but
+  // unable to transact until launch.
+  const checkoutReady = readiness.open;
+  // Crypto requires its own switch plus the shared legal-fields readiness and launch gate.
+  const cryptoReady = isCryptoCheckoutEnabled() && readiness.missingLegalFields.length === 0 && readiness.launched;
   const anyPaymentReady = checkoutReady || cryptoReady;
 
   return (

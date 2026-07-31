@@ -17,7 +17,7 @@ function requireEnv(name: string): string {
 }
 
 export async function POST(request: Request): Promise<Response> {
-  if (!getCheckoutReadiness().ready) {
+  if (!getCheckoutReadiness().open) {
     return jsonResponse(503, {
       message: "Online checkout is being prepared. Please request membership access through Telegram or email.",
     });

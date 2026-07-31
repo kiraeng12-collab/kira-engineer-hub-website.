@@ -26,9 +26,10 @@ function siteBase(): string {
 
 export async function POST(request: Request): Promise<Response> {
   // Crypto has its own switch, but still requires the legal fields to be
-  // complete (shared readiness) before any purchase can be started.
+  // complete (shared readiness) and the public launch gate to have opened
+  // before any purchase can be started.
   const readiness = getCheckoutReadiness();
-  if (!isCryptoCheckoutEnabled() || readiness.missingLegalFields.length > 0) {
+  if (!isCryptoCheckoutEnabled() || readiness.missingLegalFields.length > 0 || !readiness.launched) {
     return jsonResponse(503, { message: "Crypto payment is being prepared. Please try again later." });
   }
 
