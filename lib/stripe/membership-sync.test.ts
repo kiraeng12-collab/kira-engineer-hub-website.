@@ -105,6 +105,46 @@ describe("upsertMembershipFromSubscription", () => {
     expect(call.create.plan).toBe("quarterly");
     expect(call.create.tier).toBe("early_bird");
   });
+
+  it("grants the copy_trading entitlement when the copy-trading price is on the subscription", async () => {
+    process.env.STRIPE_PRICE_KIRA_COPY_TRADING = "price_copy_123";
+    const prisma = fakePrisma({ user: { id: "user_1" }, existingMembership: null });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (prisma as any).entitlement = {
+      findUnique: vi.fn().mockResolvedValue(null),
+      upsert: vi.fn().mockResolvedValue({}),
+    };
+    const sub = fakeSubscription({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      items: { data: [{ current_period_end: 1735689600, price: { id: "price_copy_123" } }] } as any,
+    });
+    await upsertMembershipFromSubscription(prisma, sub, 1700000000);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const products = (prisma as any).entitlement.upsert.mock.calls.map((c: any) => c[0].create.product);
+    expect(products).toContain("copy_trading");
+    expect(products).toContain("vip_membership"); // VIP path still granted, unregressed
+    delete process.env.STRIPE_PRICE_KIRA_COPY_TRADING;
+  });
+
+  it("does not grant copy_trading when no copy-trading price is present", async () => {
+    process.env.STRIPE_PRICE_KIRA_COPY_TRADING = "price_copy_123";
+    const prisma = fakePrisma({ user: { id: "user_1" }, existingMembership: null });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (prisma as any).entitlement = {
+      findUnique: vi.fn().mockResolvedValue(null),
+      upsert: vi.fn().mockResolvedValue({}),
+    };
+    // items carry a different (VIP) price, not the copy-trading one
+    const sub = fakeSubscription({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      items: { data: [{ current_period_end: 1735689600, price: { id: "price_vip_999" } }] } as any,
+    });
+    await upsertMembershipFromSubscription(prisma, sub, 1700000000);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const products = (prisma as any).entitlement.upsert.mock.calls.map((c: any) => c[0].create.product);
+    expect(products).not.toContain("copy_trading");
+    delete process.env.STRIPE_PRICE_KIRA_COPY_TRADING;
+  });
 });
 
 describe("setMembershipStatusByCustomer", () => {

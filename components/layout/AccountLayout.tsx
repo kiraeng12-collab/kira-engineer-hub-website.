@@ -21,12 +21,19 @@ export function AccountLayout({
   name,
   email,
   children,
+  showCopyTrading = false,
 }: {
   name: string | null;
   email: string;
   children: React.ReactNode;
+  showCopyTrading?: boolean;
 }) {
   const pathname = usePathname();
+
+  // Copy Trading only appears for members who hold the add-on.
+  const nav = showCopyTrading
+    ? [...ACCOUNT_NAV, { href: "/account/copy-trading", label: "Copy Trading" }]
+    : ACCOUNT_NAV;
 
   return (
     <div className="doc-page account-shell">
@@ -36,7 +43,7 @@ export function AccountLayout({
           <span className="muted">{email}</span>
         </div>
         <nav className="account-nav" aria-label="Account navigation">
-          {ACCOUNT_NAV.map((item) => {
+          {nav.map((item) => {
             const isActive = item.href === "/account" ? pathname === "/account" : pathname === item.href;
             return (
               <Link key={item.href} href={item.href} aria-current={isActive ? "page" : undefined}>

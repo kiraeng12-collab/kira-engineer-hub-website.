@@ -6,6 +6,7 @@ import {
   customerIdOf,
   upsertMembershipFromSubscription,
   setMembershipStatusByCustomer,
+  applyAddonEntitlements,
 } from "@/lib/stripe/membership-sync";
 import { markConsentEffective } from "@/lib/agreements/service";
 import type { PrismaClient } from "@/lib/generated/prisma";
@@ -36,6 +37,8 @@ async function handleEvent(prisma: PrismaClient, stripe: Stripe, event: Stripe.E
       const subscription = event.data.object as Stripe.Subscription;
       const customerId = customerIdOf(subscription.customer);
       await setMembershipStatusByCustomer(prisma, customerId, "cancelled", event.created);
+      // Also cancel any add-on entitlements (e.g. copy-trading) on this subscription.
+      await applyAddonEntitlements(prisma, subscription, "cancelled", null, event.created);
       break;
     }
     case "checkout.session.completed": {

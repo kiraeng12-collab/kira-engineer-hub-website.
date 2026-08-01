@@ -2630,3 +2630,16 @@
         flex: 0 0 auto;
       }
       .account-chip-name { max-width: 12ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Copy Trading member settings (account/copy-trading) */
+.copy-settings-form { display: grid; gap: 16px; max-width: 480px; }
+.copy-settings-form .actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.form-success { color: var(--success); font-weight: 600; }
+.form-error { color: var(--danger); font-weight: 600; }
+
+/* Copy Trading account + performance figures */
+.account-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 8px; }
+.account-stats > div { border: 1px solid var(--line, #29323D); border-radius: 12px; padding: 12px 14px; }
+.account-stats span { display: block; color: var(--muted, #98A2AE); font-size: 12.5px; }
+.account-stats strong { display: block; margin-top: 4px; font-size: 18px; font-variant-numeric: tabular-nums; }
+.pnl-pos { color: var(--success); } .pnl-neg { color: var(--danger); }

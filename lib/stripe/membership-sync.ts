@@ -4,6 +4,7 @@ import { syncTelegramAccessForUser, shouldRevokeTelegramAccess } from "@/lib/tel
 import { notifyOwnerAccessRevoked } from "@/lib/telegram/owner-alert";
 import { syncCopyBridgeForUser } from "@/lib/copy-bridge/sync";
 import { grantEntitlement, setEntitlementStatus } from "@/lib/entitlements/service";
+import { productForPriceId } from "@/lib/config/products";
 import type { PrismaClient } from "@/lib/generated/prisma";
 
 // Extracted from app/api/stripe/webhook/route.ts so this business logic -
@@ -78,12 +79,56 @@ export async function upsertMembershipFromSubscription(
     eventCreatedAt: eventCreated,
   }).catch(() => {});
 
+  // Grant add-on entitlements (e.g. the copy-trading add-on) for any add-on
+  // Price on this subscription. VIP is handled above; this only adds add-ons.
+  await applyAddonEntitlements(prisma, subscription, status, currentPeriodEnd, eventCreated);
+
   // Telegram removal failures shouldn't fail the whole webhook and trigger a
   // Stripe retry - log it and move on; it can be resolved manually.
   await syncTelegramAccessForUser(prisma, user.id, status).catch(() => {});
 
   // Mirror copy-trading access to the MT5 copy bridge (no-op until configured).
   await syncCopyBridgeForUser(prisma, user.id).catch(() => {});
+}
+
+/**
+ * Grants (or updates) entitlements for ADD-ON products on a subscription — e.g.
+ * the copy-trading add-on. VIP membership is handled by its own path, so this is
+ * purely additive and cannot regress the VIP flow. Unknown/unmapped prices are
+ * ignored. Callable on cancellation too (pass status "cancelled").
+ */
+export async function applyAddonEntitlements(
+  prisma: PrismaClient,
+  subscription: Stripe.Subscription,
+  status: string,
+  currentPeriodEnd: Date | null,
+  eventCreated: number
+): Promise<void> {
+  const customerId = customerIdOf(subscription.customer);
+  if (!customerId) return;
+  const user = await prisma.user.findUnique({ where: { stripeCustomerId: customerId } });
+  if (!user) return;
+
+  let touchedCopyTrading = false;
+  for (const item of subscription.items?.data ?? []) {
+    const priceId = typeof item.price === "string" ? item.price : item.price?.id;
+    const product = productForPriceId(priceId);
+    if (!product || product.id === "vip_membership") continue; // add-ons only
+    await grantEntitlement(prisma, {
+      userId: user.id,
+      product: product.id,
+      status,
+      source: "stripe",
+      stripeSubscriptionId: subscription.id,
+      currentPeriodEnd,
+      cancelAtPeriodEnd: subscription.cancel_at_period_end,
+      eventCreatedAt: eventCreated,
+    }).catch(() => {});
+    if (product.id === "copy_trading") touchedCopyTrading = true;
+  }
+
+  // A change to copy-trading access mirrors to the bridge (activate/revoke).
+  if (touchedCopyTrading) await syncCopyBridgeForUser(prisma, user.id).catch(() => {});
 }
 
 export async function setMembershipStatusByCustomer(
