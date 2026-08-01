@@ -380,11 +380,15 @@
   font-size: 0.78rem;
 }
 
-/* Telegram Mini App: hide the website chrome so only the calculator shows. */
+/* Telegram Mini App: hide the website chrome so only the calculator shows.
+   The cookie-consent banner is hidden too — inside Telegram's iframe the
+   consent cookie can't persist, so it would reappear on every open and cover
+   the form; a Mini App is a Telegram surface, not a website visit. */
 body.tg-miniapp .site-header,
 body.tg-miniapp .site-footer,
 body.tg-miniapp .announcement-bar,
-body.tg-miniapp .skip-link {
+body.tg-miniapp .skip-link,
+body.tg-miniapp [data-cookie-banner] {
   display: none !important;
 }
 body.tg-miniapp .section {
