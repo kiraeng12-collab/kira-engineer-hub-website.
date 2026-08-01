@@ -1,4 +1,4 @@
-interface TelegramConfig {
+export interface TelegramConfig {
   botToken: string;
   botUsername: string;
   groupChatId: string;
@@ -74,6 +74,65 @@ export async function createSingleUseInviteLink(
     expire_date: Math.floor(Date.now() / 1000) + expireSeconds,
   });
   return result.invite_link;
+}
+
+export type ChatMemberStatus =
+  | "creator"
+  | "administrator"
+  | "member"
+  | "restricted"
+  | "left"
+  | "kicked";
+
+// Statuses that mean the user is currently *in* the chat.
+const ACTIVE_MEMBER_STATUSES = new Set<ChatMemberStatus>([
+  "creator",
+  "administrator",
+  "member",
+  "restricted",
+]);
+
+/**
+ * The user's membership status in a chat, or null when the lookup fails —
+ * notably, Telegram returns PARTICIPANT_ID_INVALID (an API error) for a user
+ * that was never in the chat, which callTelegramApi throws on; we treat that
+ * as "not a member" rather than a hard failure.
+ */
+export async function getChatMemberStatus(
+  botToken: string,
+  chatId: number | string,
+  telegramUserId: number | string
+): Promise<ChatMemberStatus | null> {
+  try {
+    const result = await callTelegramApi<{ status: ChatMemberStatus; is_member?: boolean }>(
+      botToken,
+      "getChatMember",
+      { chat_id: chatId, user_id: telegramUserId }
+    );
+    // A restricted user who has left still reports "restricted" but with
+    // is_member=false — normalise that to "left" so it doesn't grant access.
+    if (result.status === "restricted" && result.is_member === false) return "left";
+    return result.status;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * True when the Telegram user is an active member of the VIP group or (when
+ * configured) the VIP channel. This is the Telegram-native VIP signal used to
+ * gate the Lot Sizing Calculator — it needs no website-account linking. The
+ * bot must be an administrator of the chat for the lookup to cover all users.
+ */
+export async function isVipGroupMember(
+  config: TelegramConfig,
+  telegramUserId: number | string
+): Promise<boolean> {
+  for (const chatId of membershipChatIds(config)) {
+    const status = await getChatMemberStatus(config.botToken, chatId, telegramUserId);
+    if (status && ACTIVE_MEMBER_STATUSES.has(status)) return true;
+  }
+  return false;
 }
 
 /**

@@ -213,6 +213,31 @@ export function LotSizeCalculator({
   const riskModes = meta?.riskModes ?? [];
   const instruments = meta?.instruments ?? [{ symbol: "XAUUSD", displayName: "Gold", assetClass: "metal" }];
 
+  // Gate: the calculator is VIP-only. Wait for metadata (which carries the
+  // server-resolved access tier) before deciding, so non-VIP never see the form.
+  if (meta === null) {
+    return <p className="lot-calc__result-empty">Loading KIRA calculator…</p>;
+  }
+  if (meta.access !== "vip") {
+    return (
+      <div className="lot-calc__lock">
+        <div className="lot-calc__lock-badge" aria-hidden="true">🔒</div>
+        <h2>VIP members only</h2>
+        <p>
+          The KIRA Lot Sizing Calculator is an exclusive tool for KIRA VIP members. Join the VIP community to unlock
+          risk-first position sizing, stress-tested lots, saved accounts, and signal-linked calculations.
+        </p>
+        <a className="button cyan" href="https://www.kiraengineerhub.com/membership" target="_blank" rel="noopener noreferrer">
+          Get VIP Access
+        </a>
+        <p className="lot-calc__lock-note">
+          Already a VIP? Open this from inside the KIRA VIP bot while your Telegram account is a member of the VIP
+          group, so we can verify your access.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="lot-calc__panels">
       {/* ---- Input panel ---- */}
