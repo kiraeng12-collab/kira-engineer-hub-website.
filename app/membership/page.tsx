@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Script from "next/script";
 import { ActionLink } from "@/components/ActionLink";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ComparisonTable } from "@/components/ComparisonTable";
@@ -152,19 +151,17 @@ export default function MembershipPage() {
           {readiness.open ? (
             <>
               <p className="small-disclosure">
-                Checkout is connected to Stripe. You&apos;ll need to{" "}
-                <Link href="/login?callbackUrl=/membership">sign in</Link> (or{" "}
-                <Link href="/register">create an account</Link>) before choosing a plan.
+                Checkout is connected to Stripe. Choose your plan, confirm the membership documents, and pay securely in
+                your account. You&apos;ll <Link href="/login?callbackUrl=/account/membership">sign in</Link> (or{" "}
+                <Link href="/register">create an account</Link>) first.
               </p>
-              <form data-checkout-form>
-                <div className="checkout-grid">
-                  <button className="button" type="submit" name="plan" value="monthly">Pay Monthly VIP</button>
-                  <button className="button secondary" type="submit" name="plan" value="quarterly">Pay Quarterly VIP</button>
-                </div>
-                <p className="checkout-status" data-checkout-status aria-live="polite">
-                  You&apos;ll confirm the membership documents before payment, then receive your private Telegram access key.
-                </p>
-              </form>
+              <div className="checkout-grid">
+                <Link className="button cyan" href="/account/membership">Continue to secure checkout</Link>
+              </div>
+              <p className="checkout-status">
+                You&apos;ll pick Monthly or Quarterly, confirm the membership documents, then pay by card or crypto and
+                receive your private Telegram access key.
+              </p>
             </>
           ) : preLaunch ? (
             <p className="checkout-status">
@@ -223,14 +220,13 @@ export default function MembershipPage() {
 
         <div className="pricing-actions">
           {readiness.open ? (
-            <a className="button cyan" href="#online-checkout">Continue to Secure Checkout</a>
+            <Link className="button cyan" href="/account/membership">Continue to Secure Checkout</Link>
           ) : (
             <ActionLink className="button cyan" href={siteConfig.social.telegramMembershipSupport}>Request Membership Access</ActionLink>
           )}
           <Link className="button secondary" href="/membership/compare">Compare Products</Link>
         </div>
       </div>
-      <Script src="/scripts/checkout-handler.js" strategy="afterInteractive" />
     </div>
   );
 }
