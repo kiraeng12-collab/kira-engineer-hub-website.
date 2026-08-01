@@ -45,7 +45,7 @@
         throw new Error(data.message || "Checkout is not available yet. Please request access through Telegram or email.");
       }
       if (!data.url) {
-        throw new Error("Checkout link was not created. Please contact KE@kiraengineerhub.com.");
+        throw new Error("Checkout link was not created. Please contact support@ke-hub.com.");
       }
       window.location.href = data.url;
     } catch (error) {

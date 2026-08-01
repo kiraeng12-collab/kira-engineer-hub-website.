@@ -10,10 +10,10 @@ export const siteConfig = {
   websiteUrl: "https://www.kiraengineerhub.com",
 
   contact: {
-    general: "KE@kiraengineerhub.com",
-    support: "KE@kiraengineerhub.com",
-    privacy: "KE@kiraengineerhub.com",
-    complaints: "KE@kiraengineerhub.com",
+    general: "support@ke-hub.com",
+    support: "support@ke-hub.com",
+    privacy: "support@ke-hub.com",
+    complaints: "support@ke-hub.com",
   },
 
   social: {

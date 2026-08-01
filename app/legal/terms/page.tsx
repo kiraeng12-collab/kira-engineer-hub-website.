@@ -68,7 +68,7 @@ export default function TermsPage() {
         prejudice to any mandatory consumer-protection rights you may have in your country of residence.
       </p>
       <h2>15. Contact</h2>
-      <p>Contact: <a href="mailto:KE@kiraengineerhub.com">KE@kiraengineerhub.com</a>.</p>
+      <p>Contact: <a href="mailto:support@ke-hub.com">support@ke-hub.com</a>.</p>
     </LegalPageLayout>
   );
 }

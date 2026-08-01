@@ -127,7 +127,7 @@ export async function POST(request: Request): Promise<Response> {
     // server log, otherwise a failed checkout is undiagnosable.
     console.error("create-checkout-session failed", error);
     return jsonResponse(500, {
-      message: "Checkout could not be started safely. Please contact KE@kiraengineerhub.com.",
+      message: "Checkout could not be started safely. Please contact support@ke-hub.com.",
     });
   }
 }

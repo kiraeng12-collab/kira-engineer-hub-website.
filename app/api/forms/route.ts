@@ -168,14 +168,14 @@ export async function POST(request: Request): Promise<Response> {
       reference,
       formType,
       submittedAt: new Date().toISOString(),
-      to: "KE@kiraengineerhub.com",
+      to: "support@ke-hub.com",
       fields: cleanedFields,
       source: { userAgent, ipHint },
     };
 
     if (!process.env.FORM_WEBHOOK_URL && !process.env.ADMIN_WEBHOOK_URL) {
       return jsonResponse(503, {
-        message: "Form delivery is not configured yet. Please contact KE@kiraengineerhub.com directly.",
+        message: "Form delivery is not configured yet. Please contact support@ke-hub.com directly.",
       });
     }
 
@@ -196,7 +196,7 @@ export async function POST(request: Request): Promise<Response> {
     }
 
     if (!delivered) {
-      return jsonResponse(502, { message: "Form delivery failed. Please contact KE@kiraengineerhub.com directly." });
+      return jsonResponse(502, { message: "Form delivery failed. Please contact support@ke-hub.com directly." });
     }
 
     return jsonResponse(200, { reference });

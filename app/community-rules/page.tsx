@@ -33,7 +33,7 @@ export default function CommunityRulesPage() {
           <h2>Enforcement</h2>
           <p>Moderators may warn, restrict, pause or remove members depending on severity. Serious conduct may result in immediate removal.</p>
           <h2>Appeals and reporting</h2>
-          <p>Reports or appeals can be sent to <a href="mailto:KE@kiraengineerhub.com">KE@kiraengineerhub.com</a> with relevant context and evidence.</p>
+          <p>Reports or appeals can be sent to <a href="mailto:support@ke-hub.com">support@ke-hub.com</a> with relevant context and evidence.</p>
         </article>
       </div>
     </div>

@@ -115,7 +115,7 @@ export async function POST(request: Request): Promise<Response> {
   } catch (error) {
     console.error("create-crypto-invoice failed", error);
     return jsonResponse(500, {
-      message: "Crypto payment could not be started safely. Please contact KE@kiraengineerhub.com.",
+      message: "Crypto payment could not be started safely. Please contact support@ke-hub.com.",
     });
   }
 }

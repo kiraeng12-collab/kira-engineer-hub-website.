@@ -13,7 +13,7 @@ export default function PrivacyPolicyPage() {
       <h2>Controller identity</h2>
       <p>
         Kira Engineer Hub operates this website and related contact channels. Final legal entity details will be
-        published when supplied by the owner. Privacy contact: <a href="mailto:KE@kiraengineerhub.com">KE@kiraengineerhub.com</a>.
+        published when supplied by the owner. Privacy contact: <a href="mailto:support@ke-hub.com">support@ke-hub.com</a>.
       </p>
       <h2>Information collected</h2>
       <ul>

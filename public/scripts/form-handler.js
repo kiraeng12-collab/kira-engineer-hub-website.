@@ -32,13 +32,13 @@
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) {
-        throw new Error(data.message || "The request could not be sent. Please contact KE@kiraengineerhub.com.");
+        throw new Error(data.message || "The request could not be sent. Please contact support@ke-hub.com.");
       }
       form.reset();
       if (status) status.textContent = "Request received. Reference: " + (data.reference || "sent");
     } catch (error) {
       if (status) {
-        status.textContent = error.message || "The request could not be sent. Please contact KE@kiraengineerhub.com.";
+        status.textContent = error.message || "The request could not be sent. Please contact support@ke-hub.com.";
       }
     } finally {
       if (button) button.disabled = false;

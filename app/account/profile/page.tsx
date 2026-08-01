@@ -21,7 +21,7 @@ export default async function AccountProfilePage() {
         <h2>Email</h2>
         <p>{session?.user?.email}</p>
         <p className="small-disclosure">
-          To change the email address on your account, please contact <a href="mailto:KE@kiraengineerhub.com">support</a>.
+          To change the email address on your account, please contact <a href="mailto:support@ke-hub.com">support</a>.
         </p>
       </section>
       <section>

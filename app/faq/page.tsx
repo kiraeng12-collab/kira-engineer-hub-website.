@@ -105,7 +105,7 @@ export default function FaqPage() {
         </details>
         <details>
           <summary>How can I contact support?</summary>
-          <p>Use Telegram or email <a href="mailto:KE@kiraengineerhub.com">KE@kiraengineerhub.com</a>.</p>
+          <p>Use Telegram or email <a href="mailto:support@ke-hub.com">support@ke-hub.com</a>.</p>
         </details>
         <details>
           <summary>How does the affiliate program work?</summary>

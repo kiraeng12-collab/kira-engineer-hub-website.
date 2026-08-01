@@ -13,7 +13,7 @@ export default function RefundPolicyPage() {
       <h2>How to cancel</h2>
       <p>
         Until online checkout is activated, cancellation or access-removal requests should be sent to{" "}
-        <a href="mailto:KE@kiraengineerhub.com">KE@kiraengineerhub.com</a> or the official membership support
+        <a href="mailto:support@ke-hub.com">support@ke-hub.com</a> or the official membership support
         Telegram. When a billing portal is added, members should use the billing portal for subscription
         cancellation and payment-method updates.
       </p>

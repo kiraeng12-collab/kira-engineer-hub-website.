@@ -64,7 +64,7 @@ export function PartnerApplicationForm() {
 
       if (!response.ok) {
         setState("error");
-        setMessage(data.message || "The application could not be sent. Please try again or email KE@kiraengineerhub.com.");
+        setMessage(data.message || "The application could not be sent. Please try again or email support@ke-hub.com.");
         trackEvent("partner_application_error", { status: response.status });
         return;
       }

@@ -17,7 +17,7 @@ export default function AccessibilityPage() {
       </p>
       <p>
         We do not claim full accessibility compliance until independent testing confirms it. Accessibility feedback
-        can be sent to <a href="mailto:KE@kiraengineerhub.com">KE@kiraengineerhub.com</a>.
+        can be sent to <a href="mailto:support@ke-hub.com">support@ke-hub.com</a>.
       </p>
     </LegalPageLayout>
   );

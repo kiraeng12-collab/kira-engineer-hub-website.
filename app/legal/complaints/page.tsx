@@ -14,7 +14,7 @@ export default function LegalComplaintsPage() {
       <h2>How to submit a complaint</h2>
       <p>
         Use the <Link href="/complaints">complaint form</Link> or contact{" "}
-        <a href="mailto:KE@kiraengineerhub.com">KE@kiraengineerhub.com</a>. Include your full name, email, Telegram
+        <a href="mailto:support@ke-hub.com">support@ke-hub.com</a>. Include your full name, email, Telegram
         username, product or access area, payment reference if relevant, a clear description, supporting evidence
         and requested resolution.
       </p>

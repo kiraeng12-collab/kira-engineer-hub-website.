@@ -64,9 +64,9 @@ export const legalConfig: LegalConfig = {
   regulatoryStatus:
     "Kira Engineer Hub, LLC provides trading and financial-market education and related technology only. It is not a licensed or regulated financial adviser, broker-dealer, or investment manager, does not execute trades or hold client funds, and does not provide personalized investment advice.",
   minimumAge: "18",
-  supportEmail: "KE@kiraengineerhub.com",
-  complaintsEmail: "KE@kiraengineerhub.com",
-  privacyEmail: "KE@kiraengineerhub.com",
+  supportEmail: "support@ke-hub.com",
+  complaintsEmail: "support@ke-hub.com",
+  privacyEmail: "support@ke-hub.com",
   cancellationDeadline: "Before the next renewal date",
   refundRequestPeriod: "As soon as possible after the billing issue or access-delivery issue is identified",
   complaintAcknowledgementTarget: "Within 7 business days where practical",

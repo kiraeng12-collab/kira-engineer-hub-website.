@@ -22,7 +22,7 @@ export default function SecurityPage() {
             Kira Engineer Hub uses HTTPS, security headers, cookie consent controls, and a public security contact.
             Checkout remains disabled until payment, account, and membership infrastructure are production-ready.
           </p>
-          <p>Security contact: <a href="mailto:KE@kiraengineerhub.com">KE@kiraengineerhub.com</a></p>
+          <p>Security contact: <a href="mailto:support@ke-hub.com">support@ke-hub.com</a></p>
           <p>Security policy: <a href="/.well-known/security.txt">/.well-known/security.txt</a></p>
         </div>
         <section>
