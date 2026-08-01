@@ -77,6 +77,18 @@ export function Footer() {
               </TelegramLink>
             </li>
             <li>
+              <a className="footer-social" href={siteConfig.social.instagram} target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#social-instagram" /></svg>
+                <span>@kiraenghub</span>
+              </a>
+            </li>
+            <li>
+              <a className="footer-social" href={siteConfig.social.x} target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#social-x" /></svg>
+                <span>@kiraenghub</span>
+              </a>
+            </li>
+            <li>
               <a className="footer-social" href={siteConfig.social.instagramFounder} target="_blank" rel="noopener noreferrer">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#social-instagram" /></svg>
                 <span>@kira.engineer</span>

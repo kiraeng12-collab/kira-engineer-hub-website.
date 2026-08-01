@@ -19,6 +19,10 @@ export const siteConfig = {
   social: {
     telegramCommunity: "https://t.me/KiraTradingCommunity",
     telegramMembershipSupport: "https://t.me/KIRAENGINEER",
+    // Official Kira Engineer Hub brand accounts.
+    instagram: "https://www.instagram.com/kiraenghub/",
+    x: "https://x.com/kiraenghub",
+    // Founder + trading-community Instagram accounts.
     instagramFounder: "https://www.instagram.com/kira.engineer/",
     instagramTrading: "https://www.instagram.com/kira.tradingc/",
   },
