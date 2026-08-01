@@ -346,6 +346,40 @@
   line-height: 1.45;
 }
 
+/* ---- VIP lock screen ---- */
+.lot-calc__lock {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(201, 162, 74, 0.08), transparent 55%), var(--surface);
+  padding: clamp(28px, 6vw, 48px);
+  text-align: center;
+  max-width: 520px;
+  margin-inline: auto;
+}
+.lot-calc__lock-badge {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+.lot-calc__lock h2 {
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+}
+.lot-calc__lock p {
+  color: var(--stone);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.lot-calc__lock .button {
+  width: 100%;
+  max-width: 280px;
+}
+.lot-calc__lock-note {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
 /* Telegram Mini App: hide the website chrome so only the calculator shows. */
 body.tg-miniapp .site-header,
 body.tg-miniapp .site-footer,

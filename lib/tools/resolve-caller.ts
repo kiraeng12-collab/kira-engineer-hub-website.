@@ -15,7 +15,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth/config";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { hasEntitlement } from "@/lib/entitlements/service";
-import { getTelegramConfig } from "@/lib/telegram/client";
+import { getTelegramConfig, isVipGroupMember } from "@/lib/telegram/client";
 import { verifyTelegramInitData } from "@/lib/telegram/init-data";
 import type { PrismaClient } from "@/lib/generated/prisma";
 
@@ -40,19 +40,28 @@ export async function resolveCaller(request?: Request): Promise<Caller> {
 
   // Path 2 — Telegram Mini App initData.
   const initData = request?.headers.get("x-telegram-init-data");
-  if (initData && prisma) {
+  if (initData) {
     const config = getTelegramConfig();
     if (config) {
       const verified = verifyTelegramInitData(initData, config.botToken);
       if (verified.ok) {
-        const linked = await prisma.user.findUnique({
-          where: { telegramUserId: verified.user.id },
-          select: { id: true },
-        });
-        if (linked) {
-          const vip = await hasEntitlement(prisma, linked.id, "vip_telegram");
-          return { access: vip ? "vip" : "free", userId: linked.id, via: "telegram", prisma };
+        // VIP is determined by live VIP-group/channel membership — the
+        // Telegram-native signal, requiring no website-account linking.
+        let vip = false;
+        try {
+          vip = await isVipGroupMember(config, verified.user.id);
+        } catch {
+          vip = false; // a Telegram API hiccup must not silently grant access
         }
+        // Resolve a linked website account if one exists, purely so VIP history
+        // and saved profiles can be stored. Not required for access.
+        const linked = prisma
+          ? await prisma.user.findUnique({
+              where: { telegramUserId: verified.user.id },
+              select: { id: true },
+            })
+          : null;
+        return { access: vip ? "vip" : "free", userId: linked?.id ?? null, via: "telegram", prisma };
       }
     }
   }

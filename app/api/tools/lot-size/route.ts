@@ -46,6 +46,16 @@ export async function GET(request: Request): Promise<Response> {
 export async function POST(request: Request): Promise<Response> {
   const { access, userId, prisma } = await resolveCaller(request);
 
+  // The calculator is VIP-only: only active KIRA VIP members (verified by live
+  // VIP-group membership in Telegram, or the vip_telegram entitlement on the
+  // website) may run a calculation. Everyone else is locked out.
+  if (access !== "vip") {
+    return jsonResponse(403, {
+      locked: true,
+      message: "The KIRA Lot Sizing Calculator is available to KIRA VIP members.",
+    });
+  }
+
   // Rate limit anonymous abuse by IP. Generous — the calc is cheap and pure —
   // but enough to stop a scripted flood.
   if (prisma) {
