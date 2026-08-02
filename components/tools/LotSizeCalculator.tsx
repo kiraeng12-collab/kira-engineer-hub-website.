@@ -231,8 +231,8 @@ export function LotSizeCalculator({
           Get VIP Access
         </a>
         <p className="lot-calc__lock-note">
-          Already a VIP? Open this from inside the KIRA VIP bot while your Telegram account is a member of the VIP
-          group, so we can verify your access.
+          Already a VIP? Make sure you have activated your VIP access key and linked your Telegram account (via the
+          KIRA VIP bot), then reopen this from the bot so we can verify your key.
         </p>
       </div>
     );
