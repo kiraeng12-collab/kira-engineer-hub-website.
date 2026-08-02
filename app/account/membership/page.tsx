@@ -88,11 +88,21 @@ export default async function AccountMembershipPage() {
           {/* Members who joined the community before the cutoff can unlock
               their permanent price before purchasing. */}
           {user?.membershipTier === "founding" || user?.membershipTier === "early_bird" ? (
-            <p className="form-note">
-              Community pricing active: {TIER_LABELS[user.membershipTier]?.trim() || user.membershipTier}
-            </p>
+            <div className="notice">
+              <strong>✓ Your community discount is applied</strong>
+              <br />
+              You&apos;re getting {TIER_LABELS[user.membershipTier]?.trim() || user.membershipTier} — it&apos;s applied
+              automatically to the prices below.
+            </div>
           ) : (
-            <ClaimDiscountButton />
+            <div className="notice">
+              <strong>Did you claim your community discount?</strong>
+              <br />
+              If you joined KIRA before 1 August 2026, claim your loyalty discount <strong>before you pay</strong> — your
+              Founding or Early Bird price then applies automatically. Otherwise you&apos;ll be charged the standard
+              price.
+              <ClaimDiscountButton />
+            </div>
           )}
           {anyPaymentReady ? (
             <SubscribeButtons
