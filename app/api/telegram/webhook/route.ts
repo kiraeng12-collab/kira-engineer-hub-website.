@@ -2,6 +2,7 @@ import { jsonResponse } from "@/lib/api-utils";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { getTelegramConfig, sendTelegramMessage, createSingleUseInviteLink } from "@/lib/telegram/client";
 import { hashToken, isExpired } from "@/lib/auth/tokens";
+import { ingestChannelPost } from "@/lib/trades/store";
 
 export const runtime = "nodejs";
 
@@ -9,11 +10,25 @@ export const runtime = "nodejs";
 // belt and suspenders against a leaked link being reused by someone else.
 const INVITE_LINK_TTL_SECONDS = 15 * 60;
 
+interface TelegramChannelPost {
+  message_id: number;
+  text?: string;
+  chat?: { id: number };
+  reply_to_message?: { message_id: number };
+}
+
 interface TelegramUpdate {
   message?: {
     text?: string;
     from?: { id: number; username?: string };
   };
+  channel_post?: TelegramChannelPost;
+  edited_channel_post?: TelegramChannelPost;
+}
+
+/** The chat trades are read from — the VIP channel by default. */
+function tradesChatId(channelChatId: string | null): string | null {
+  return (process.env.TRADES_CHANNEL_CHAT_ID || "").trim() || channelChatId;
 }
 
 export async function POST(request: Request): Promise<Response> {
@@ -31,6 +46,29 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const update = (await request.json().catch(() => null)) as TelegramUpdate | null;
+
+  // --- VIP Live Dashboard: ingest trade signals + reply updates from the VIP
+  // channel. Only posts from the configured trades chat are considered; a
+  // parse/ingest failure is swallowed so it can never break the webhook. ---
+  const post = update?.channel_post ?? update?.edited_channel_post;
+  if (post?.chat?.id != null && typeof post.text === "string") {
+    const tradesChat = tradesChatId(config.channelChatId);
+    if (tradesChat && String(post.chat.id) === tradesChat) {
+      try {
+        await ingestChannelPost(prisma, {
+          channelChatId: String(post.chat.id),
+          messageId: post.message_id,
+          text: post.text,
+          replyToMessageId: post.reply_to_message?.message_id ?? null,
+          isEdit: Boolean(update?.edited_channel_post),
+        });
+      } catch (err) {
+        console.error("trade ingest failed:", err);
+      }
+    }
+    return jsonResponse(200, { ok: true });
+  }
+
   const message = update?.message;
   const text = message?.text;
   const fromId = message?.from?.id;

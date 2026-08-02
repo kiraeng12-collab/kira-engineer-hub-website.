@@ -6,7 +6,7 @@
   ],
   "headers": [
     {
-      "source": "/((?!tools/lot-sizing-calculator/telegram).*)",
+      "source": "/((?!tools/(?:lot-sizing-calculator|dashboard)/telegram).*)",
       "headers": [
         {
           "key": "Strict-Transport-Security",
@@ -35,7 +35,7 @@
       ]
     },
     {
-      "source": "/tools/lot-sizing-calculator/telegram",
+      "source": "/tools/:app(lot-sizing-calculator|dashboard)/telegram",
       "headers": [
         {
           "key": "Strict-Transport-Security",
