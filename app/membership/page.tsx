@@ -54,6 +54,28 @@ export default function MembershipPage() {
         <p className="meta">Structured market discussion, risk-aware planning context, learning resources, and private Telegram access.</p>
       </div>
       <div className="doc-body">
+        {readiness.open ? (
+          <div className="notice" id="join">
+            <strong>Ready to join? Become a KIRA VIP member.</strong>
+            <br />
+            {getStandardPriceDisplay("monthly")} or {getStandardPriceDisplay("quarterly")} — cancel anytime. If you
+            joined our community early, your loyalty discount applies automatically at checkout.
+            <div className="actions">
+              <Link className="button cyan" href="/account/membership">Subscribe now</Link>
+              <a className="button secondary" href="#online-checkout">See plans &amp; details</a>
+            </div>
+          </div>
+        ) : preLaunch ? (
+          <div className="notice" id="join">
+            <strong>Membership opens {LAUNCH_DISPLAY}.</strong>
+            <br />
+            Join the free community on Telegram now, and you&apos;ll be ready to subscribe the moment we go live.
+            <div className="actions">
+              <ActionLink className="button cyan" href={siteConfig.social.telegramCommunity}>Join Free on Telegram</ActionLink>
+            </div>
+          </div>
+        ) : null}
+
         <section>
           <h2>What KIRA VIP Membership is</h2>
           <p>

@@ -57,10 +57,12 @@ export function SubscribeButtons({
   tier = null,
   cardEnabled = false,
   cryptoEnabled = false,
+  defaultName = "",
 }: {
   tier?: MembershipTier | null;
   cardEnabled?: boolean;
   cryptoEnabled?: boolean;
+  defaultName?: string;
 }) {
   const [plan, setPlan] = useState<PlanId | null>(null);
   const [method, setMethod] = useState<PayMethod>(cardEnabled ? "card" : "crypto");
@@ -203,7 +205,7 @@ export function SubscribeButtons({
         <p>
           <label>
             Full legal name
-            <input name="legal_name" autoComplete="name" minLength={2} maxLength={120} required />
+            <input name="legal_name" autoComplete="name" defaultValue={defaultName} minLength={2} maxLength={120} required />
           </label>
         </p>
         <p>

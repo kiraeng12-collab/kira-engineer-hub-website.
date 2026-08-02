@@ -109,6 +109,7 @@ export default async function AccountMembershipPage() {
               tier={user?.membershipTier === "founding" || user?.membershipTier === "early_bird" ? user.membershipTier : null}
               cardEnabled={checkoutReady}
               cryptoEnabled={cryptoReady}
+              defaultName={session?.user?.name ?? ""}
             />
           ) : null}
           <div className="actions">
