@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export function RegisterForm() {
+  const router = useRouter();
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -11,6 +14,7 @@ export function RegisterForm() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    const email = String(data.get("email") || "");
     const password = String(data.get("password") || "");
     const confirmPassword = String(data.get("confirm_password") || "");
 
@@ -24,7 +28,7 @@ export function RegisterForm() {
     try {
       const body = new URLSearchParams();
       body.set("name", String(data.get("name") || ""));
-      body.set("email", String(data.get("email") || ""));
+      body.set("email", email);
       body.set("password", password);
       body.set("terms_accepted", data.get("terms_accepted") ? "true" : "false");
 
@@ -41,8 +45,17 @@ export function RegisterForm() {
         return;
       }
 
+      // Sign the member in immediately and take them straight to checkout — no
+      // email round-trip. The verification email is still sent for later.
+      const signInResult = await signIn("credentials", { email, password, redirect: false });
+      if (signInResult?.ok) {
+        router.push("/account/membership");
+        return;
+      }
+
+      // Fallback if auto-login didn't take: account exists, just sign in.
       setStatus("success");
-      setMessage("Account created. Check your email for a verification link before signing in.");
+      setMessage("Account created. Please sign in to start your membership.");
       form.reset();
     } catch {
       setStatus("error");
@@ -53,9 +66,9 @@ export function RegisterForm() {
   if (status === "success") {
     return (
       <div className="notice">
-        <strong>Check your email</strong>
+        <strong>Account created</strong>
         <br />
-        {message}
+        {message} <Link href="/login?callbackUrl=/account/membership">Sign in</Link>
       </div>
     );
   }

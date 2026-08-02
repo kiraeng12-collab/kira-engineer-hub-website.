@@ -39,9 +39,11 @@ export async function authorizeCredentials(
   const validPassword = await bcrypt.compare(password, user.passwordHash);
   if (!validPassword) return null;
 
-  if (!user.emailVerified) {
-    throw new Error("EMAIL_NOT_VERIFIED");
-  }
+  // Email verification is NOT required to sign in or pay. Most members join from
+  // their phone and the verify-email round-trip was the biggest checkout drop-off.
+  // The verification email is still sent at registration for later account
+  // recovery, but it no longer blocks access. To re-enable the hard gate, restore
+  // the `if (!user.emailVerified) throw new Error("EMAIL_NOT_VERIFIED")` check.
 
   return { id: user.id, email: user.email, name: user.name };
 }

@@ -84,21 +84,21 @@ describe("authorizeCredentials", () => {
     expect(result).toBeNull();
   });
 
-  it("throws EMAIL_NOT_VERIFIED for a correct password on an unverified account", async () => {
+  it("signs in an unverified account (email verification no longer blocks login)", async () => {
     const prisma = {
       user: {
         findUnique: vi.fn().mockResolvedValue({
           id: "1",
           email: "a@example.com",
+          name: "Test User",
           passwordHash: "hash",
           emailVerified: null,
         }),
       },
     };
     const authorize = await loadWithMocks({ prisma });
-    await expect(authorize({ email: "a@example.com", password: "secret123" }, undefined)).rejects.toThrow(
-      "EMAIL_NOT_VERIFIED"
-    );
+    const result = await authorize({ email: "a@example.com", password: "secret123" }, undefined);
+    expect(result).toEqual({ id: "1", email: "a@example.com", name: "Test User" });
   });
 
   it("returns the user on valid, verified credentials", async () => {
