@@ -12,9 +12,10 @@ const WINDOW_DAYS = 3;
  * Daily "expiring soon" heads-up. DMs the owner one digest of the paid
  * (card/crypto) memberships lapsing in the next few days, so they can nudge a
  * renewal BEFORE access drops. Owner-only, Cron-authorized, and a no-op when
- * nothing is expiring or alerts aren't configured. Migration grandfathers
- * (source "admin_grant") are deliberately excluded - those are handled by the
- * re-subscribe campaign, not ongoing billing.
+ * nothing is expiring or alerts aren't configured. Includes migration
+ * grandfathers (source "admin_grant") — pre-launch members granted access
+ * until a fixed date — so the owner can nudge them to re-subscribe before it
+ * ends (they don't auto-renew).
  */
 async function run(request: Request): Promise<Response> {
   const secret = process.env.CRON_SECRET;
@@ -38,7 +39,7 @@ async function run(request: Request): Promise<Response> {
   const soon = await prisma.entitlement.findMany({
     where: {
       status: "active",
-      source: { in: ["stripe", "crypto"] },
+      source: { in: ["stripe", "crypto", "admin_grant"] },
       currentPeriodEnd: { gte: now, lte: until },
     },
     select: {
