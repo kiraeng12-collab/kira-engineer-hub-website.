@@ -444,3 +444,48 @@ model LotSizeCalculation {
   @@index([status])
   @@index([riskMode])
 }
+
+// KIRA VIP Live Dashboard — a trade parsed from a VIP-channel signal post. The
+// bot ingests channel posts, turns valid signals into rows here, and updates
+// them from reply messages (TP1/TP2/SL/BE). The VIP-only dashboard Mini App
+// reads these to show what's running / closed / moved to break-even.
+model Trade {
+  id String @id @default(cuid())
+
+  // Provenance: the exact channel post this trade came from. Unique together so
+  // the same post is never ingested twice, and so reply updates can find their
+  // parent by the replied-to message id.
+  channelChatId    String
+  channelMessageId String
+
+  symbol    String // e.g. XAUUSD
+  direction String // BUY | SELL
+  size      String? // BIG | NORMAL | SMALL, as posted (maps to calculator modes)
+
+  // Entry is a range; entryMin == entryMax for a single price.
+  entryMin Float?
+  entryMax Float?
+
+  stopLoss         Float?
+  // Kept so the dashboard can show "SL 4005 → BE" once the stop is moved.
+  originalStopLoss Float?
+  movedToBE        Boolean @default(false)
+
+  takeProfits Float[] // [tp1, tp2, ...] in order
+  tpHitCount  Int     @default(0) // how many TPs have been hit so far
+
+  // pending (wait confirmation) | running | closed
+  status  String  @default("running")
+  // When closed: tp2 | sl | manual (tp1 alone keeps status running).
+  outcome String?
+
+  rawText String // original post text, for audit and re-parsing
+
+  openedAt  DateTime  @default(now())
+  closedAt  DateTime?
+  updatedAt DateTime  @updatedAt
+
+  @@unique([channelChatId, channelMessageId])
+  @@index([status, openedAt])
+  @@index([symbol])
+}

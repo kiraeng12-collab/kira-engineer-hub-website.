@@ -3,20 +3,6 @@
 import { useEffect, useState } from "react";
 import { LotSizeCalculator } from "./LotSizeCalculator";
 
-/** Minimal shape of the Telegram WebApp SDK surface we use. */
-interface TelegramWebApp {
-  initData: string;
-  colorScheme: "light" | "dark";
-  ready: () => void;
-  expand: () => void;
-  themeParams?: Record<string, string>;
-}
-declare global {
-  interface Window {
-    Telegram?: { WebApp?: TelegramWebApp };
-  }
-}
-
 type Prefill = Parameters<typeof LotSizeCalculator>[0]["initialPrefill"];
 
 /**
