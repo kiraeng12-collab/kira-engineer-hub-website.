@@ -1,19 +1,23 @@
 /**
- * Access gate for the VIP Live Dashboard. Open to anyone who is a live member
- * of the VIP group/channel, OR who holds a valid VIP KEY (the vip_telegram
- * entitlement) — a paying website user who may not have linked Telegram yet.
- * Group/channel membership alone is enough, so legacy joins without a website
- * account still get in.
+ * Access gate for the VIP Live Dashboard.
+ *
+ * STRICT RULE: the viewer must be a live member of the VIP group or channel.
+ * This is the only way in — there is no entitlement bypass, so anyone who is
+ * not currently in the VIP group/channel (never joined, left, or was removed)
+ * cannot open the dashboard, full stop.
+ *
+ * The Telegram identity is trusted only after HMAC verification (verified Mini
+ * App initData, or the Telegram id on the signed-in website account), and
+ * membership is confirmed live against Telegram via getChatMember. Every
+ * failure path denies (fail-closed): no identity, an unverifiable identity, a
+ * Telegram API error, or the bot lacking admin all result in "no access".
  *
  * Works from either a website session or a verified Telegram Mini App identity.
- * The Telegram id needed for the group check comes from verified initData
- * (Mini App) or from the linked website account (session).
  */
 
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth/config";
 import { getPrismaClient } from "@/lib/db/prisma";
-import { hasEntitlement } from "@/lib/entitlements/service";
 import { getTelegramConfig, isVipGroupMember } from "@/lib/telegram/client";
 import { verifyTelegramInitData } from "@/lib/telegram/init-data";
 import type { PrismaClient } from "@/lib/generated/prisma";
@@ -52,22 +56,24 @@ export async function resolveDashboardAccess(request: Request): Promise<Dashboar
     }
   }
 
-  // Need at least one identity to check membership against.
-  if (!userId && !telegramId) {
-    return { ok: false, status: 401, message: "Open the dashboard from the KIRA VIP bot." };
+  // A verified Telegram identity is mandatory — without one we cannot check
+  // VIP-group membership, so there is nothing to grant access on.
+  if (!telegramId || !config) {
+    return {
+      ok: false,
+      status: 401,
+      message: "Open the dashboard from the KIRA VIP bot so we can verify your VIP membership.",
+    };
   }
 
-  // VIP = a live member of the VIP group/channel, OR a linked account holding
-  // the vip_telegram key. Group/channel membership alone is enough.
-  let vip = false;
-  if (telegramId && config) vip = await isVipGroupMember(config, telegramId).catch(() => false);
-  if (!vip && userId) vip = await hasEntitlement(prisma, userId, "vip_telegram");
-
-  if (!vip) {
+  // The ONLY gate: live membership of the VIP group/channel. No entitlement
+  // bypass — not in the group means no dashboard. Fail-closed on any error.
+  const inGroup = await isVipGroupMember(config, telegramId).catch(() => false);
+  if (!inGroup) {
     return {
       ok: false,
       status: 403,
-      message: "This dashboard is for KIRA VIP members — join the VIP group to access it.",
+      message: "This dashboard is for KIRA VIP members — you must be in the VIP group to open it.",
     };
   }
 
