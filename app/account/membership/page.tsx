@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth/config";
 import { getPrismaClient } from "@/lib/db/prisma";
+import { verifyClaimToken, applyLoyaltyClaim, VIP_CLAIM_COOKIE } from "@/lib/telegram/loyalty-link";
 import { getStandardPriceDisplay, getEarlyBirdPriceDisplay, getFoundingPriceDisplay, type PlanId } from "@/lib/config/pricing";
 import { SubscribeButtons } from "@/components/account/SubscribeButtons";
 import { getCheckoutReadiness } from "@/lib/config/checkout-readiness";
@@ -36,6 +38,21 @@ const TIER_LABELS: Record<string, string> = {
 export default async function AccountMembershipPage() {
   const session = await getServerSession(authOptions);
   const prisma = getPrismaClient();
+
+  // A member arriving from the bot's signed /vip link carries their loyalty
+  // claim in an httpOnly cookie (set before they signed in). Apply it now that
+  // they're authenticated so the discount is live before they pay. Idempotent
+  // and upgrade-only, so re-running on refresh is harmless.
+  if (prisma && session?.user?.id) {
+    const claimToken = (await cookies()).get(VIP_CLAIM_COOKIE)?.value;
+    const verified = verifyClaimToken(claimToken);
+    if (verified) {
+      await applyLoyaltyClaim(prisma, session.user.id, verified.telegramUserId).catch((e) =>
+        console.error("vip loyalty claim (cookie) failed:", e instanceof Error ? e.message : e)
+      );
+    }
+  }
+
   const [membership, user] =
     prisma && session?.user?.id
       ? await Promise.all([
