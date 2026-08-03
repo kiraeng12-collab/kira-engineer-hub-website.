@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth/config";
 import { jsonResponse } from "@/lib/api-utils";
@@ -14,6 +15,36 @@ export const runtime = "nodejs";
 
 const INVITE_LINK_TTL_SECONDS = 15 * 60;
 
+function secretsMatch(provided: string | null, expected: string): boolean {
+  if (!provided) return false;
+  const a = Buffer.from(provided);
+  const b = Buffer.from(expected);
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+
+/**
+ * Identify the member either from the bot (x-kira-bot-secret + telegramUserId in
+ * the body) or from a website session. Returns their userId, or null.
+ */
+async function resolveMemberId(
+  request: Request,
+  prisma: NonNullable<ReturnType<typeof getPrismaClient>>
+): Promise<string | null> {
+  const sharedSecret = process.env.TELEGRAM_BOT_VERIFY_SECRET;
+  if (sharedSecret && secretsMatch(request.headers.get("x-kira-bot-secret"), sharedSecret)) {
+    const body = (await request.json().catch(() => null)) as { telegramUserId?: unknown } | null;
+    const telegramUserId =
+      typeof body?.telegramUserId === "string" || typeof body?.telegramUserId === "number"
+        ? String(body.telegramUserId).trim()
+        : "";
+    if (!telegramUserId) return null;
+    const u = await prisma.user.findUnique({ where: { telegramUserId }, select: { id: true } });
+    return u?.id ?? null;
+  }
+  const session = await getServerSession(authOptions);
+  return session?.user?.id ?? null;
+}
+
 /**
  * Re-sends VIP invite links to an already-linked member.
  *
@@ -25,25 +56,25 @@ const INVITE_LINK_TTL_SECONDS = 15 * 60;
  * No access key is involved: the Telegram account is already verified and
  * stored, so the links are delivered straight to it by the bot.
  */
-export async function POST(): Promise<Response> {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.id) return jsonResponse(401, { message: "Please sign in first." });
-
+export async function POST(request: Request): Promise<Response> {
   const prisma = getPrismaClient();
   const config = getTelegramConfig();
   if (!prisma || !config) {
     return jsonResponse(503, { message: "Telegram is not configured yet." });
   }
 
+  const userId = await resolveMemberId(request, prisma);
+  if (!userId) return jsonResponse(401, { message: "Please sign in first." });
+
   const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
+    where: { id: userId },
     select: { telegramUserId: true },
   });
   if (!user?.telegramUserId) {
     return jsonResponse(400, { message: "Connect your Telegram account first." });
   }
 
-  const access = await checkVipTelegramAccess(prisma, session.user.id);
+  const access = await checkVipTelegramAccess(prisma, userId);
   if (!access.ok) {
     if (access.reason === "no_membership") {
       return jsonResponse(403, { message: "An active KIRA VIP Membership is required." });
