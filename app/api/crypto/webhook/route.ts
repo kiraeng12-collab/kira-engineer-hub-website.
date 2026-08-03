@@ -9,6 +9,7 @@ import {
 import { grantEntitlement, setEntitlementStatus } from "@/lib/entitlements/service";
 import { markConsentEffective } from "@/lib/agreements/service";
 import { syncTelegramAccessForUser } from "@/lib/telegram/membership-sync";
+import { deliverVipInviteDM } from "@/lib/telegram/provision-purchase";
 import { cryptoPeriodEnd } from "@/lib/config/crypto";
 import type { PlanId } from "@/lib/config/pricing";
 
@@ -67,6 +68,17 @@ export async function POST(request: Request): Promise<Response> {
 
     // Stamp the signing as effective at payment settlement (idempotent).
     await markConsentEffective(prisma, record.consentRecordId, null, Math.floor(Date.now() / 1000)).catch(() => {});
+
+    // Telegram-first crypto purchase: the account is already linked to their
+    // Telegram id, so deliver the VIP invite straight to their DM. (Website
+    // crypto payers aren't linked yet, so this is a no-op for them.)
+    const paidUser = await prisma.user.findUnique({
+      where: { id: record.userId },
+      select: { telegramUserId: true, telegramLinkedAt: true, name: true },
+    });
+    if (paidUser?.telegramUserId && paidUser.telegramLinkedAt) {
+      await deliverVipInviteDM(paidUser.telegramUserId, paidUser.name).catch(() => {});
+    }
 
     return jsonResponse(200, { ok: true, granted: true });
   }
