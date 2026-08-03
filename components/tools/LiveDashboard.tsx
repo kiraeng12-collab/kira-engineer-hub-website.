@@ -40,6 +40,8 @@ export function LiveDashboard() {
   const [status, setStatus] = useState<"loading" | "ok" | "locked" | "error">("loading");
   const [lockMsg, setLockMsg] = useState("");
   const [data, setData] = useState<DashboardData | null>(null);
+  const [viewer, setViewer] = useState<string>("");
+  const [stamp, setStamp] = useState<string>("");
   const initData = useRef<string>("");
 
   // Telegram init: inject SDK, read initData, strip website chrome.
@@ -55,6 +57,13 @@ export function LiveDashboard() {
           /* non-fatal */
         }
         initData.current = wa.initData || "";
+        // Identity for the anti-leak watermark. Any screenshot then carries who
+        // took it. Best-effort — falls back to a generic label if unavailable.
+        const u = wa.initDataUnsafe?.user;
+        if (u) {
+          const name = [u.first_name, u.last_name].filter(Boolean).join(" ") || u.username || "";
+          setViewer([name, u.id ? `id ${u.id}` : ""].filter(Boolean).join(" · "));
+        }
       }
       setReady(true);
     }
@@ -104,6 +113,17 @@ export function LiveDashboard() {
     };
   }, [ready]);
 
+  // Live timestamp for the watermark, refreshed every 30s.
+  useEffect(() => {
+    const tick = () =>
+      setStamp(
+        new Date().toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })
+      );
+    tick();
+    const id = setInterval(tick, 30000);
+    return () => clearInterval(id);
+  }, []);
+
   if (!ready || status === "loading") {
     return <p className="dash__empty">Loading live trades…</p>;
   }
@@ -127,6 +147,7 @@ export function LiveDashboard() {
 
   return (
     <div className="dash">
+      <Watermark label={[viewer || "KIRA VIP", stamp].filter(Boolean).join("  ·  ")} />
       <section>
         <p className="dash__section-label">
           🟢 Running <span className="dash__count">{data.running.length}</span>
@@ -164,6 +185,32 @@ export function LiveDashboard() {
         Live · updates every {REFRESH_MS / 1000}s · reflects the KIRA VIP channel. Educational only, not financial advice.
       </p>
     </div>
+  );
+}
+
+// A tiled, low-opacity identity overlay. Screenshots can't be blocked on a web
+// Mini App, so instead every view is stamped with who is looking + when — a
+// leaked screenshot then identifies the leaker. pointer-events:none so it never
+// interferes with taps.
+function Watermark({ label }: { label: string }) {
+  const safe = label.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const svg =
+    `<svg xmlns='http://www.w3.org/2000/svg' width='380' height='210'>` +
+    `<text x='8' y='105' transform='rotate(-28 190 105)' fill='rgba(150,163,180,0.13)' ` +
+    `font-family='Arial, Helvetica, sans-serif' font-size='13' font-weight='700'>${safe}</text></svg>`;
+  const url = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        position: "fixed",
+        inset: 0,
+        pointerEvents: "none",
+        zIndex: 9999,
+        backgroundImage: url,
+        backgroundRepeat: "repeat",
+      }}
+    />
   );
 }
 
