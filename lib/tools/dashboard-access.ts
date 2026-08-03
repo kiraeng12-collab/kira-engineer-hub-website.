@@ -1,7 +1,9 @@
 /**
- * Access gate for the VIP Live Dashboard. Stricter than the calculator: a
- * member must hold a valid VIP KEY (the vip_telegram entitlement) AND currently
- * be a member of the VIP group/channel. Both are required.
+ * Access gate for the VIP Live Dashboard. Open to anyone who is a live member
+ * of the VIP group/channel, OR who holds a valid VIP KEY (the vip_telegram
+ * entitlement) — a paying website user who may not have linked Telegram yet.
+ * Group/channel membership alone is enough, so legacy joins without a website
+ * account still get in.
  *
  * Works from either a website session or a verified Telegram Mini App identity.
  * The Telegram id needed for the group check comes from verified initData
@@ -17,7 +19,7 @@ import { verifyTelegramInitData } from "@/lib/telegram/init-data";
 import type { PrismaClient } from "@/lib/generated/prisma";
 
 export type DashboardAccess =
-  | { ok: true; prisma: PrismaClient; userId: string }
+  | { ok: true; prisma: PrismaClient; userId: string | null }
   | { ok: false; status: number; message: string };
 
 export async function resolveDashboardAccess(request: Request): Promise<DashboardAccess> {
@@ -50,18 +52,24 @@ export async function resolveDashboardAccess(request: Request): Promise<Dashboar
     }
   }
 
-  if (!userId) return { ok: false, status: 401, message: "Open the dashboard from the KIRA VIP bot while signed in." };
-
-  // 1) Valid VIP key.
-  const hasKey = await hasEntitlement(prisma, userId, "vip_telegram");
-  if (!hasKey) return { ok: false, status: 403, message: "This dashboard is for active KIRA VIP members." };
-
-  // 2) Currently in the VIP group/channel.
-  if (!telegramId || !config) {
-    return { ok: false, status: 403, message: "Link your Telegram to your VIP account to access the dashboard." };
+  // Need at least one identity to check membership against.
+  if (!userId && !telegramId) {
+    return { ok: false, status: 401, message: "Open the dashboard from the KIRA VIP bot." };
   }
-  const inGroup = await isVipGroupMember(config, telegramId).catch(() => false);
-  if (!inGroup) return { ok: false, status: 403, message: "You must be a member of the KIRA VIP group to view the dashboard." };
+
+  // VIP = a live member of the VIP group/channel, OR a linked account holding
+  // the vip_telegram key. Group/channel membership alone is enough.
+  let vip = false;
+  if (telegramId && config) vip = await isVipGroupMember(config, telegramId).catch(() => false);
+  if (!vip && userId) vip = await hasEntitlement(prisma, userId, "vip_telegram");
+
+  if (!vip) {
+    return {
+      ok: false,
+      status: 403,
+      message: "This dashboard is for KIRA VIP members — join the VIP group to access it.",
+    };
+  }
 
   return { ok: true, prisma, userId };
 }

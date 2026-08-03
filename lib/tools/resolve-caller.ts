@@ -6,16 +6,17 @@
  *   1. A website next-auth session, or
  *   2. A verified Telegram Mini App `initData` header (X-Telegram-Init-Data).
  *
- * VIP status always comes from the `vip_telegram` entitlement — never from the
- * request. The Telegram id is trusted only after HMAC verification and only
- * once it maps to a linked website account.
+ * VIP status is granted to anyone who is a live member of the VIP group or
+ * channel, OR who holds the `vip_telegram` entitlement (a paying website user
+ * who may not have linked Telegram yet). It is never taken from the request —
+ * the Telegram id is trusted only after HMAC verification.
  */
 
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth/config";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { hasEntitlement } from "@/lib/entitlements/service";
-import { getTelegramConfig } from "@/lib/telegram/client";
+import { getTelegramConfig, isVipGroupMember } from "@/lib/telegram/client";
 import { verifyTelegramInitData } from "@/lib/telegram/init-data";
 import type { PrismaClient } from "@/lib/generated/prisma";
 
@@ -34,7 +35,13 @@ export async function resolveCaller(request?: Request): Promise<Caller> {
   const session = await getServerSession(authOptions);
   const sessionUserId = session?.user?.id ?? null;
   if (sessionUserId) {
-    const vip = prisma ? await hasEntitlement(prisma, sessionUserId, "vip_telegram") : false;
+    let vip = prisma ? await hasEntitlement(prisma, sessionUserId, "vip_telegram") : false;
+    // Also honour live VIP group/channel membership via their linked Telegram.
+    if (!vip && prisma) {
+      const config = getTelegramConfig();
+      const u = await prisma.user.findUnique({ where: { id: sessionUserId }, select: { telegramUserId: true } });
+      if (config && u?.telegramUserId) vip = await isVipGroupMember(config, u.telegramUserId).catch(() => false);
+    }
     return { access: vip ? "vip" : "free", userId: sessionUserId, via: "session", prisma };
   }
 
@@ -45,15 +52,15 @@ export async function resolveCaller(request?: Request): Promise<Caller> {
     if (config) {
       const verified = verifyTelegramInitData(initData, config.botToken);
       if (verified.ok && prisma) {
-        // VIP requires a valid VIP KEY: the Telegram account must be linked to a
-        // website account that holds the vip_telegram entitlement. Being in the
-        // VIP group is NOT sufficient — team members, guests, and legacy joins
-        // sit in the group without a paid key and must stay locked out.
+        // VIP = a live member of the VIP group/channel, OR a linked account that
+        // holds the vip_telegram key. Group/channel membership alone is enough,
+        // so legacy joins without a website account still get in.
         const linked = await prisma.user.findUnique({
           where: { telegramUserId: verified.user.id },
           select: { id: true },
         });
-        const vip = linked ? await hasEntitlement(prisma, linked.id, "vip_telegram") : false;
+        let vip = await isVipGroupMember(config, verified.user.id).catch(() => false);
+        if (!vip && linked) vip = await hasEntitlement(prisma, linked.id, "vip_telegram");
         return { access: vip ? "vip" : "free", userId: linked?.id ?? null, via: "telegram", prisma };
       }
     }
