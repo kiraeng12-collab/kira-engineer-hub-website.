@@ -8,7 +8,14 @@ export const metadata: Metadata = {
   alternates: { canonical: "/checkout/success" },
 };
 
-export default function CheckoutSuccessPage() {
+export default async function CheckoutSuccessPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ src?: string }>;
+}) {
+  const { src } = await searchParams;
+  const fromTelegram = src === "telegram";
+
   return (
     <div className="doc-page">
       <div className="doc-intro">
@@ -20,11 +27,16 @@ export default function CheckoutSuccessPage() {
         <div className="notice">
           <strong>Thank you.</strong>
           <br />
-          Your payment was received. Your membership will be confirmed automatically once Stripe verifies the
-          subscription - this usually takes a few moments, and can take a little longer in some cases.
+          {fromTelegram
+            ? "Your payment was received. Head back to Telegram — the KIRA bot is sending your VIP invite links to your chat right now (this usually takes a few moments)."
+            : "Your payment was received. Your membership will be confirmed automatically once Stripe verifies the subscription - this usually takes a few moments, and can take a little longer in some cases."}
         </div>
         <div className="actions">
-          <Link className="button" href="/account/membership">View Membership Status</Link>
+          {fromTelegram ? (
+            <a className="button" href="https://t.me/KiratradingVIP_Bot">Return to Telegram</a>
+          ) : (
+            <Link className="button" href="/account/membership">View Membership Status</Link>
+          )}
           <Link className="button secondary" href="/support">Contact Support</Link>
         </div>
       </div>

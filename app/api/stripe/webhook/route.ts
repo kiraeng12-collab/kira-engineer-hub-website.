@@ -9,6 +9,7 @@ import {
   applyAddonEntitlements,
 } from "@/lib/stripe/membership-sync";
 import { markConsentEffective } from "@/lib/agreements/service";
+import { provisionTelegramStripePurchase } from "@/lib/telegram/provision-purchase";
 import type { PrismaClient } from "@/lib/generated/prisma";
 
 export const runtime = "nodejs";
@@ -43,6 +44,20 @@ async function handleEvent(prisma: PrismaClient, stripe: Stripe, event: Stripe.E
     }
     case "checkout.session.completed": {
       const checkoutSession = event.data.object as Stripe.Checkout.Session;
+
+      // Telegram-first purchase: no website account exists yet. Provision one
+      // from the payment email, link Telegram + customer, grant the membership,
+      // and DM the invite. If it handled the session, we're done.
+      if (checkoutSession.mode === "subscription") {
+        const handled = await provisionTelegramStripePurchase(
+          prisma,
+          stripe,
+          checkoutSession,
+          event.created
+        );
+        if (handled) break;
+      }
+
       if (checkoutSession.mode === "subscription" && checkoutSession.subscription) {
         const subscriptionId =
           typeof checkoutSession.subscription === "string"
