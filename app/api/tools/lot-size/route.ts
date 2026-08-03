@@ -46,9 +46,9 @@ export async function GET(request: Request): Promise<Response> {
 export async function POST(request: Request): Promise<Response> {
   const { access, userId, prisma } = await resolveCaller(request);
 
-  // The calculator is VIP-only: only active KIRA VIP members (verified by live
-  // VIP-group membership in Telegram, or the vip_telegram entitlement on the
-  // website) may run a calculation. Everyone else is locked out.
+  // The calculator is VIP-only: only members with LIVE VIP group/channel
+  // membership in Telegram may run a calculation (no entitlement bypass).
+  // Everyone else is locked out.
   if (access !== "vip") {
     return jsonResponse(403, {
       locked: true,
