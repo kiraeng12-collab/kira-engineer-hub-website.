@@ -165,7 +165,7 @@ export function LiveDashboard() {
 
       {data.closed.length > 0 && (
         <section>
-          <p className="dash__section-label">✅ Recently closed</p>
+          <p className="dash__section-label">✅ This week&apos;s results</p>
           <ul className="dash__closed">
             {data.closed.map((t) => (
               <li key={t.id}>
@@ -188,7 +188,7 @@ export function LiveDashboard() {
       )}
 
       <p className="dash__meta">
-        Live · updates every {REFRESH_MS / 1000}s · reflects the KIRA VIP channel. Educational only, not financial advice.
+        Live · updates every {REFRESH_MS / 1000}s · results reset every Monday · reflects the KIRA VIP channel. Educational only, not financial advice.
       </p>
     </div>
   );

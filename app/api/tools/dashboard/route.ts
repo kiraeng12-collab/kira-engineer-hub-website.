@@ -59,7 +59,7 @@ export async function GET(request: Request): Promise<Response> {
 
   const [open, closed] = await Promise.all([
     listOpenTrades(access.prisma),
-    listRecentClosed(access.prisma, 12),
+    listRecentClosed(access.prisma),
   ]);
 
   return jsonResponse(200, {

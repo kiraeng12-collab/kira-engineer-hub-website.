@@ -129,6 +129,25 @@ function computeUpdate(trade: TradeRow, update: ParsedUpdate): Record<string, un
 
 // ---- Reads for the dashboard ----
 
+/**
+ * Start of the current trading week — the most recent Monday 00:00. The closed
+ * list resets to this each Monday so the board shows THIS week's results, not an
+ * ever-growing history. Running trades are never reset (they're live).
+ * DASHBOARD_WEEK_OFFSET_HOURS shifts the Monday-midnight boundary to the desired
+ * timezone (e.g. 3 for +03:00); defaults to UTC.
+ */
+export function startOfTradingWeek(now: Date = new Date()): Date {
+  const offsetHours = Number(process.env.DASHBOARD_WEEK_OFFSET_HOURS || 0);
+  const shifted = new Date(now.getTime() + offsetHours * 3_600_000);
+  const daysSinceMonday = (shifted.getUTCDay() + 6) % 7; // Mon=0 … Sun=6
+  const mondayMidnight = Date.UTC(
+    shifted.getUTCFullYear(),
+    shifted.getUTCMonth(),
+    shifted.getUTCDate() - daysSinceMonday
+  );
+  return new Date(mondayMidnight - offsetHours * 3_600_000);
+}
+
 export async function listOpenTrades(prisma: PrismaClient) {
   try {
     return await prisma.trade.findMany({
@@ -141,10 +160,11 @@ export async function listOpenTrades(prisma: PrismaClient) {
   }
 }
 
-export async function listRecentClosed(prisma: PrismaClient, limit = 15) {
+/** Trades closed since the start of the current trading week (Monday reset). */
+export async function listRecentClosed(prisma: PrismaClient, limit = 60) {
   try {
     return await prisma.trade.findMany({
-      where: { status: "closed" },
+      where: { status: "closed", closedAt: { gte: startOfTradingWeek() } },
       orderBy: { closedAt: "desc" },
       take: limit,
     });
