@@ -89,6 +89,25 @@ describe("parseTradeUpdate", () => {
     expect(parseTradeUpdate("target hit ✅")).toEqual({ type: "tp" });
   });
 
+  it("reads slash-command forms", () => {
+    expect(parseTradeUpdate("/tp1")).toEqual({ type: "tp1" });
+    expect(parseTradeUpdate("/tp2")).toEqual({ type: "tp2" });
+    expect(parseTradeUpdate("/exit")).toEqual({ type: "close" });
+  });
+
+  it("detects entry activation (/enter)", () => {
+    expect(parseTradeUpdate("/enter")).toEqual({ type: "enter" });
+    expect(parseTradeUpdate("entered ✅")).toEqual({ type: "enter" });
+    expect(parseTradeUpdate("order filled")).toEqual({ type: "enter" });
+    expect(parseTradeUpdate("activated")).toEqual({ type: "enter" });
+  });
+
+  it("detects cancel as distinct from a manual close", () => {
+    expect(parseTradeUpdate("/cancel")).toEqual({ type: "cancel" });
+    expect(parseTradeUpdate("cancelled")).toEqual({ type: "cancel" });
+    expect(parseTradeUpdate("no trade")).toEqual({ type: "cancel" });
+  });
+
   it("returns null for unrelated replies", () => {
     expect(parseTradeUpdate("great call! 🔥")).toBeNull();
     expect(parseTradeUpdate("thanks")).toBeNull();

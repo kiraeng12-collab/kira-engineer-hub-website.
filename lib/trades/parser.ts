@@ -30,7 +30,9 @@ export type ParsedUpdate =
   | { type: "tp" } // an unnumbered target hit
   | { type: "sl" }
   | { type: "be"; price: number | null } // stop moved to break-even
-  | { type: "close" };
+  | { type: "enter" } // order filled / activated -> now running
+  | { type: "cancel" } // setup voided before entry
+  | { type: "close" }; // manually exited
 
 function num(raw: string | undefined): number | null {
   if (!raw) return null;
@@ -108,7 +110,12 @@ export function parseTradeUpdate(text: string): ParsedUpdate | null {
   if (/\btp\s*1\b|take\s*profit\s*1|first\s*target/.test(t)) return { type: "tp1" };
   if (/\bsl\b|stop[\s-]*loss|stopped|stop[\s-]*out/.test(t)) return { type: "sl" };
   if (/\btp\b|take\s*profit|target\s*(?:hit|reached|done)|profit\s*secured/.test(t)) return { type: "tp" };
-  if (/\bclosed?\b|book(?:ed)?|cancel/.test(t)) return { type: "close" };
+  // Entry activated: /enter, entered, activated, filled, triggered.
+  if (/\benter(?:ed|ing)?\b|\bactivat\w*|\bfilled\b|\btriggered\b/.test(t)) return { type: "enter" };
+  // Setup voided before entry: /cancel, cancelled, void, no trade, invalid.
+  if (/\bcancel(?:l?ed)?\b|\bvoid(?:ed)?\b|no\s*trade|invalid/.test(t)) return { type: "cancel" };
+  // Manual exit / close: /exit, exited, closed, booked.
+  if (/\bexit(?:ed)?\b|\bclosed?\b|book(?:ed)?/.test(t)) return { type: "close" };
 
   return null;
 }

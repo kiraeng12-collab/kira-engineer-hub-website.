@@ -116,6 +116,12 @@ function computeUpdate(trade: TradeRow, update: ParsedUpdate): Record<string, un
         status: trade.status === "pending" ? "running" : trade.status,
       };
     }
+    case "enter":
+      // Order filled / activated — a pending setup is now live.
+      return { status: "running" };
+    case "cancel":
+      // Setup voided before entry — off the board, marked cancelled.
+      return { status: "closed", outcome: "cancelled", closedAt: now };
     case "close":
       return { status: "closed", outcome: "manual", closedAt: now };
   }

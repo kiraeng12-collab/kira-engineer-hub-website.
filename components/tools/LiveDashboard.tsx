@@ -173,7 +173,13 @@ export function LiveDashboard() {
                   {t.symbol} <em data-dir={t.direction}>{t.direction}</em>
                 </span>
                 <span className="dash__outcome" data-outcome={t.outcome ?? "manual"}>
-                  {t.outcome === "sl" ? "SL hit" : t.outcome?.startsWith("tp") ? `${t.outcome.toUpperCase()} ✅` : "Closed"}
+                  {t.outcome === "sl"
+                    ? "SL hit"
+                    : t.outcome === "cancelled"
+                    ? "Cancelled"
+                    : t.outcome?.startsWith("tp")
+                    ? `${t.outcome.toUpperCase()} ✅`
+                    : "Closed"}
                 </span>
               </li>
             ))}
