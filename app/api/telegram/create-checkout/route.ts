@@ -22,12 +22,6 @@ function secretsMatch(provided: string | null, expected: string): boolean {
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
-function requireEnv(name: string): string {
-  const value = process.env[name]?.trim();
-  if (!value) throw new Error(`Missing ${name}`);
-  return value;
-}
-
 function asTier(value: string | null | undefined): MembershipTier | null {
   return value === "founding" || value === "early_bird" ? value : null;
 }
@@ -70,7 +64,15 @@ export async function POST(request: Request): Promise<Response> {
     const legacy = await prisma.legacyMember.findUnique({ where: { telegramUserId } });
     const effectiveTier = asTier(legacy?.tier);
 
-    const priceId = requireEnv(getStripePriceEnvForTier(plan, effectiveTier));
+    // Explicit price lookup so a missing tier price env is diagnosable (the env
+    // NAME is safe to surface) instead of a generic 500. This is the usual cause
+    // of "checkout error" for a discounted plan whose price wasn't set in Vercel.
+    const priceEnv = getStripePriceEnvForTier(plan, effectiveTier);
+    const priceId = process.env[priceEnv]?.trim();
+    if (!priceId) {
+      console.error(`create-checkout: missing Stripe price env ${priceEnv} (plan=${plan}, tier=${effectiveTier || "standard"})`);
+      return jsonResponse(500, { ok: false, reason: "price_not_configured", env: priceEnv });
+    }
     const selected = pricingConfig.plans[plan];
 
     const successBase = process.env.STRIPE_SUCCESS_URL || "https://www.kiraengineerhub.com/checkout/success";
